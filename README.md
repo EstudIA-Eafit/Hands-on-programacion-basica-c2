@@ -29,7 +29,10 @@ previa que se actualiza mientras la persona escribe.
 ├── index.html              Portada: muestra la lista de laboratorios
 ├── laboratorio.html        Página de laboratorio, la misma para todos
 ├── README.md               Este archivo
-├── .nojekyll               Archivo vacío que GitHub Pages necesita (ver abajo)
+├── .nojekyll               Archivo vacío para GitHub Pages (ver abajo)
+├── .github/
+│   ├── workflows/publicar.yml   Publica el sitio al subir cambios a main
+│   └── scripts/revisar_labs.py  Revisa los laboratorios antes de publicar
 ├── assets/
 │   ├── css/sitio.css       Estilos de todo el sitio
 │   └── js/
@@ -58,9 +61,10 @@ Cómo funciona:
 Por eso, para agregar un laboratorio **no hace falta tocar HTML ni JavaScript**:
 solo carpetas y archivos JSON.
 
-> **¿Por qué el archivo `.nojekyll`?** GitHub Pages ignora las carpetas que
-> empiezan con guion bajo, como `_plantilla`. Este archivo vacío se lo impide.
-> No lo borres.
+> **¿Por qué el archivo `.nojekyll`?** Con la publicación por GitHub Actions
+> no hace falta. Se deja por si alguien publica con la opción
+> **Deploy from a branch**: en ese modo GitHub ignora las carpetas que
+> empiezan con guion bajo, como `_plantilla`, y este archivo vacío lo impide.
 
 ---
 
@@ -122,14 +126,38 @@ publica solo en uno o dos minutos.
 
    Cambia `USUARIO` y `NOMBRE-DEL-REPO` por los tuyos.
 4. En GitHub, entra al repositorio y ve a **Settings → Pages**.
-5. En **Build and deployment**, en **Source**, elige **Deploy from a branch**.
-6. En **Branch**, elige `main` y la carpeta `/ (root)`. Pulsa **Save**.
-7. Espera uno o dos minutos y recarga la página de Settings. Arriba aparece la
-   dirección del sitio, con esta forma:
+5. En **Build and deployment**, en **Source**, elige **GitHub Actions**.
+   No hace falta elegir nada más: el proyecto ya trae las instrucciones de
+   publicación en `.github/workflows/publicar.yml`.
+6. Ve a la pestaña **Actions** del repositorio. Si la publicación no empezó
+   sola, entra en **Publicar en GitHub Pages** y pulsa **Run workflow**.
+7. Cuando termine (marca verde ✓), la dirección del sitio aparece en
+   **Settings → Pages** y en el resultado de la publicación. Tiene esta forma:
 
    ```
    https://USUARIO.github.io/NOMBRE-DEL-REPO/
    ```
+
+### Qué pasa en cada publicación
+
+Cada vez que subes cambios a `main`, GitHub hace dos pasos (los ves en la
+pestaña **Actions**):
+
+1. **Revisar laboratorios.** Ejecuta `.github/scripts/revisar_labs.py`, que
+   busca los errores más comunes: un JSON mal escrito, una carpeta que no
+   existe, un archivo de inicio que falta o tareas con el mismo `id`.
+2. **Publicar sitio.** Solo si la revisión salió bien.
+
+Si la revisión encuentra un problema, aparece una marca roja ✗ y **el sitio
+no se actualiza**: sigue en línea la versión anterior. Entra en la ejecución
+fallida, abre el paso **Revisar labs.json y cada lab.json** y lee la lista de
+problemas. Cada uno dice el archivo y, si es un JSON mal escrito, la línea.
+
+Puedes hacer la misma revisión en tu computador antes de subir los cambios:
+
+```
+python .github/scripts/revisar_labs.py
+```
 
 Todas las rutas del sitio son relativas, así que funciona dentro de esa
 subcarpeta sin cambiar nada.
@@ -195,8 +223,14 @@ Abre `labs/labs.json` y agrega una entrada al final de la lista
 
 ### Paso 5. Prueba
 
-Abre el sitio con el servidor local y revisa que el laboratorio aparece en la
-portada y que abre bien. Si ves el mensaje "No se pudo cargar", lo más común es:
+Ejecuta la revisión automática desde la carpeta del proyecto:
+
+```
+python .github/scripts/revisar_labs.py
+```
+
+Después abre el sitio con el servidor local y revisa que el laboratorio
+aparece en la portada y que abre bien. Si ves el mensaje "No se pudo cargar", lo más común es:
 
 - una coma de más o de menos en un archivo JSON;
 - comillas que faltan alrededor de un texto;

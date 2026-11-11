@@ -1,0 +1,64 @@
+# ============================================================
+# PUBLICAR EN GITHUB PAGES
+# Cada vez que se suben cambios a la rama main, GitHub:
+# 1. Revisa que los archivos de los laboratorios estén bien.
+# 2. Si todo está bien, publica el sitio en GitHub Pages.
+# Si la revisión encuentra un error, el sitio NO se publica
+# y sigue en línea la versión anterior.
+# ============================================================
+
+name: Publicar en GitHub Pages
+
+on:
+  # Se ejecuta al subir cambios a main...
+  push:
+    branches: [main]
+  # ...y también a mano, desde la pestaña Actions del repositorio.
+  workflow_dispatch:
+
+# Permisos mínimos que necesita GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Si se suben varios cambios seguidos, no se publican a la vez:
+# la publicación en curso termina y después se publica el más reciente.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  revisar:
+    name: Revisar laboratorios
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Revisar labs.json y cada lab.json
+        run: python3 .github/scripts/revisar_labs.py
+
+  publicar:
+    name: Publicar sitio
+    needs: revisar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - name: Descargar el código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Empaquetar el sitio
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # El sitio es estático: se publica la carpeta tal cual.
+          path: .
+
+      - name: Publicar
+        id: despliegue
+        uses: actions/deploy-pages@v4
