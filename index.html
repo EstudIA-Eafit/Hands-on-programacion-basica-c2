@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laboratorios · [Nombre del curso]</title>
+  <link rel="stylesheet" href="assets/css/sitio.css">
+</head>
+<body>
+
+  <a class="saltar" href="#contenido">Ir al contenido</a>
+
+  <header class="cabecera">
+    <div class="contenedor">
+      <p class="cabecera-curso" id="nombre-curso">[Nombre del curso]</p>
+      <h1>Laboratorios prácticos</h1>
+      <p>Practica escribiendo código. Cada laboratorio tiene tareas cortas y un editor con vista previa.</p>
+    </div>
+  </header>
+
+  <main id="contenido" class="contenedor">
+
+    <section aria-labelledby="titulo-como">
+      <h2 id="titulo-como">Cómo funciona</h2>
+      <ol class="pasos">
+        <li>Elige un laboratorio de la lista.</li>
+        <li>Lee una tarea y escribe el código en el editor.</li>
+        <li>Mira el resultado. Se actualiza mientras escribes.</li>
+        <li>Al terminar, descarga tu trabajo para guardarlo en tu portafolio.</li>
+      </ol>
+      <p>No necesitas instalar nada. Tu avance se guarda solo en este navegador: si cambias de computador, descarga tu trabajo antes de irte.</p>
+    </section>
+
+    <section aria-labelledby="titulo-lista">
+      <h2 id="titulo-lista">Laboratorios</h2>
+      <!-- portada.js llena esta lista leyendo labs/labs.json -->
+      <ul class="tarjetas" id="lista-laboratorios">
+        <li>Cargando laboratorios…</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>[Nombre del curso] · [Nombre de la institución]</p>
+      <p>Este sitio no recoge datos personales ni usa servicios externos.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/portada.js"></script>
+</body>
+</html>

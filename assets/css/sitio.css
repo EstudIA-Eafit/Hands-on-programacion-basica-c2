@@ -1,0 +1,406 @@
+/* ============================================================
+   ESTILOS DEL SITIO
+   Los usan la portada y la página de laboratorio.
+   Primero se escriben los estilos para celular. Más abajo,
+   dentro de @media, los cambios para pantallas más anchas.
+   ============================================================ */
+
+
+/* ---------- Colores ----------
+   Se guardan en variables para cambiarlos en un solo lugar.
+   Todas las combinaciones de texto y fondo tienen buen contraste. */
+
+:root {
+  --texto: #1b1b1b;
+  --texto-suave: #4a4a4a;
+  --fondo: #ffffff;
+  --fondo-suave: #f3f5f8;
+  --borde: #767676;
+  --principal: #0b4f8a;
+  --principal-oscuro: #083a66;
+  --reto: #7a3e00;
+  --error-fondo: #fdecea;
+  --error-texto: #8a1c12;
+  --foco: #c75b00;
+}
+
+
+/* ---------- Base ---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--texto);
+  background-color: var(--fondo);
+}
+
+h1, h2, h3 {
+  line-height: 1.25;
+}
+
+a {
+  color: var(--principal);
+}
+
+code {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.95em;
+  background-color: var(--fondo-suave);
+  padding: 0 0.2em;
+  border-radius: 3px;
+}
+
+/* El foco del teclado siempre se ve con un borde naranja grueso. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+iframe:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 2px;
+}
+
+/* Enlace "Ir al contenido": solo aparece al llegar con el teclado. */
+.saltar {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--fondo);
+  z-index: 10;
+}
+
+.saltar:focus {
+  top: 1rem;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* ---------- Contenedores ---------- */
+
+.contenedor,
+.contenedor-ancho {
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.contenedor {
+  max-width: 60rem;
+}
+
+.contenedor-ancho {
+  max-width: 100rem;
+}
+
+
+/* ---------- Cabecera y pie ---------- */
+
+.cabecera {
+  background-color: var(--principal);
+  color: #ffffff;
+  padding: 1.5rem 0;
+}
+
+.cabecera a {
+  color: #ffffff;
+}
+
+.cabecera h1 {
+  margin: 0.25rem 0 0.5rem;
+}
+
+.cabecera-curso {
+  margin: 0;
+  font-weight: bold;
+}
+
+.cabecera-lab {
+  padding: 0.75rem 0;
+}
+
+.pie {
+  margin-top: 3rem;
+  padding: 1.5rem 0;
+  background-color: var(--fondo-suave);
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+}
+
+.pie p {
+  margin: 0.25rem 0;
+}
+
+
+/* ---------- Textos de ayuda y avisos ---------- */
+
+.nota {
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+}
+
+.aviso {
+  list-style: none;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-left: 5px solid var(--error-texto);
+  background-color: var(--error-fondo);
+  color: var(--error-texto);
+}
+
+.pasos li {
+  margin-bottom: 0.25rem;
+}
+
+
+/* ---------- Tarjetas de la portada ---------- */
+
+.tarjetas {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.tarjeta {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+}
+
+.tarjeta h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
+}
+
+.datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.datos dt {
+  font-weight: bold;
+}
+
+.datos dt::after {
+  content: ":";
+}
+
+.datos dd {
+  margin: 0 1rem 0 0;
+}
+
+
+/* ---------- Página de laboratorio ---------- */
+
+.presentacion {
+  max-width: 50rem;
+}
+
+.lab-cuerpo {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.lab-cuerpo h2 {
+  margin-top: 0;
+}
+
+/* Tareas */
+
+.lista-tareas {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tarea {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+/* Casillas más grandes: son más fáciles de tocar en el celular. */
+.tarea input[type=checkbox] {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin: 0.15rem 0 0;
+  accent-color: var(--principal);
+}
+
+.tarea label {
+  cursor: pointer;
+}
+
+.tarea details {
+  grid-column: 2;
+}
+
+.tarea summary {
+  cursor: pointer;
+  color: var(--principal);
+  text-decoration: underline;
+}
+
+.tarea details p {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--fondo-suave);
+  border-radius: 6px;
+}
+
+.tarea-reto label strong {
+  color: var(--reto);
+}
+
+.avance {
+  font-weight: bold;
+}
+
+/* Pestañas del editor */
+
+.pestanas {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.pestana {
+  font: inherit;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--borde);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  background-color: var(--fondo-suave);
+  color: var(--texto);
+  cursor: pointer;
+}
+
+.pestana[aria-selected="true"] {
+  background-color: var(--principal);
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* Editor y vista previa */
+
+.panel label {
+  display: block;
+  font-weight: bold;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.codigo {
+  display: block;
+  width: 100%;
+  height: 26rem;
+  padding: 0.75rem;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--texto);
+  background-color: #fbfbfb;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  resize: vertical;
+  tab-size: 2;
+}
+
+.titulo-pestana {
+  margin: 0.5rem 0 0.25rem;
+}
+
+#vista-previa {
+  display: block;
+  width: 100%;
+  height: 26rem;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  background-color: #ffffff;
+}
+
+/* Botones */
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+button {
+  font: inherit;
+}
+
+.acciones button {
+  padding: 0.6rem 1rem;
+  border: 2px solid var(--principal);
+  border-radius: 6px;
+  background-color: var(--principal);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.acciones button:hover {
+  background-color: var(--principal-oscuro);
+}
+
+.acciones .boton-secundario {
+  background-color: var(--fondo);
+  color: var(--principal);
+}
+
+.acciones .boton-secundario:hover {
+  background-color: var(--fondo-suave);
+}
+
+.descargas {
+  margin-top: 2rem;
+}
+
+
+/* ---------- Pantallas medianas: código y resultado lado a lado ---------- */
+
+@media (min-width: 50rem) {
+  .tarjetas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lab-cuerpo {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tareas {
+    grid-column: 1 / -1;
+  }
+
+  .codigo,
+  #vista-previa {
+    height: 32rem;
+  }
+}
+
+
+/* ---------- Pantallas grandes: tareas, código y resultado en tres columnas ---------- */
+
+@media (min-width: 80rem) {
+  .lab-cuerpo {
+    grid-template-columns: minmax(18rem, 0.8fr) 1fr 1fr;
+  }
+
+  .tareas {
+    grid-column: auto;
+  }
+}

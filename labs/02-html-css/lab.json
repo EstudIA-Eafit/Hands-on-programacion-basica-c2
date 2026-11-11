@@ -1,0 +1,55 @@
+{
+  "id": "02-html-css",
+  "titulo": "HTML con CSS",
+  "objetivo": "Cambiar la apariencia de una página con reglas de CSS, usando selectores por etiqueta, por clase y por id.",
+  "duracion": "60 minutos",
+  "nivel": "Básico",
+  "archivos": [
+    { "nombre": "index.html", "etiqueta": "HTML", "principal": true },
+    { "nombre": "estilos.css", "etiqueta": "CSS" }
+  ],
+  "tareas": [
+    {
+      "id": "fondo",
+      "texto": "Cambia el color de fondo del <code>body</code>.",
+      "pista": "En la pestaña CSS, busca la regla <code>body</code> y cambia <code>white</code> en <code>background-color</code>. Prueba <code>lightyellow</code> o <code>#e8f4f8</code>.",
+      "reto": false
+    },
+    {
+      "id": "letra",
+      "texto": "Cambia el tipo de letra del <code>body</code>.",
+      "pista": "En la regla <code>body</code>, cambia el valor de <code>font-family</code>. Prueba <code>Arial</code>, <code>Georgia</code> o <code>Verdana</code>.",
+      "reto": false
+    },
+    {
+      "id": "h1",
+      "texto": "Cambia el color y el tamaño del <code>h1</code>.",
+      "pista": "En la regla <code>h1</code>, cambia el valor de <code>color</code> y el de <code>font-size</code>. Por ejemplo: <code>color: darkgreen;</code> y <code>font-size: 40px;</code>.",
+      "reto": false
+    },
+    {
+      "id": "centrar",
+      "texto": "Centra el encabezado con <code>text-align</code>.",
+      "pista": "En la regla <code>header</code>, cambia <code>left</code> por <code>center</code>.",
+      "reto": false
+    },
+    {
+      "id": "clase",
+      "texto": "En el HTML, agrega <code>class=\"destacado\"</code> al párrafo que todavía no tiene clase.",
+      "pista": "Esta tarea se hace en la pestaña HTML. El párrafo dice «Este párrafo todavía no tiene clase». Debe quedar así: <code>&lt;p class=\"destacado\"&gt;</code>.",
+      "reto": false
+    },
+    {
+      "id": "menu",
+      "texto": "Dale un color de fondo al elemento con <code>id=\"menu\"</code>.",
+      "pista": "En la pestaña CSS, dentro de la regla <code>#menu</code>, agrega una línea con <code>background-color</code>. Por ejemplo: <code>background-color: lightblue;</code>.",
+      "reto": false
+    },
+    {
+      "id": "footer",
+      "texto": "Escribe desde cero una regla para <code>footer</code>: texto centrado y de color gris (<code>gray</code>).",
+      "pista": "Escríbela al final de la pestaña CSS. Empieza con <code>footer {</code>, pon una propiedad por línea y cierra con <code>}</code>. Usa <code>text-align</code> y <code>color</code>.",
+      "reto": true
+    }
+  ]
+}

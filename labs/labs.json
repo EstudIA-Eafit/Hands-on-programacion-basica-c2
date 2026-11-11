@@ -1,0 +1,21 @@
+{
+  "curso": "[Nombre del curso]",
+  "laboratorios": [
+    {
+      "id": "01-html-basico",
+      "titulo": "HTML básico",
+      "descripcion": "Edita tu primera página web: título, textos, una lista, una sección nueva y un enlace en el menú.",
+      "duracion": "45 minutos",
+      "nivel": "Básico",
+      "carpeta": "01-html-basico"
+    },
+    {
+      "id": "02-html-css",
+      "titulo": "HTML con CSS",
+      "descripcion": "Cambia la apariencia de una página con reglas de CSS: colores, tipo de letra, tamaño y alineación.",
+      "duracion": "60 minutos",
+      "nivel": "Básico",
+      "carpeta": "02-html-css"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+/* ==========================================================
+   PRÁCTICA 2 · CSS
+   Una regla tiene tres partes:
+
+       selector { propiedad: valor; }
+
+   Haz una tarea, guarda (Ctrl + S) y recarga el navegador (F5).
+   Los textos entre estos símbolos son comentarios.
+   ========================================================== */
+
+
+/* --- Selector por etiqueta: aplica a TODAS las etiquetas de ese tipo --- */
+
+body {
+  /* TAREA 1: cambia el color de fondo. Prueba: lightyellow, #e8f4f8 */
+  background-color: white;
+
+  /* TAREA 2: cambia el tipo de letra. Prueba: Arial, Georgia, Verdana */
+  font-family: Times New Roman;
+}
+
+h1 {
+  /* TAREA 3: cambia el color y el tamaño del título. */
+  color: black;
+  font-size: 32px;
+}
+
+h2 {
+  color: navy;
+}
+
+header {
+  /* TAREA 4: centra el contenido del encabezado.
+     Cambia left por center. */
+  text-align: left;
+}
+
+
+/* --- Selector por clase: empieza con punto.
+       Aplica a los elementos que tengan class="destacado" --- */
+
+.destacado {
+  background-color: lightyellow;
+  color: darkred;
+}
+
+/* TAREA 5: se hace en el archivo HTML. Vuelve aquí al terminar. */
+
+
+/* --- Selector por id: empieza con numeral.
+       Aplica al único elemento que tenga id="menu" --- */
+
+#menu {
+  /* TAREA 6: dale un color de fondo al menú. */
+  font-size: 18px;
+}
+
+
+/* RETO: escribe debajo una regla nueva para footer.
+   Que su texto quede centrado y de color gray. */

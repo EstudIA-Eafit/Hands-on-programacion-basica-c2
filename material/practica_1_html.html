@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- TAREA 1: cambia el texto de <title> por el nombre de tu página.
+       Guarda, recarga el navegador y mira la pestaña. -->
+  <title>Mi primera página</title>
+</head>
+<body>
+
+  <!-- ======================================================
+       PRÁCTICA 1 · HTML
+       Cómo trabajar:
+       1. Abre este archivo en el navegador (doble clic).
+       2. Ábrelo también en un editor de texto (Bloc de notas sirve).
+       3. Haz una tarea, guarda (Ctrl + S) y recarga el navegador (F5).
+       Los textos entre estas flechas son comentarios: el navegador
+       no los muestra.
+       ====================================================== -->
+
+  <header>
+    <!-- TAREA 2: cambia este título por el tema de tu página. -->
+    <h1>Escribe aquí el título de tu página</h1>
+    <p>Una frase corta que diga para quién es esta página.</p>
+
+    <nav>
+      <ul>
+        <li><a href="#presentacion">Presentación</a></li>
+        <li><a href="#lista">Lista</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <!-- TAREA 6: cuando crees tu sección nueva, agrega aquí
+             un enlace que lleve a ella. -->
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="presentacion">
+      <h2>Presentación</h2>
+      <!-- TAREA 3: reemplaza este párrafo por dos frases tuyas
+           que cuenten de qué trata la página. -->
+      <p>Este es un párrafo de ejemplo. Cámbialo por tu propio texto.</p>
+    </section>
+
+    <section id="lista">
+      <h2>Lista</h2>
+      <p>Tres cosas que una persona encontrará aquí:</p>
+      <ul>
+        <li>Primera cosa</li>
+        <li>Segunda cosa</li>
+        <!-- TAREA 4: agrega el tercer elemento de la lista. -->
+      </ul>
+    </section>
+
+    <!-- TAREA 5: crea aquí una sección nueva.
+         Necesita: <section> con un id, un <h2> y un <p>.
+         Puedes copiar la sección "Presentación" y cambiarla. -->
+
+    <section id="contacto">
+      <h2>Contacto</h2>
+      <form>
+        <label for="nombre">Tu nombre</label>
+        <input type="text" id="nombre">
+
+        <!-- RETO: agrega otro campo con su etiqueta,
+             por ejemplo para escribir un mensaje. -->
+
+        <button type="button">Enviar</button>
+      </form>
+      <p>Formulario de práctica: todavía no guarda ni envía datos.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Página de práctica · Encuentro 1</p>
+  </footer>
+
+</body>
+</html>

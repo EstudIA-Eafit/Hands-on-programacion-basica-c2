@@ -1,0 +1,54 @@
+{
+  "id": "01-html-basico",
+  "titulo": "HTML básico",
+  "objetivo": "Cambiar el contenido de una página web usando etiquetas HTML: título, encabezados, párrafos, listas, secciones y enlaces.",
+  "duracion": "45 minutos",
+  "nivel": "Básico",
+  "archivos": [
+    { "nombre": "index.html", "etiqueta": "HTML", "principal": true }
+  ],
+  "tareas": [
+    {
+      "id": "title",
+      "texto": "Cambia el texto de <code>&lt;title&gt;</code> por el nombre de tu página.",
+      "pista": "Está casi al principio, dentro de <code>&lt;head&gt;</code>. El título no se ve dentro de la página: aparece en la pestaña del navegador. Aquí lo verás arriba del resultado, en «Título de la pestaña».",
+      "reto": false
+    },
+    {
+      "id": "h1",
+      "texto": "Cambia el <code>&lt;h1&gt;</code> por el tema de tu página.",
+      "pista": "Busca <code>Escribe aquí el título de tu página</code>. Cambia solo el texto entre <code>&lt;h1&gt;</code> y <code>&lt;/h1&gt;</code>.",
+      "reto": false
+    },
+    {
+      "id": "parrafo",
+      "texto": "En la sección «Presentación», reemplaza el párrafo de ejemplo por dos frases tuyas.",
+      "pista": "Escribe tus dos frases entre <code>&lt;p&gt;</code> y <code>&lt;/p&gt;</code>. Las dos van en el mismo párrafo.",
+      "reto": false
+    },
+    {
+      "id": "lista",
+      "texto": "Agrega el tercer elemento de la lista.",
+      "pista": "Copia la línea <code>&lt;li&gt;Segunda cosa&lt;/li&gt;</code>, pégala debajo y cambia el texto.",
+      "reto": false
+    },
+    {
+      "id": "seccion",
+      "texto": "Crea una sección nueva con un <code>id</code>, un <code>&lt;h2&gt;</code> y un <code>&lt;p&gt;</code>.",
+      "pista": "Puedes copiar la sección «Presentación» completa, desde <code>&lt;section&gt;</code> hasta <code>&lt;/section&gt;</code>, y cambiarla. El <code>id</code> debe ser una palabra sin espacios, por ejemplo <code>id=\"gustos\"</code>.",
+      "reto": false
+    },
+    {
+      "id": "enlace",
+      "texto": "Agrega al menú un enlace que lleve a tu sección nueva.",
+      "pista": "Copia una línea del menú, como <code>&lt;li&gt;&lt;a href=\"#lista\"&gt;Lista&lt;/a&gt;&lt;/li&gt;</code>. Cambia <code>#lista</code> por <code>#</code> seguido del id de tu sección.",
+      "reto": false
+    },
+    {
+      "id": "campo",
+      "texto": "Agrega al formulario otro campo con su etiqueta.",
+      "pista": "Cada campo necesita un <code>&lt;label&gt;</code> y un <code>&lt;input&gt;</code>. El <code>for</code> de la etiqueta y el <code>id</code> del campo deben ser iguales, por ejemplo <code>for=\"mensaje\"</code> e <code>id=\"mensaje\"</code>.",
+      "reto": true
+    }
+  ]
+}

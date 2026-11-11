@@ -1,0 +1,24 @@
+{
+  "id": "00-nombre-del-laboratorio",
+  "titulo": "[Título del laboratorio]",
+  "objetivo": "[Qué va a aprender la persona en este laboratorio]",
+  "duracion": "[Duración estimada]",
+  "nivel": "Básico",
+  "archivos": [
+    { "nombre": "index.html", "etiqueta": "HTML", "principal": true }
+  ],
+  "tareas": [
+    {
+      "id": "tarea-1",
+      "texto": "[Instrucción de la primera tarea]",
+      "pista": "[Pista opcional. Si no hay pista, deja las comillas vacías]",
+      "reto": false
+    },
+    {
+      "id": "reto-1",
+      "texto": "[Instrucción del reto]",
+      "pista": "",
+      "reto": true
+    }
+  ]
+}

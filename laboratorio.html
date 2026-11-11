@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laboratorio · [Nombre del curso]</title>
+  <link rel="stylesheet" href="assets/css/sitio.css">
+</head>
+<body>
+
+  <!-- Esta página es la misma para todos los laboratorios.
+       La dirección dice cuál cargar, por ejemplo:
+       laboratorio.html?lab=01-html-basico
+       laboratorio.js lee labs/01-html-basico/lab.json y llena la página. -->
+
+  <a class="saltar" href="#contenido">Ir al contenido</a>
+
+  <header class="cabecera cabecera-lab">
+    <div class="contenedor-ancho">
+      <a href="index.html">← Volver a los laboratorios</a>
+    </div>
+  </header>
+
+  <main id="contenido" class="contenedor-ancho">
+
+    <!-- Mensaje que solo aparece si algo sale mal al cargar -->
+    <p class="aviso" id="aviso-error" role="alert" hidden></p>
+
+    <div id="laboratorio" hidden>
+
+      <section class="presentacion" aria-labelledby="titulo-lab">
+        <h1 id="titulo-lab"></h1>
+        <p id="objetivo-lab"></p>
+        <dl class="datos">
+          <dt>Duración</dt>
+          <dd id="duracion-lab"></dd>
+          <dt>Nivel</dt>
+          <dd id="nivel-lab"></dd>
+        </dl>
+        <p class="nota">
+          Escribe en el editor y mira el resultado: se actualiza solo,
+          sin guardar ni recargar. Los comentarios del código hablan de guardar
+          con Ctrl + S y recargar con F5; eso aplica solo si trabajas en tu
+          propio editor.
+        </p>
+      </section>
+
+      <div class="lab-cuerpo">
+
+        <section class="tareas" aria-labelledby="titulo-tareas">
+          <h2 id="titulo-tareas">Tareas</h2>
+          <p class="avance" id="avance" aria-live="polite"></p>
+          <!-- laboratorio.js crea aquí una tarea por cada elemento de "tareas" en lab.json -->
+          <ol class="lista-tareas" id="lista-tareas"></ol>
+          <p class="nota">Las casillas marcadas se guardan en este navegador.</p>
+        </section>
+
+        <section class="editor" aria-labelledby="titulo-editor">
+          <h2 id="titulo-editor">Tu código</h2>
+          <!-- Si el laboratorio tiene varios archivos, aquí aparecen las pestañas -->
+          <div class="pestanas" id="pestanas" role="tablist" aria-label="Archivos" hidden></div>
+          <!-- Aquí aparece un cuadro de texto por cada archivo -->
+          <div id="paneles"></div>
+
+          <div class="acciones">
+            <button type="button" id="boton-descargar">Descargar mi trabajo</button>
+            <button type="button" id="boton-reiniciar" class="boton-secundario">Volver al código inicial</button>
+          </div>
+          <p class="nota" id="estado-guardado" aria-live="polite"></p>
+        </section>
+
+        <section class="vista" aria-labelledby="titulo-vista">
+          <h2 id="titulo-vista">Resultado</h2>
+          <p class="titulo-pestana">Título de la pestaña: <strong id="titulo-pestana"></strong></p>
+          <!-- sandbox sin permisos: la vista previa no ejecuta scripts
+               ni envía formularios. -->
+          <iframe id="vista-previa" title="Vista previa de tu página" sandbox></iframe>
+        </section>
+
+      </div>
+
+      <section class="descargas" aria-labelledby="titulo-descargas">
+        <h2 id="titulo-descargas">¿Prefieres trabajar en tu propio editor?</h2>
+        <p>Descarga los archivos de inicio y guárdalos juntos en una misma carpeta.</p>
+        <ul id="lista-descargas"></ul>
+      </section>
+
+    </div>
+
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor-ancho">
+      <p>[Nombre del curso] · [Nombre de la institución]</p>
+      <p>Este sitio no recoge datos personales ni usa servicios externos.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/laboratorio.js"></script>
+</body>
+</html>

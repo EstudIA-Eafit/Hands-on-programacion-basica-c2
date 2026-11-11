@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi primera página con estilos</title>
+
+  <!-- Esta línea conecta la página con su hoja de estilos.
+       El archivo estilos.css debe estar en la MISMA carpeta. -->
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <!-- ======================================================
+       PRÁCTICA 2 · CSS
+       En esta práctica casi todo se hace en el archivo estilos.css.
+       Este archivo HTML solo lo tocas en la TAREA 5.
+       Guarda (Ctrl + S) y recarga el navegador (F5) tras cada cambio.
+       ====================================================== -->
+
+  <header>
+    <h1>Mi primera página</h1>
+    <p>Una página sencilla para practicar estilos.</p>
+
+    <nav id="menu">
+      <ul>
+        <li><a href="#presentacion">Presentación</a></li>
+        <li><a href="#lista">Lista</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="presentacion">
+      <h2>Presentación</h2>
+      <p class="destacado">Este párrafo tiene la clase "destacado".</p>
+
+      <!-- TAREA 5: agrega class="destacado" a la etiqueta <p>
+           de abajo. Guarda, recarga y mira qué cambió. -->
+      <p>Este párrafo todavía no tiene clase.</p>
+    </section>
+
+    <section id="lista">
+      <h2>Lista</h2>
+      <p>Tres cosas que una persona encontrará aquí:</p>
+      <ul>
+        <li>Primera cosa</li>
+        <li>Segunda cosa</li>
+        <li>Tercera cosa</li>
+      </ul>
+    </section>
+
+    <section id="contacto">
+      <h2>Contacto</h2>
+      <form>
+        <label for="nombre">Tu nombre</label>
+        <input type="text" id="nombre">
+        <button type="button">Enviar</button>
+      </form>
+      <p>Formulario de práctica: todavía no guarda ni envía datos.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Página de práctica · Encuentro 1</p>
+  </footer>
+
+</body>
+</html>
