@@ -1,4 +1,4 @@
-# Laboratorios prácticos · [Nombre del curso]
+# Laboratorios prácticos · Programación Básica - C2
 
 Sitio web con laboratorios de programación para principiantes.
 Cada laboratorio tiene tareas cortas, un editor de código y una vista
@@ -33,6 +33,7 @@ previa que se actualiza mientras la persona escribe.
 ├── assets/
 │   ├── css/sitio.css       Estilos de todo el sitio
 │   └── js/
+│       ├── curso.js        Escribe el nombre del curso en todas las páginas
 │       ├── portada.js      Arma la lista de la portada
 │       └── laboratorio.js  Tareas, editor, vista previa y botones
 ├── labs/
@@ -276,8 +277,12 @@ JSON no admite comentarios. Por eso el ejemplo de abajo está comentado con
 
 ```jsonc
 {
-  // Nombre del curso. Se muestra arriba en la portada.
-  "curso": "[Nombre del curso]",
+  // Nombre del curso. Se muestra en la portada y en el pie de todas las páginas.
+  // Este es el ÚNICO lugar donde se escribe: cámbialo aquí y listo.
+  "curso": "Programación Básica - C2",
+
+  // Nombre de la institución. Se muestra en el pie de todas las páginas.
+  "institucion": "[Nombre de la institución]",
 
   // Un elemento por laboratorio, en el orden en que aparecen en la portada.
   "laboratorios": [

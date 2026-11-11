@@ -1,5 +1,6 @@
 {
-  "curso": "[Nombre del curso]",
+  "curso": "Programación Básica - C2",
+  "institucion": "[Nombre de la institución]",
   "laboratorios": [
     {
       "id": "01-html-basico",

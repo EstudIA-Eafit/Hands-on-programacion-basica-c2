@@ -61,10 +61,6 @@ async function cargarPortada() {
     }
     const catalogo = await respuesta.json();
 
-    if (catalogo.curso) {
-      document.getElementById("nombre-curso").textContent = catalogo.curso;
-    }
-
     lista.innerHTML = "";
     for (const lab of catalogo.laboratorios) {
       lista.appendChild(crearTarjeta(lab));
