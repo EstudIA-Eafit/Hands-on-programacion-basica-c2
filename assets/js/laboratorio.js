@@ -135,11 +135,12 @@ function mostrarPanelTareas(abrir) {
   document.getElementById("panel-tareas").classList.toggle("tareas-cerrada", !abrir);
   document.querySelector(".lab-cuerpo").classList.toggle("sin-tareas", !abrir);
   boton.setAttribute("aria-expanded", abrir ? "true" : "false");
-  if (abrir) {
-    boton.innerHTML = '<span aria-hidden="true">«</span> Ocultar tareas';
-  } else {
-    boton.innerHTML = 'Mostrar tareas <span aria-hidden="true">»</span>';
-  }
+  // El botón solo muestra una flecha. Su nombre lo leen los lectores
+  // de pantalla (aria-label) y aparece al pasar el mouse (title).
+  // La dirección de la flecha la cambia sitio.css según aria-expanded.
+  const nombre = abrir ? "Ocultar tareas" : "Mostrar tareas";
+  boton.setAttribute("aria-label", nombre);
+  boton.title = nombre;
 }
 
 function alternarTareas() {
