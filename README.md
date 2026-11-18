@@ -17,8 +17,10 @@ previa que se actualiza mientras la persona escribe.
 3. [Publicar en GitHub Pages](#publicar-en-github-pages)
 4. [Agregar un laboratorio nuevo](#agregar-un-laboratorio-nuevo)
 5. [Formato de lab.json](#formato-de-labjson)
-6. [Formato de labs/labs.json](#formato-de-labslabsjson)
-7. [Límites conocidos](#límites-conocidos)
+6. [Laboratorios con varios proyectos](#laboratorios-con-varios-proyectos)
+7. [Contrato para JavaScript (labs 03 y 04)](#contrato-para-javascript-labs-03-y-04)
+8. [Formato de labs/labs.json](#formato-de-labslabsjson)
+9. [Límites conocidos](#límites-conocidos)
 
 ---
 
@@ -41,13 +43,25 @@ previa que se actualiza mientras la persona escribe.
 │       └── laboratorio.js  Tareas, editor, vista previa y botones
 ├── labs/
 │   ├── labs.json           Catálogo: la lista de laboratorios
-│   ├── _plantilla/         Laboratorio vacío para copiar
+│   ├── _plantilla/         Laboratorio vacío para copiar (con dos proyectos)
 │   ├── 01-html-basico/
 │   │   ├── lab.json        Datos y tareas del laboratorio
 │   │   └── inicio/         Archivos con los que empieza la práctica
-│   └── 02-html-css/
+│   ├── 02-html-css/
+│   │   ├── lab.json
+│   │   └── inicio/
+│   ├── 03-modelo-de-cajas/ Laboratorio con tres proyectos para elegir
+│   │   ├── lab.json
+│   │   └── inicio/
+│   │       ├── eventos/    Una carpeta por proyecto,
+│   │       ├── tienda/     cada una con los mismos archivos
+│   │       └── servicios/
+│   └── 04-flexbox-grid/    Sigue con el proyecto elegido en el 03
 │       ├── lab.json
 │       └── inicio/
+│           ├── eventos/
+│           ├── tienda/
+│           └── servicios/
 └── material/               Plantillas originales de clase
 ```
 
@@ -57,6 +71,8 @@ Cómo funciona:
   cada laboratorio.
 - Cada tarjeta lleva a `laboratorio.html?lab=NOMBRE-DE-CARPETA`. Esa página lee
   `labs/NOMBRE-DE-CARPETA/lab.json` y los archivos de `inicio/`, y arma todo.
+- Si el laboratorio ofrece varios proyectos, la página primero pide elegir uno
+  y después lee los archivos de `inicio/NOMBRE-DEL-PROYECTO/`.
 
 Por eso, para agregar un laboratorio **no hace falta tocar HTML ni JavaScript**:
 solo carpetas y archivos JSON.
@@ -104,7 +120,13 @@ un programa pequeño que sirve las páginas como lo haría internet.
 - La portada muestra todos los laboratorios.
 - Cada laboratorio abre, muestra sus tareas y la vista previa.
 - Al escribir en el editor, la vista previa cambia.
+- El botón **Abrir vista previa en pestaña nueva** muestra el código del
+  editor, con tus cambios.
 - Los enlaces de "Descargar" bajan los archivos de inicio.
+- En los labs 03 y 04: el proyecto que eliges en el 03 aparece ya elegido
+  en el 04, y el botón **Cambiar de proyecto** funciona.
+- Prueba la página a lo ancho de un celular (375 px) con el modo de
+  dispositivo del inspector (`Ctrl + Mayús + M` en Chrome, Edge o Firefox).
 
 ---
 
@@ -166,7 +188,7 @@ subcarpeta sin cambiar nada.
 
 ## Agregar un laboratorio nuevo
 
-Ejemplo: vamos a crear el laboratorio `03-listas`.
+Ejemplo: vamos a crear el laboratorio `05-listas`.
 
 ### Paso 1. Copia la plantilla
 
@@ -174,18 +196,45 @@ Copia la carpeta `labs/_plantilla/` y pega la copia dentro de `labs/` con el
 nombre nuevo:
 
 ```
-labs/03-listas/
+labs/05-listas/
 ├── lab.json
 └── inicio/
-    └── index.html
+    ├── proyecto-a/
+    │   └── index.html
+    └── proyecto-b/
+        └── index.html
 ```
 
 Reglas para el nombre de la carpeta: solo letras minúsculas sin tildes,
 números y guiones. Sin espacios. Empieza con un número para que queden en orden.
 
+La plantilla viene con **dos proyectos para elegir**. Decide ahora cuál de
+estos dos casos es el tuyo:
+
+- **Un solo proyecto** (como los labs 01 y 02): todas las personas trabajan
+  con los mismos archivos.
+  1. Mueve los archivos de `inicio/proyecto-a/` a `inicio/`.
+  2. Borra las carpetas `inicio/proyecto-a/` e `inicio/proyecto-b/`.
+  3. En `lab.json`, borra todo el bloque `"proyectos": { ... },` con su coma.
+
+  Queda así:
+
+  ```
+  labs/05-listas/
+  ├── lab.json
+  └── inicio/
+      └── index.html
+  ```
+
+- **Varios proyectos para elegir** (como los labs 03 y 04): cada persona elige
+  un proyecto. Todos tienen las mismas tareas; solo cambia el contenido.
+  Deja la estructura como está y lee la sección
+  [Laboratorios con varios proyectos](#laboratorios-con-varios-proyectos).
+
 ### Paso 2. Pon los archivos de inicio
 
-Dentro de `inicio/` van los archivos con los que empieza la persona.
+Los archivos de inicio son los archivos con los que empieza la persona.
+Van en `inicio/` o, si hay varios proyectos, en la carpeta de cada proyecto.
 Reemplaza `index.html` por el tuyo.
 
 - Si el laboratorio usa CSS, agrega también el archivo `.css` (por ejemplo
@@ -195,7 +244,7 @@ Reemplaza `index.html` por el tuyo.
 
 ### Paso 3. Edita `lab.json`
 
-Abre `labs/03-listas/lab.json` y cambia los textos entre corchetes. El formato
+Abre `labs/05-listas/lab.json` y cambia los textos entre corchetes. El formato
 completo está en la sección [Formato de lab.json](#formato-de-labjson).
 
 ### Paso 4. Agrega el laboratorio al catálogo
@@ -205,17 +254,17 @@ Abre `labs/labs.json` y agrega una entrada al final de la lista
 
 ```json
     {
-      "id": "02-html-css",
+      "id": "04-flexbox-grid",
       ...
-      "carpeta": "02-html-css"
+      "carpeta": "04-flexbox-grid"
     },
     {
-      "id": "03-listas",
+      "id": "05-listas",
       "titulo": "Listas en HTML",
       "descripcion": "Crea listas ordenadas y no ordenadas.",
       "duracion": "30 minutos",
       "nivel": "Básico",
-      "carpeta": "03-listas"
+      "carpeta": "05-listas"
     }
   ]
 }
@@ -235,7 +284,9 @@ aparece en la portada y que abre bien. Si ves el mensaje "No se pudo cargar", lo
 - una coma de más o de menos en un archivo JSON;
 - comillas que faltan alrededor de un texto;
 - el nombre de `"carpeta"` no coincide con el nombre real de la carpeta;
-- un archivo de `"archivos"` no existe dentro de `inicio/`.
+- un archivo de `"archivos"` no existe dentro de `inicio/`;
+- con varios proyectos: el `"id"` de un proyecto no coincide con el nombre de
+  su carpeta, o a un proyecto le falta uno de los archivos.
 
 Para encontrar errores en un JSON, puedes pegarlo en un validador de JSON
 o abrirlo en VS Code, que marca los errores en rojo.
@@ -275,6 +326,17 @@ JSON no admite comentarios. Por eso el ejemplo de abajo está comentado con
     { "nombre": "estilos.css", "etiqueta": "CSS" }
   ],
 
+  // OPCIONAL. Solo si el laboratorio ofrece varios proyectos para elegir.
+  // Si no lo escribes, los archivos están directo en inicio/.
+  // La explicación completa está en "Laboratorios con varios proyectos".
+  "proyectos": {
+    "grupo": "encuentro-2",
+    "opciones": [
+      { "id": "eventos", "titulo": "Inscripción a eventos culturales",
+        "descripcion": "Seis eventos del barrio y un formulario para inscribirse." }
+    ]
+  },
+
   // Las tareas, en el orden en que se muestran.
   "tareas": [
     {
@@ -304,6 +366,145 @@ JSON no admite comentarios. Por eso el ejemplo de abajo está comentado con
   ]
 }
 ```
+
+---
+
+## Laboratorios con varios proyectos
+
+Un laboratorio puede ofrecer varios proyectos para elegir. Por ejemplo, en
+los labs 03 y 04 cada persona elige entre un catálogo de tienda, una agenda de
+eventos o un directorio de servicios. **Las tareas son las mismas para todos
+los proyectos.** Solo cambian los archivos de inicio.
+
+### Qué cambia en lab.json
+
+Se agrega el bloque `"proyectos"`:
+
+```jsonc
+"proyectos": {
+  // Los laboratorios con el mismo "grupo" comparten la elección:
+  // lo que la persona elige en uno aparece ya elegido en los otros.
+  // Los labs 03 y 04 usan "encuentro-2".
+  // Si no escribes "grupo", la elección vale solo para este laboratorio.
+  "grupo": "encuentro-2",
+
+  // Un elemento por proyecto, en el orden en que se muestran.
+  "opciones": [
+    {
+      // Es también el NOMBRE DE LA CARPETA: inicio/eventos/
+      // Solo letras minúsculas sin tildes, números y guiones.
+      // No lo cambies después de publicar: el trabajo guardado depende de él.
+      "id": "eventos",
+
+      // Lo que se ve en la lista para elegir.
+      "titulo": "Inscripción a eventos culturales",
+      "descripcion": "Seis eventos del barrio y un formulario para inscribirse."
+    },
+    {
+      "id": "tienda",
+      "titulo": "Catálogo de una tienda de barrio",
+      "descripcion": "Seis productos y un formulario para hacer un pedido."
+    }
+  ]
+}
+```
+
+### Qué cambia en las carpetas
+
+Cada proyecto tiene su carpeta dentro de `inicio/`, con el mismo nombre que su
+`"id"`. **Todas las carpetas deben tener los mismos archivos**, los de la lista
+`"archivos"`:
+
+```
+labs/03-modelo-de-cajas/
+├── lab.json
+└── inicio/
+    ├── eventos/
+    │   ├── index.html
+    │   └── estilos.css
+    ├── tienda/
+    │   ├── index.html
+    │   └── estilos.css
+    └── servicios/
+        ├── index.html
+        └── estilos.css
+```
+
+La revisión automática (`revisar_labs.py`) avisa si a un proyecto le falta un
+archivo.
+
+### Qué ve la persona
+
+- La primera vez, antes del editor, aparece la lista de proyectos para elegir.
+- Después, arriba de las tareas dice el proyecto elegido y hay un botón
+  **Cambiar de proyecto**.
+- La elección se guarda en el navegador. Si otro laboratorio tiene el mismo
+  `"grupo"`, se abre directamente con ese proyecto.
+- El código se guarda aparte para cada proyecto. Si la persona cambia de
+  proyecto y vuelve, encuentra su trabajo como lo dejó.
+- Las tareas marcadas son del laboratorio, no del proyecto: no se borran al
+  cambiar de proyecto.
+
+---
+
+## Contrato para JavaScript (labs 03 y 04)
+
+En próximos encuentros los estudiantes van a usar JavaScript para leer el
+formulario y agregar tarjetas a la lista. Ese código va a buscar los elementos
+por su `id` y su clase. Por eso, **en los laboratorios futuros que sigan con
+estos proyectos, no cambies estos nombres**. Son los mismos en los tres
+proyectos, así que el mismo código de JavaScript sirve para todos.
+
+### Estructura de la página
+
+| Qué es | Nombre | Notas |
+|---|---|---|
+| Sección de tarjetas | `id="seccion-tarjetas"` | El menú enlaza aquí. |
+| Contenedor de tarjetas | `id="lista-tarjetas"` | JavaScript agregará tarjetas aquí adentro. |
+| Cada tarjeta | `class="tarjeta"` | Siempre un `<article>` con la estructura de abajo. |
+| Sección del formulario | `id="seccion-formulario"` | El menú enlaza aquí. |
+| Formulario | `id="formulario"` | |
+| Cada campo con su etiqueta | `class="campo"` | Un `<div>` con un `<label>` y su campo. |
+| Botón del formulario | `id="boton-enviar"` | Es `type="button"`: no envía nada. |
+| Mensajes | `id="mensaje"` | Un `<p>` vacío con `aria-live="polite"`. JavaScript escribirá aquí. |
+| Pie de página | `id="acerca"` | El menú enlaza aquí. |
+| Menú | `class="menu"` | Un `<nav>` con tres enlaces. |
+
+### Estructura de cada tarjeta
+
+Todas las tarjetas son iguales. Una tarjeta nueva creada con JavaScript debe
+tener exactamente esta forma:
+
+```html
+<article class="tarjeta">
+  <h3 class="tarjeta-titulo">...</h3>
+  <p class="tarjeta-texto">...</p>
+  <p class="tarjeta-detalle">...</p>
+</article>
+```
+
+| Clase | Eventos | Tienda | Servicios |
+|---|---|---|---|
+| `tarjeta-titulo` | Nombre del evento | Nombre del producto | Oficio |
+| `tarjeta-texto` | Fecha | Descripción | Descripción |
+| `tarjeta-detalle` | Lugar | Precio | Horario |
+
+### Campos del formulario
+
+En cada campo, el `id` y el `name` son iguales, y el `<label>` tiene un `for`
+con ese mismo nombre.
+
+| Proyecto | Campos (`id` y `name`) |
+|---|---|
+| Eventos | `nombre` (text), `correo` (email), `evento` (select), `acompanantes` (number) |
+| Tienda | `nombre` (text), `telefono` (tel), `producto` (select), `cantidad` (number), `comentarios` (textarea) |
+| Servicios | `nombre` (text), `correo` (email), `servicio` (select), `fecha` (date), `descripcion` (textarea) |
+
+Las opciones del `select` tienen como `value` el mismo texto del título de
+cada tarjeta.
+
+La página dice: "Este formulario todavía no guarda ni envía datos." Cuando un
+laboratorio futuro agregue JavaScript, actualiza ese texto.
 
 ---
 
@@ -344,6 +545,11 @@ en la portada. Puedes verla en `laboratorio.html?lab=_plantilla`.
   Por eso hay un botón para descargar el trabajo.
 - **La vista previa no ejecuta JavaScript ni envía formularios.** Los
   formularios de ejemplo son solo de práctica: no guardan ni envían datos.
+  La vista previa en pestaña nueva tampoco ejecuta JavaScript.
+- **La pestaña nueva es una foto del código.** Muestra el código del momento
+  en que se pulsó el botón. Si la persona cambia el código, debe pulsar el
+  botón otra vez. Si el navegador bloquea las ventanas emergentes, la página
+  lo avisa debajo del botón.
 - **Solo HTML y CSS.** El editor acepta un archivo HTML principal y archivos
   CSS. Los archivos CSS se conectan a la vista previa solo si el HTML los
   enlaza con `<link ... href="nombre.css">`.

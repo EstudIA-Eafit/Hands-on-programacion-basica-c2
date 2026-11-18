@@ -7,6 +7,21 @@
   "archivos": [
     { "nombre": "index.html", "etiqueta": "HTML", "principal": true }
   ],
+  "proyectos": {
+    "grupo": "[nombre-del-grupo]",
+    "opciones": [
+      {
+        "id": "proyecto-a",
+        "titulo": "[Título del proyecto A]",
+        "descripcion": "[Una frase: de qué trata el proyecto A]"
+      },
+      {
+        "id": "proyecto-b",
+        "titulo": "[Título del proyecto B]",
+        "descripcion": "[Una frase: de qué trata el proyecto B]"
+      }
+    ]
+  },
   "tareas": [
     {
       "id": "tarea-1",

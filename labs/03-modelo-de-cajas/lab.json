@@ -1,0 +1,81 @@
+{
+  "id": "03-modelo-de-cajas",
+  "titulo": "Modelo de cajas con el inspector",
+  "objetivo": "Usar el inspector del navegador para ver y ajustar el espacio de cada elemento: contenido, padding, border y margin.",
+  "duracion": "60 minutos",
+  "nivel": "Básico",
+  "archivos": [
+    { "nombre": "index.html", "etiqueta": "HTML", "principal": true },
+    { "nombre": "estilos.css", "etiqueta": "CSS" }
+  ],
+  "proyectos": {
+    "grupo": "encuentro-2",
+    "opciones": [
+      {
+        "id": "eventos",
+        "titulo": "Inscripción a eventos culturales",
+        "descripcion": "Seis eventos del barrio y un formulario para inscribirse."
+      },
+      {
+        "id": "tienda",
+        "titulo": "Catálogo de una tienda de barrio",
+        "descripcion": "Seis productos y un formulario para hacer un pedido."
+      },
+      {
+        "id": "servicios",
+        "titulo": "Directorio de servicios del barrio",
+        "descripcion": "Seis servicios y un formulario para pedir uno."
+      }
+    ]
+  },
+  "tareas": [
+    {
+      "id": "inspector",
+      "texto": "Abre el inspector y selecciona una tarjeta. En el diagrama de la caja, ubica el contenido, el padding, el border y el margin.",
+      "pista": "Pulsa «Abrir vista previa en pestaña nueva». En esa pestaña, haz clic derecho sobre una tarjeta y elige «Inspeccionar». En el código del inspector, haz clic en la línea <code>&lt;article class=\"tarjeta\"&gt;</code>. El diagrama de la caja es un dibujo de rectángulos, uno dentro de otro. En Chrome y Edge está en la pestaña «Calculado» (Computed). En Firefox está en la pestaña «Diseño» (Layout). Por ahora padding, border y margin valen 0 o aparecen con un guion.",
+      "reto": false
+    },
+    {
+      "id": "padding",
+      "texto": "Dale <code>padding</code> a las tarjetas. Primero prueba el valor en el inspector y después cópialo en la pestaña CSS.",
+      "pista": "En el inspector, en la pestaña «Estilos» (Styles), busca la regla <code>.tarjeta</code>. Haz clic dentro de las llaves y escribe <code>padding: 16px</code>. Mira el cambio en la página. Lo que escribes en el inspector se pierde al recargar. Por eso, al final, escribe <code>padding: 16px;</code> dentro de la regla <code>.tarjeta</code> en la pestaña CSS.",
+      "reto": false
+    },
+    {
+      "id": "borde",
+      "texto": "Agrega un borde a las tarjetas con <code>border</code>.",
+      "pista": "En la regla <code>.tarjeta</code>, agrega <code>border: 2px solid gray;</code>. Los tres valores son el grosor, el tipo de línea y el color. Puedes usar el mismo color de los títulos.",
+      "reto": false
+    },
+    {
+      "id": "margin",
+      "texto": "Separa las tarjetas entre sí con <code>margin</code>.",
+      "pista": "En la regla <code>.tarjeta</code>, agrega <code>margin: 16px;</code>. El padding es el espacio de adentro, entre el texto y el borde. El margin es el espacio de afuera, entre una tarjeta y otra.",
+      "reto": false
+    },
+    {
+      "id": "ancho",
+      "texto": "Dale a las tarjetas un ancho fijo con <code>width: 250px;</code>. Mide el ancho real en el inspector. ¿Por qué es mayor que 250?",
+      "pista": "Vuelve a pulsar «Abrir vista previa en pestaña nueva»: esa pestaña muestra tu código del momento en que pulsas el botón. Pasa el cursor sobre la tarjeta en el inspector y lee el ancho. Con <code>padding: 16px</code> y <code>border: 2px</code> debe decir 286. El motivo: <code>width</code> mide solo el contenido. El navegador suma el padding y el borde de los dos lados: 250 + 16 + 16 + 2 + 2 = 286.",
+      "reto": false
+    },
+    {
+      "id": "box-sizing",
+      "texto": "Agrega <code>* { box-sizing: border-box; }</code> al inicio de la hoja de estilos y vuelve a medir el ancho.",
+      "pista": "Escríbelo donde dice «TAREA 6». El <code>*</code> es un selector que aplica a todos los elementos. Abre otra vez la vista previa en pestaña nueva y mide: ahora la tarjeta mide 250. Con <code>border-box</code>, el ancho incluye el padding y el borde. El contenido se hace más angosto para que todo quepa.",
+      "reto": false
+    },
+    {
+      "id": "campos",
+      "texto": "Dale <code>padding</code> y <code>border</code> a los campos del formulario.",
+      "pista": "Busca la regla <code>input, select, textarea</code>: aplica a los tres tipos de campo. Agrega <code>padding: 8px;</code> y <code>border: 1px solid gray;</code>. Si quieres, dale también padding al botón en la regla <code>button</code>, por ejemplo <code>padding: 8px 16px;</code>: el primer valor es arriba y abajo, el segundo es a los lados.",
+      "reto": false
+    },
+    {
+      "id": "esquinas",
+      "texto": "Redondea las esquinas de las tarjetas y de los campos con <code>border-radius</code>.",
+      "pista": "Agrega <code>border-radius: 8px;</code> en <code>.tarjeta</code> y <code>border-radius: 4px;</code> en los campos. Con un número más grande, la esquina queda más redondeada.",
+      "reto": true
+    }
+  ]
+}

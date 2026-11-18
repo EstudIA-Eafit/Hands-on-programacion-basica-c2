@@ -1,0 +1,75 @@
+{
+  "id": "04-flexbox-grid",
+  "titulo": "Flexbox, Grid y diseño responsivo",
+  "objetivo": "Distribuir los elementos de la página con Flexbox y Grid, ordenar la hoja de estilos por secciones y adaptar la página a pantallas pequeñas.",
+  "duracion": "75 minutos",
+  "nivel": "Básico",
+  "archivos": [
+    { "nombre": "index.html", "etiqueta": "HTML", "principal": true },
+    { "nombre": "estilos.css", "etiqueta": "CSS" }
+  ],
+  "proyectos": {
+    "grupo": "encuentro-2",
+    "opciones": [
+      {
+        "id": "eventos",
+        "titulo": "Inscripción a eventos culturales",
+        "descripcion": "Seis eventos del barrio y un formulario para inscribirse."
+      },
+      {
+        "id": "tienda",
+        "titulo": "Catálogo de una tienda de barrio",
+        "descripcion": "Seis productos y un formulario para hacer un pedido."
+      },
+      {
+        "id": "servicios",
+        "titulo": "Directorio de servicios del barrio",
+        "descripcion": "Seis servicios y un formulario para pedir uno."
+      }
+    ]
+  },
+  "tareas": [
+    {
+      "id": "menu-fila",
+      "texto": "Pon los enlaces del menú en fila, con espacio entre ellos, usando <code>display: flex</code> y <code>gap</code>.",
+      "pista": "Escribe una regla nueva para <code>.menu</code>: <code>.menu { display: flex; gap: 16px; }</code>. <code>display: flex</code> pone a los hijos del menú, los enlaces, uno al lado del otro. <code>gap</code> es el espacio entre ellos.",
+      "reto": false
+    },
+    {
+      "id": "header",
+      "texto": "Dentro del <code>header</code>, pon el título a la izquierda y el menú a la derecha con <code>justify-content</code>.",
+      "pista": "En la regla <code>header</code>, agrega <code>display: flex;</code> y <code>justify-content: space-between;</code>. <code>space-between</code> deja todo el espacio libre en el medio. Agrega también <code>align-items: center;</code> para centrarlos de arriba a abajo, y <code>padding: 16px;</code> para que no queden pegados al borde.",
+      "reto": false
+    },
+    {
+      "id": "cuadricula",
+      "texto": "Organiza las tarjetas en 3 columnas con <code>display: grid</code>, <code>grid-template-columns: repeat(3, 1fr)</code> y <code>gap</code>.",
+      "pista": "La regla va en el contenedor de las tarjetas, que tiene <code>id=\"lista-tarjetas\"</code>: <code>#lista-tarjetas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }</code>. <code>1fr</code> es una parte del espacio libre: tres columnas iguales. Después, en <code>.tarjeta</code>, borra <code>width</code> y <code>margin</code>. Ahora la cuadrícula decide el ancho y <code>gap</code> separa las tarjetas. El cuadro «Resultado» es angosto: para ver bien las 3 columnas, usa «Abrir vista previa en pestaña nueva».",
+      "reto": false
+    },
+    {
+      "id": "formulario",
+      "texto": "Pon cada etiqueta encima de su campo, en columna, con Flexbox.",
+      "pista": "Cada etiqueta y su campo están dentro de un <code>&lt;div class=\"campo\"&gt;</code>. Escribe: <code>.campo { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }</code>. <code>flex-direction: column</code> pone los hijos uno debajo del otro. <code>align-items: flex-start</code> evita que los campos se estiren a todo el ancho. Haz lo mismo con <code>#formulario</code> y <code>gap: 16px</code> para separar un campo del otro.",
+      "reto": false
+    },
+    {
+      "id": "ordenar",
+      "texto": "Ordena la hoja de estilos en cuatro secciones con comentarios: base, estructura, componentes y responsivo.",
+      "pista": "Escribe cuatro comentarios, por ejemplo <code>/* ===== BASE ===== */</code>, y mueve cada regla debajo del suyo. <strong>Base</strong>: <code>*</code>, <code>body</code>, <code>h2</code>, los campos y <code>button</code>. <strong>Estructura</strong>: <code>header</code> y <code>footer</code>. <strong>Componentes</strong>: <code>.menu</code>, las tarjetas y el formulario. <strong>Responsivo</strong>: queda vacía por ahora. Mueve una regla a la vez y revisa que la página se vea igual.",
+      "reto": false
+    },
+    {
+      "id": "responsivo",
+      "texto": "En la sección responsivo, agrega una <code>@media</code> que en pantallas de menos de 600px deje las tarjetas en una columna y el menú en columna. Pruébala con el modo de dispositivo del inspector.",
+      "pista": "Escribe <code>@media (max-width: 599px) { … }</code> y dentro pon reglas normales: <code>#lista-tarjetas { grid-template-columns: 1fr; }</code> y <code>.menu { flex-direction: column; }</code>. También ayuda <code>header { flex-direction: column; align-items: flex-start; }</code>. Va al final de la hoja para que gane sobre las reglas de arriba. Para probar: abre la vista previa en pestaña nueva, abre el inspector y pulsa el ícono de celular y tableta (o <code>Ctrl + Mayús + M</code>). Escribe 375 en el ancho y después 1280. Ojo: el cuadro «Resultado» de esta página mide menos de 600px, así que ahí verás siempre la versión de celular.",
+      "reto": false
+    },
+    {
+      "id": "dos-columnas",
+      "texto": "Haz que entre 600px y 900px las tarjetas queden en 2 columnas.",
+      "pista": "Escribe otra <code>@media</code> con dos condiciones unidas por <code>and</code>: <code>@media (min-width: 600px) and (max-width: 900px) { … }</code>. Dentro, usa <code>repeat(2, 1fr)</code> en <code>#lista-tarjetas</code>. Pruébala en el modo de dispositivo con un ancho de 750.",
+      "reto": true
+    }
+  ]
+}

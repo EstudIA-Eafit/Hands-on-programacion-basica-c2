@@ -43,47 +43,85 @@
           con Ctrl + S y recargar con F5; eso aplica solo si trabajas en tu
           propio editor.
         </p>
+
+        <!-- Solo en laboratorios con varios proyectos: dice cuál se eligió -->
+        <div class="proyecto-actual" id="proyecto-actual" tabindex="-1" hidden>
+          <p>Proyecto: <strong id="nombre-proyecto"></strong></p>
+          <button type="button" id="boton-cambiar-proyecto" class="boton-secundario">Cambiar de proyecto</button>
+        </div>
       </section>
 
-      <div class="lab-cuerpo">
-
-        <section class="tareas" aria-labelledby="titulo-tareas">
-          <h2 id="titulo-tareas">Tareas</h2>
-          <p class="avance" id="avance" aria-live="polite"></p>
-          <!-- laboratorio.js crea aquí una tarea por cada elemento de "tareas" en lab.json -->
-          <ol class="lista-tareas" id="lista-tareas"></ol>
-          <p class="nota">Las casillas marcadas se guardan en este navegador.</p>
-        </section>
-
-        <section class="editor" aria-labelledby="titulo-editor">
-          <h2 id="titulo-editor">Tu código</h2>
-          <!-- Si el laboratorio tiene varios archivos, aquí aparecen las pestañas -->
-          <div class="pestanas" id="pestanas" role="tablist" aria-label="Archivos" hidden></div>
-          <!-- Aquí aparece un cuadro de texto por cada archivo -->
-          <div id="paneles"></div>
-
+      <!-- Solo en laboratorios con varios proyectos: la lista para elegir.
+           laboratorio.js crea una opción por cada proyecto de lab.json. -->
+      <section class="eleccion" id="eleccion-proyecto" aria-labelledby="titulo-eleccion" hidden>
+        <h2 id="titulo-eleccion" tabindex="-1">Elige tu proyecto</h2>
+        <p>
+          Los proyectos tienen las mismas tareas. Solo cambia el contenido.
+          Vas a seguir con el mismo proyecto en los laboratorios siguientes.
+          Tu elección se guarda en este navegador y la puedes cambiar después.
+        </p>
+        <form id="form-eleccion">
+          <fieldset>
+            <legend>¿Con qué proyecto quieres trabajar?</legend>
+            <div id="opciones-proyecto"></div>
+          </fieldset>
           <div class="acciones">
-            <button type="button" id="boton-descargar">Descargar mi trabajo</button>
-            <button type="button" id="boton-reiniciar" class="boton-secundario">Volver al código inicial</button>
+            <button type="submit">Empezar con este proyecto</button>
+            <button type="button" id="boton-cancelar-eleccion" class="boton-secundario" hidden>Seguir con el proyecto actual</button>
           </div>
-          <p class="nota" id="estado-guardado" aria-live="polite"></p>
-        </section>
+        </form>
+      </section>
 
-        <section class="vista" aria-labelledby="titulo-vista">
-          <h2 id="titulo-vista">Resultado</h2>
-          <p class="titulo-pestana">Título de la pestaña: <strong id="titulo-pestana"></strong></p>
-          <!-- sandbox sin permisos: la vista previa no ejecuta scripts
-               ni envía formularios. -->
-          <iframe id="vista-previa" title="Vista previa de tu página" sandbox></iframe>
+      <!-- El editor, la vista previa y las descargas -->
+      <div id="area-trabajo">
+
+        <div class="lab-cuerpo">
+
+          <section class="tareas" aria-labelledby="titulo-tareas">
+            <h2 id="titulo-tareas">Tareas</h2>
+            <p class="avance" id="avance" aria-live="polite"></p>
+            <!-- laboratorio.js crea aquí una tarea por cada elemento de "tareas" en lab.json -->
+            <ol class="lista-tareas" id="lista-tareas"></ol>
+            <p class="nota">Las casillas marcadas se guardan en este navegador.</p>
+          </section>
+
+          <section class="editor" aria-labelledby="titulo-editor">
+            <h2 id="titulo-editor">Tu código</h2>
+            <!-- Si el laboratorio tiene varios archivos, aquí aparecen las pestañas -->
+            <div class="pestanas" id="pestanas" role="tablist" aria-label="Archivos" hidden></div>
+            <!-- Aquí aparece un cuadro de texto por cada archivo -->
+            <div id="paneles"></div>
+
+            <div class="acciones">
+              <button type="button" id="boton-descargar">Descargar mi trabajo</button>
+              <button type="button" id="boton-reiniciar" class="boton-secundario">Volver al código inicial</button>
+            </div>
+            <p class="nota" id="estado-guardado" aria-live="polite"></p>
+          </section>
+
+          <section class="vista" aria-labelledby="titulo-vista">
+            <h2 id="titulo-vista">Resultado</h2>
+            <p class="titulo-pestana">Título de la pestaña: <strong id="titulo-pestana"></strong></p>
+            <!-- sandbox sin permisos: la vista previa no ejecuta scripts
+                 ni envía formularios. -->
+            <iframe id="vista-previa" title="Vista previa de tu página" sandbox></iframe>
+            <!-- Abre el código del editor en otra pestaña: allí es más fácil
+                 usar el inspector del navegador. -->
+            <div class="acciones">
+              <button type="button" id="boton-pestana" class="boton-secundario">Abrir vista previa en pestaña nueva</button>
+            </div>
+            <p class="nota" id="estado-pestana" aria-live="polite"></p>
+          </section>
+
+        </div>
+
+        <section class="descargas" aria-labelledby="titulo-descargas">
+          <h2 id="titulo-descargas">¿Prefieres trabajar en tu propio editor?</h2>
+          <p>Descarga los archivos de inicio y guárdalos juntos en una misma carpeta.</p>
+          <ul id="lista-descargas"></ul>
         </section>
 
       </div>
-
-      <section class="descargas" aria-labelledby="titulo-descargas">
-        <h2 id="titulo-descargas">¿Prefieres trabajar en tu propio editor?</h2>
-        <p>Descarga los archivos de inicio y guárdalos juntos en una misma carpeta.</p>
-        <ul id="lista-descargas"></ul>
-      </section>
 
     </div>
 
