@@ -8,20 +8,82 @@
 
 /* ---------- Colores ----------
    Se guardan en variables para cambiarlos en un solo lugar.
-   Todas las combinaciones de texto y fondo tienen buen contraste. */
+   Todas las combinaciones de texto y fondo tienen buen contraste.
+   Hay dos temas: claro (este bloque) y oscuro (el bloque de abajo).
+   tema.js pone data-tema="oscuro" en <html> para usar el oscuro. */
 
 :root {
+  color-scheme: light;
   --texto: #1b1b1b;
   --texto-suave: #4a4a4a;
   --fondo: #ffffff;
   --fondo-suave: #f3f5f8;
   --borde: #767676;
-  --principal: #0b4f8a;
-  --principal-oscuro: #083a66;
+  --linea: #d0d0d0;
+  --principal: #0b4f8a;          /* enlaces, botones, pestaña activa */
+  --principal-hover: #083a66;    /* fondo del botón al pasar el cursor */
+  --sobre-principal: #ffffff;    /* texto encima de --principal */
+  --cabecera-fondo: #0b4f8a;
+  --cabecera-texto: #ffffff;
   --reto: #7a3e00;
   --error-fondo: #fdecea;
   --error-texto: #8a1c12;
   --foco: #c75b00;
+
+  /* Editor de código: colores parecidos al tema "Light+" de VS Code */
+  --codigo-fondo: #ffffff;
+  --codigo-texto: #1b1b1b;
+  --codigo-numeros: #237893;
+  --codigo-numeros-fondo: #f3f5f8;
+  --codigo-seleccion: rgba(0, 120, 215, 0.25);
+  --c-etiqueta: #800000;
+  --c-puntuacion: #800000;
+  --c-atributo: #e50000;
+  --c-valor: #0000ff;
+  --c-entidad: #c50000;
+  --c-comentario: #008000;
+  --c-selector: #800000;
+  --c-propiedad: #e50000;
+  --c-valor-css: #0451a5;
+  --c-numero: #098658;
+  --c-arroba: #af00db;
+}
+
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --texto: #e8e8e8;
+  --texto-suave: #b4b4b4;
+  --fondo: #14171a;
+  --fondo-suave: #22272d;
+  --borde: #8b949e;
+  --linea: #3a4048;
+  --principal: #6cb6ff;
+  --principal-hover: #a5d2ff;
+  --sobre-principal: #0d1117;
+  --cabecera-fondo: #0b3a66;
+  --cabecera-texto: #ffffff;
+  --reto: #f0a35c;
+  --error-fondo: #3b1d1a;
+  --error-texto: #ffb4a9;
+  --foco: #ff9a3c;
+
+  /* Editor de código: colores parecidos al tema "Dark+" de VS Code */
+  --codigo-fondo: #1e1e1e;
+  --codigo-texto: #d4d4d4;
+  --codigo-numeros: #858585;
+  --codigo-numeros-fondo: #1e1e1e;
+  --codigo-seleccion: rgba(38, 79, 120, 0.7);
+  --c-etiqueta: #569cd6;
+  --c-puntuacion: #8c8c8c;       /* un poco más claro que VS Code, para buen contraste */
+  --c-atributo: #9cdcfe;
+  --c-valor: #ce9178;
+  --c-entidad: #569cd6;
+  --c-comentario: #6a9955;
+  --c-selector: #d7ba7d;
+  --c-propiedad: #9cdcfe;
+  --c-valor-css: #ce9178;
+  --c-numero: #b5cea8;
+  --c-arroba: #c586c0;
 }
 
 
@@ -106,13 +168,39 @@ iframe:focus-visible {
 /* ---------- Cabecera y pie ---------- */
 
 .cabecera {
-  background-color: var(--principal);
-  color: #ffffff;
+  background-color: var(--cabecera-fondo);
+  color: var(--cabecera-texto);
   padding: 1.5rem 0;
 }
 
 .cabecera a {
-  color: #ffffff;
+  color: var(--cabecera-texto);
+}
+
+/* Fila de arriba de la cabecera: texto a la izquierda, botón de tema a la derecha */
+.barra-superior {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+.boton-tema {
+  padding: 0.35rem 0.8rem;
+  border: 2px solid var(--cabecera-texto);
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--cabecera-texto);
+  cursor: pointer;
+}
+
+.boton-tema:hover {
+  text-decoration: underline;
+}
+
+.cabecera .boton-tema:focus-visible {
+  outline-color: var(--cabecera-texto);
 }
 
 .cabecera h1 {
@@ -230,7 +318,7 @@ iframe:focus-visible {
   grid-template-columns: auto 1fr;
   gap: 0.25rem 0.75rem;
   padding: 0.75rem 0;
-  border-bottom: 1px solid #d0d0d0;
+  border-bottom: 1px solid var(--linea);
 }
 
 /* Casillas más grandes: son más fáciles de tocar en el celular. */
@@ -290,7 +378,7 @@ iframe:focus-visible {
 
 .pestana[aria-selected="true"] {
   background-color: var(--principal);
-  color: #ffffff;
+  color: var(--sobre-principal);
   font-weight: bold;
 }
 
@@ -302,21 +390,122 @@ iframe:focus-visible {
   margin: 0.5rem 0 0.25rem;
 }
 
+/* El editor tiene tres partes, una al lado de la otra:
+   - .numeros: los números de línea;
+   - .capa-colores: el código pintado de colores (resaltado.js);
+   - .codigo: el cuadro de texto donde se escribe. Su letra es
+     transparente y está encima de la capa de colores, así que se
+     ve el texto de colores y el cursor del cuadro de texto.
+   Las tres deben usar la misma letra, tamaño y espacios. */
+
+.marco-codigo {
+  display: flex;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: var(--codigo-fondo);
+}
+
+.marco-codigo:focus-within {
+  outline: 3px solid var(--foco);
+  outline-offset: 2px;
+}
+
+.numeros,
+.capa-colores,
 .codigo {
-  display: block;
-  width: 100%;
-  height: 26rem;
+  margin: 0;
   padding: 0.75rem;
   font-family: Consolas, "Courier New", monospace;
   font-size: 0.95rem;
   line-height: 1.45;
-  color: var(--texto);
-  background-color: #fbfbfb;
-  border: 1px solid var(--borde);
-  border-radius: 6px;
-  resize: vertical;
+  letter-spacing: normal;
+  font-variant-ligatures: none;
   tab-size: 2;
+  white-space: pre;
 }
+
+/* La columna de números no debe decidir la altura del editor:
+   la decide el cuadro de texto. Por eso el texto de los números
+   va con position: absolute y lo que sobra se esconde. */
+.numeros {
+  position: relative;
+  flex-shrink: 0;
+  width: calc(3ch + 1.25rem);
+  padding: 0;
+  overflow: hidden;
+  color: var(--codigo-numeros);
+  background-color: var(--codigo-numeros-fondo);
+  border-right: 1px solid var(--linea);
+  user-select: none;
+}
+
+.numeros-texto {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.75rem 0.5rem 0.75rem 0;
+  text-align: right;
+}
+
+.area-codigo {
+  position: relative;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.capa-colores {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--codigo-texto);
+}
+
+.capa-colores code {
+  display: block;
+  font: inherit;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.codigo {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 26rem;
+  border: none;
+  border-radius: 0;
+  color: transparent;
+  caret-color: var(--codigo-texto);
+  background-color: transparent;
+  resize: vertical;
+  overflow: auto;
+}
+
+.codigo::selection {
+  color: transparent;
+  background-color: var(--codigo-seleccion);
+}
+
+/* El borde del foco ya lo dibuja .marco-codigo */
+.codigo:focus-visible {
+  outline: none;
+}
+
+/* Colores de cada tipo de palabra */
+.t-etiqueta   { color: var(--c-etiqueta); }
+.t-puntuacion { color: var(--c-puntuacion); }
+.t-atributo   { color: var(--c-atributo); }
+.t-valor      { color: var(--c-valor); }
+.t-entidad    { color: var(--c-entidad); }
+.t-comentario { color: var(--c-comentario); }
+.t-selector   { color: var(--c-selector); }
+.t-propiedad  { color: var(--c-propiedad); }
+.t-valor-css  { color: var(--c-valor-css); }
+.t-numero     { color: var(--c-numero); }
+.t-arroba     { color: var(--c-arroba); }
 
 .titulo-pestana {
   margin: 0.5rem 0 0.25rem;
@@ -328,6 +517,9 @@ iframe:focus-visible {
   height: 26rem;
   border: 1px solid var(--borde);
   border-radius: 6px;
+  /* El resultado muestra la página del estudiante con sus propios colores,
+     también en el tema oscuro. */
+  color-scheme: light;
   background-color: #ffffff;
 }
 
@@ -349,12 +541,13 @@ button {
   border: 2px solid var(--principal);
   border-radius: 6px;
   background-color: var(--principal);
-  color: #ffffff;
+  color: var(--sobre-principal);
   cursor: pointer;
 }
 
 .acciones button:hover {
-  background-color: var(--principal-oscuro);
+  border-color: var(--principal-hover);
+  background-color: var(--principal-hover);
 }
 
 .acciones .boton-secundario {

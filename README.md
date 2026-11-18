@@ -20,7 +20,8 @@ previa que se actualiza mientras la persona escribe.
 6. [Laboratorios con varios proyectos](#laboratorios-con-varios-proyectos)
 7. [Contrato para JavaScript (labs 03 y 04)](#contrato-para-javascript-labs-03-y-04)
 8. [Formato de labs/labs.json](#formato-de-labslabsjson)
-9. [Límites conocidos](#límites-conocidos)
+9. [Editor con colores y tema claro u oscuro](#editor-con-colores-y-tema-claro-u-oscuro)
+10. [Límites conocidos](#límites-conocidos)
 
 ---
 
@@ -38,8 +39,10 @@ previa que se actualiza mientras la persona escribe.
 ├── assets/
 │   ├── css/sitio.css       Estilos de todo el sitio
 │   └── js/
+│       ├── tema.js         Tema claro u oscuro y su botón (todas las páginas)
 │       ├── curso.js        Escribe el nombre del curso en todas las páginas
 │       ├── portada.js      Arma la lista de la portada
+│       ├── resaltado.js    Pinta de colores el código HTML y CSS del editor
 │       └── laboratorio.js  Tareas, editor, vista previa y botones
 ├── labs/
 │   ├── labs.json           Catálogo: la lista de laboratorios
@@ -119,7 +122,10 @@ un programa pequeño que sirve las páginas como lo haría internet.
 
 - La portada muestra todos los laboratorios.
 - Cada laboratorio abre, muestra sus tareas y la vista previa.
-- Al escribir en el editor, la vista previa cambia.
+- Al escribir en el editor, la vista previa cambia y el código se ve de colores.
+- En el editor, Tab agrega 2 espacios. Esc y después Tab sale del editor.
+- El botón **Cambiar a tema oscuro / claro** de la cabecera cambia los colores
+  de todo el sitio, y el tema se mantiene al pasar a otra página.
 - El botón **Abrir vista previa en pestaña nueva** muestra el código del
   editor, con tus cambios.
 - Los enlaces de "Descargar" bajan los archivos de inicio.
@@ -538,6 +544,50 @@ en la portada. Puedes verla en `laboratorio.html?lab=_plantilla`.
 
 ---
 
+## Editor con colores y tema claro u oscuro
+
+### Colores del código
+
+El editor pinta de colores el HTML y el CSS, parecido a Visual Studio Code:
+etiquetas, atributos, valores, comentarios, selectores, propiedades y números.
+También tiene números de línea.
+
+Cómo funciona, por si hay que arreglar algo:
+
+- El cuadro de texto donde se escribe tiene la **letra transparente**.
+- Debajo hay una copia del código pintada de colores (`assets/js/resaltado.js`).
+  Se vuelve a pintar en cada tecla.
+- Las dos capas usan la misma letra, el mismo tamaño y los mismos espacios.
+  **Si cambias la letra, el tamaño o el `padding` del editor en
+  `assets/css/sitio.css`, cámbialos en la regla compartida
+  `.numeros, .capa-colores, .codigo`**, o el color dejará de coincidir con
+  el texto.
+
+### Teclado en el editor
+
+- **Tab** agrega 2 espacios. Con varias líneas seleccionadas, las mueve a la
+  derecha.
+- **Mayús + Tab** quita hasta 2 espacios al inicio de cada línea seleccionada.
+- **Esc y después Tab** sale del editor. Así, quien usa solo el teclado no
+  queda atrapado. La página lo explica debajo del editor.
+- **Ctrl + Z** deshace, también los cambios de Tab.
+
+### Tema claro u oscuro
+
+- La primera vez, el sitio usa el tema del sistema (computador o celular).
+- El botón de la cabecera lo cambia. La elección se guarda en el navegador y
+  vale para todas las páginas del sitio.
+- El cuadro **Resultado** siempre muestra la página del estudiante con sus
+  propios colores, también en el tema oscuro.
+
+Los colores de los dos temas están al principio de `assets/css/sitio.css`, en
+variables: el bloque `:root` es el tema claro y el bloque
+`:root[data-tema="oscuro"]` es el oscuro. Los colores del código empiezan con
+`--c-`. Todas las combinaciones de texto y fondo tienen un contraste de al
+menos 4.5 a 1; si cambias un color, revisa que siga así.
+
+---
+
 ## Límites conocidos
 
 - **El avance vive en un solo navegador.** Si la persona cambia de computador,
@@ -556,5 +606,8 @@ en la portada. Puedes verla en `laboratorio.html?lab=_plantilla`.
 - **La descarga del trabajo es un solo archivo HTML.** Si hay CSS, queda
   dentro de una etiqueta `<style>`. Los archivos de inicio sí se descargan por
   separado.
-- **Sin resaltado de colores en el código.** El editor es un cuadro de texto
-  simple, para que el sitio funcione en computadores modestos.
+- **El editor no es VS Code.** Pinta colores, muestra números de línea y
+  maneja Tab, pero no autocompleta, no cierra etiquetas solo y no marca
+  errores. Si el código tiene un error, los colores pueden verse raros; el
+  código no cambia.
+- **El tema se guarda en un solo navegador**, igual que el avance.
