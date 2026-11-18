@@ -17,6 +17,22 @@
       "duracion": "60 minutos",
       "nivel": "Básico",
       "carpeta": "02-html-css"
+    },
+    {
+      "id": "03-modelo-de-cajas",
+      "titulo": "Modelo de cajas con el inspector",
+      "descripcion": "Elige tu proyecto y usa el inspector del navegador para darle espacio: padding, border, margin y box-sizing.",
+      "duracion": "60 minutos",
+      "nivel": "Básico",
+      "carpeta": "03-modelo-de-cajas"
+    },
+    {
+      "id": "04-flexbox-grid",
+      "titulo": "Flexbox, Grid y diseño responsivo",
+      "descripcion": "Sigue con tu proyecto: menú en fila, tarjetas en cuadrícula, hoja de estilos ordenada y una versión para celular.",
+      "duracion": "75 minutos",
+      "nivel": "Básico",
+      "carpeta": "04-flexbox-grid"
     }
   ]
 }

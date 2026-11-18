@@ -8,11 +8,13 @@
 # Revisa los errores más comunes al agregar un laboratorio:
 # - un archivo JSON mal escrito (una coma de más o de menos);
 # - una carpeta del catálogo que no existe;
-# - un archivo de "archivos" que no está en inicio/;
+# - un archivo de "archivos" que no está en inicio/
+#   (o en la carpeta de cada proyecto, si el lab tiene varios);
 # - datos que faltan o ids repetidos.
 # ============================================================
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -38,6 +40,29 @@ def revisar_campos(ruta, datos, campos):
             errores.append(f'{ruta}: falta el campo "{campo}".')
 
 
+def revisar_proyectos(ruta, proyectos):
+    """Revisa el bloque "proyectos" y devuelve las carpetas de inicio."""
+    opciones = proyectos.get("opciones", []) if isinstance(proyectos, dict) else []
+    if not opciones:
+        errores.append(f'{ruta}: "proyectos" debe tener una lista "opciones" con al menos un proyecto.')
+        return []
+    carpetas = []
+    for opcion in opciones:
+        revisar_campos(ruta, opcion, ["id", "titulo"])
+        ident = str(opcion.get("id", ""))
+        # El id es también el nombre de la carpeta: sin espacios ni tildes.
+        if not re.fullmatch(r"[a-z0-9_-]+", ident):
+            errores.append(f'{ruta}: el id de proyecto "{ident}" solo puede tener '
+                           "letras minúsculas sin tildes, números, - y _.")
+            continue
+        carpetas.append(f"inicio/{ident}")
+    ids = [str(opcion.get("id")) for opcion in opciones]
+    repetidos = {i for i in ids if ids.count(i) > 1}
+    if repetidos:
+        errores.append(f"{ruta}: hay proyectos con el mismo id: {', '.join(sorted(repetidos))}.")
+    return carpetas
+
+
 def revisar_laboratorio(carpeta):
     # as_posix() escribe la ruta con / también en Windows.
     ruta = (carpeta / "lab.json").as_posix()
@@ -50,10 +75,17 @@ def revisar_laboratorio(carpeta):
     archivos = lab.get("archivos", [])
     if not archivos:
         errores.append(f'{ruta}: "archivos" no puede estar vacío.')
-    for archivo in archivos:
-        nombre = archivo.get("nombre", "")
-        if not (carpeta / "inicio" / nombre).is_file():
-            errores.append(f"{ruta}: no existe el archivo inicio/{nombre}.")
+
+    # Sin "proyectos", los archivos están en inicio/.
+    # Con "proyectos", cada proyecto tiene su carpeta: inicio/<id del proyecto>/.
+    carpetas_inicio = ["inicio"]
+    if "proyectos" in lab:
+        carpetas_inicio = revisar_proyectos(ruta, lab["proyectos"])
+    for carpeta_inicio in carpetas_inicio:
+        for archivo in archivos:
+            nombre = archivo.get("nombre", "")
+            if not (carpeta / carpeta_inicio / nombre).is_file():
+                errores.append(f"{ruta}: no existe el archivo {carpeta_inicio}/{nombre}.")
     principales = [a for a in archivos if a.get("principal")]
     if len(principales) != 1:
         errores.append(f'{ruta}: debe haber exactamente un archivo con "principal": true.')

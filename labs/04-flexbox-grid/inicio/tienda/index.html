@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo de la tienda del barrio</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <!-- ======================================================
+       LAB 04 · DISTRIBUIR Y ORGANIZAR
+       En este laboratorio todo se hace en el archivo estilos.css.
+       Este archivo HTML no lo tienes que cambiar.
+       ====================================================== -->
+
+  <header>
+    <div>
+      <h1>Tienda del barrio</h1>
+      <p>Productos frescos cerca de tu casa.</p>
+    </div>
+
+    <nav class="menu" aria-label="Menú principal">
+      <a href="#seccion-tarjetas">Productos</a>
+      <a href="#seccion-formulario">Hacer pedido</a>
+      <a href="#acerca">Acerca de</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="seccion-tarjetas">
+      <h2>Productos</h2>
+      <p>Estos son algunos productos de la semana.</p>
+
+      <!-- Cada tarjeta es un producto: nombre, descripción y precio.
+           Todas las tarjetas tienen la misma estructura. -->
+      <div id="lista-tarjetas">
+
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Pan de la casa</h3>
+          <p class="tarjeta-texto">Pan fresco, horneado cada mañana.</p>
+          <p class="tarjeta-detalle">$ 3.500</p>
+        </article>
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Huevos</h3>
+          <p class="tarjeta-texto">Bandeja de 12 huevos.</p>
+          <p class="tarjeta-detalle">$ 9.000</p>
+        </article>
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Leche entera</h3>
+          <p class="tarjeta-texto">Bolsa de 1 litro.</p>
+          <p class="tarjeta-detalle">$ 4.200</p>
+        </article>
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Café molido</h3>
+          <p class="tarjeta-texto">Paquete de 500 gramos.</p>
+          <p class="tarjeta-detalle">$ 15.000</p>
+        </article>
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Queso fresco</h3>
+          <p class="tarjeta-texto">Bloque de 500 gramos.</p>
+          <p class="tarjeta-detalle">$ 12.000</p>
+        </article>
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Frutas de temporada</h3>
+          <p class="tarjeta-texto">Canasta pequeña con frutas variadas.</p>
+          <p class="tarjeta-detalle">$ 10.000</p>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="seccion-formulario">
+      <h2>Hacer un pedido</h2>
+      <p>Elige un producto y cuéntanos cuántas unidades quieres.</p>
+      <p class="aviso-practica">Este formulario todavía no guarda ni envía datos.</p>
+
+      <form id="formulario">
+
+        <div class="campo">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre">
+        </div>
+
+        <div class="campo">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono">
+        </div>
+
+        <div class="campo">
+          <label for="producto">Producto</label>
+          <select id="producto" name="producto">
+            <option value="">Elige una opción</option>
+            <option value="Pan de la casa">Pan de la casa</option>
+            <option value="Huevos">Huevos</option>
+            <option value="Leche entera">Leche entera</option>
+            <option value="Café molido">Café molido</option>
+            <option value="Queso fresco">Queso fresco</option>
+            <option value="Frutas de temporada">Frutas de temporada</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="cantidad">Cantidad</label>
+          <input type="number" id="cantidad" name="cantidad" min="1" max="20" value="1">
+        </div>
+
+        <div class="campo">
+          <label for="comentarios">Comentarios</label>
+          <textarea id="comentarios" name="comentarios" rows="4"></textarea>
+        </div>
+
+        <button type="button" id="boton-enviar">Enviar pedido</button>
+
+      </form>
+
+      <!-- Aquí aparecerán mensajes cuando la página use JavaScript. -->
+      <p id="mensaje" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer id="acerca">
+    <h2>Acerca de</h2>
+    <p>Proyecto de práctica. Todos los datos de esta página son ficticios.</p>
+  </footer>
+
+</body>
+</html>

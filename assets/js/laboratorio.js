@@ -2,8 +2,10 @@
 // PÁGINA DE LABORATORIO
 // Esta página es la misma para todos los laboratorios.
 // 1. Lee en la dirección qué laboratorio abrir (?lab=carpeta).
-// 2. Carga labs/<carpeta>/lab.json y los archivos de inicio.
-// 3. Muestra las tareas, el editor y la vista previa.
+// 2. Carga labs/<carpeta>/lab.json.
+// 3. Si el laboratorio tiene varios proyectos, pide elegir uno.
+// 4. Carga los archivos de inicio y muestra las tareas,
+//    el editor y la vista previa.
 // Todo lo que la persona hace se guarda solo en su navegador.
 // ============================================================
 
@@ -12,6 +14,8 @@
 
 let laboratorio = null;   // el contenido de lab.json
 let carpeta = "";         // por ejemplo "labs/01-html-basico/"
+let carpetaInicio = "";   // carpeta de los archivos de inicio
+let proyecto = null;      // el proyecto elegido, si el lab tiene varios
 let codigoInicial = {};   // nombre de archivo -> código de inicio
 let editores = {};        // nombre de archivo -> su cuadro de texto
 let espera = null;        // temporizador para no actualizar en cada tecla
@@ -48,6 +52,39 @@ function borrarGuardado(parte) {
     localStorage.removeItem(claveGuardado(parte));
   } catch (error) {
     // Si no se puede borrar, no pasa nada grave.
+  }
+}
+
+// El código de cada archivo se guarda aparte para cada proyecto.
+// Así, si la persona cambia de proyecto y vuelve, no pierde su trabajo.
+// En los laboratorios sin proyectos la clave es la de siempre.
+function parteArchivo(nombre) {
+  if (proyecto) {
+    return proyecto.id + ":archivo:" + nombre;
+  }
+  return "archivo:" + nombre;
+}
+
+// La elección de proyecto se guarda por "grupo", no por laboratorio.
+// Los laboratorios del mismo grupo comparten la elección.
+function claveProyecto() {
+  const grupo = laboratorio.proyectos.grupo || laboratorio.id;
+  return "laboratorios:proyecto:" + grupo;
+}
+
+function leerProyectoGuardado() {
+  try {
+    return localStorage.getItem(claveProyecto());
+  } catch (error) {
+    return null;
+  }
+}
+
+function guardarProyecto(id) {
+  try {
+    localStorage.setItem(claveProyecto(), id);
+  } catch (error) {
+    // Si no se puede guardar, la persona tendrá que elegir otra vez.
   }
 }
 
@@ -172,7 +209,7 @@ function crearPanel(archivo, posicion) {
   cuadro.setAttribute("autocorrect", "off");
   cuadro.setAttribute("wrap", "off");
 
-  const guardado = leerGuardado("archivo:" + archivo.nombre);
+  const guardado = leerGuardado(parteArchivo(archivo.nombre));
   cuadro.value = guardado !== null ? guardado : codigoInicial[archivo.nombre];
   cuadro.addEventListener("input", alEscribir);
 
@@ -236,6 +273,11 @@ function mostrarEditor() {
   const contenedorPaneles = document.getElementById("paneles");
   const hayVariosArchivos = laboratorio.archivos.length > 1;
 
+  // Si la persona cambió de proyecto, quitamos el editor anterior.
+  contenedorPestanas.innerHTML = "";
+  contenedorPaneles.innerHTML = "";
+  editores = {};
+
   laboratorio.archivos.forEach(function (archivo, posicion) {
     const panel = crearPanel(archivo, posicion);
     contenedorPaneles.appendChild(panel);
@@ -258,6 +300,7 @@ function mostrarEditor() {
 function alEscribir() {
   clearTimeout(espera);
   espera = setTimeout(function () {
+    espera = null;
     guardarCodigo();
     actualizarVistaPrevia();
   }, 300);
@@ -266,7 +309,7 @@ function alEscribir() {
 function guardarCodigo() {
   let todoBien = true;
   for (const archivo of laboratorio.archivos) {
-    const cambio = guardar("archivo:" + archivo.nombre, editores[archivo.nombre].value);
+    const cambio = guardar(parteArchivo(archivo.nombre), editores[archivo.nombre].value);
     todoBien = todoBien && cambio;
   }
   const estado = document.getElementById("estado-guardado");
@@ -324,6 +367,17 @@ function prepararVistaPrevia(pagina) {
   return base + pagina;
 }
 
+// Antes de cambiar de proyecto o abrir la pestaña nueva,
+// guardamos lo que estaba pendiente.
+function guardarPendiente() {
+  if (espera !== null) {
+    clearTimeout(espera);
+    espera = null;
+    guardarCodigo();
+    actualizarVistaPrevia();
+  }
+}
+
 function actualizarVistaPrevia() {
   const pagina = armarPagina();
   document.getElementById("vista-previa").srcdoc = prepararVistaPrevia(pagina);
@@ -337,16 +391,61 @@ function actualizarVistaPrevia() {
 
 // ---------- Botones ----------
 
+function nombreDescarga() {
+  if (proyecto) {
+    return laboratorio.id + "-" + proyecto.id + "-mi-trabajo.html";
+  }
+  return laboratorio.id + "-mi-trabajo.html";
+}
+
 function descargarTrabajo() {
   const pagina = armarPagina();
   const archivo = new Blob([pagina], { type: "text/html;charset=utf-8" });
   const enlace = document.createElement("a");
   enlace.href = URL.createObjectURL(archivo);
-  enlace.download = laboratorio.id + "-mi-trabajo.html";
+  enlace.download = nombreDescarga();
   document.body.appendChild(enlace);
   enlace.click();
   enlace.remove();
   URL.revokeObjectURL(enlace.href);
+}
+
+// La pestaña nueva no tiene la protección del cuadro de vista previa.
+// Esta regla de seguridad, puesta al inicio de <head>, hace lo mismo:
+// no deja ejecutar scripts ni enviar formularios.
+function protegerPestana(pagina) {
+  const regla = '<meta http-equiv="Content-Security-Policy" ' +
+    'content="script-src \'none\'; object-src \'none\'; form-action \'none\'">';
+  const inicioHead = /<head[^>]*>/i;
+  if (inicioHead.test(pagina)) {
+    return pagina.replace(inicioHead, function (etiqueta) {
+      return etiqueta + regla;
+    });
+  }
+  return regla + pagina;
+}
+
+// Abre en otra pestaña el código que está ahora en el editor,
+// para usar el inspector del navegador con más espacio.
+// Siempre usa la misma pestaña, así no se acumulan.
+function abrirEnPestana() {
+  guardarPendiente();
+  const pagina = protegerPestana(armarPagina());
+  const archivo = new Blob([pagina], { type: "text/html;charset=utf-8" });
+  const direccion = URL.createObjectURL(archivo);
+  const pestana = window.open(direccion, "vista-previa-laboratorio");
+  const estado = document.getElementById("estado-pestana");
+  if (pestana) {
+    estado.textContent = "Tu página se abrió en otra pestaña. " +
+      "Si cambias el código, vuelve a pulsar el botón para ver los cambios.";
+  } else {
+    estado.textContent = "El navegador no dejó abrir la pestaña nueva. " +
+      "Revisa si bloqueó las ventanas emergentes de este sitio.";
+  }
+  // Damos tiempo a que la pestaña cargue y después liberamos la memoria.
+  setTimeout(function () {
+    URL.revokeObjectURL(direccion);
+  }, 60000);
 }
 
 function reiniciarCodigo() {
@@ -359,7 +458,7 @@ function reiniciarCodigo() {
   }
   for (const archivo of laboratorio.archivos) {
     editores[archivo.nombre].value = codigoInicial[archivo.nombre];
-    borrarGuardado("archivo:" + archivo.nombre);
+    borrarGuardado(parteArchivo(archivo.nombre));
   }
   document.getElementById("estado-guardado").textContent = "Volviste al código inicial.";
   actualizarVistaPrevia();
@@ -367,14 +466,129 @@ function reiniciarCodigo() {
 
 function mostrarDescargas() {
   const lista = document.getElementById("lista-descargas");
+  lista.innerHTML = "";
   for (const archivo of laboratorio.archivos) {
     const elemento = document.createElement("li");
     const enlace = document.createElement("a");
-    enlace.href = carpeta + "inicio/" + archivo.nombre;
+    enlace.href = carpetaInicio + archivo.nombre;
     enlace.download = archivo.nombre;
     enlace.textContent = "Descargar " + archivo.nombre;
     elemento.appendChild(enlace);
     lista.appendChild(elemento);
+  }
+}
+
+
+// ---------- Elegir proyecto ----------
+// Solo para laboratorios con "proyectos" en lab.json.
+
+function buscarProyecto(id) {
+  for (const opcion of laboratorio.proyectos.opciones) {
+    if (opcion.id === id) {
+      return opcion;
+    }
+  }
+  return null;
+}
+
+// Crea una opción: botón redondo, título y descripción.
+function crearOpcion(opcion) {
+  const caja = document.createElement("div");
+  caja.className = "opcion";
+
+  const boton = document.createElement("input");
+  boton.type = "radio";
+  boton.name = "proyecto";
+  boton.id = "proyecto-" + opcion.id;
+  boton.value = opcion.id;
+  boton.required = true;
+
+  const etiqueta = document.createElement("label");
+  etiqueta.htmlFor = boton.id;
+  const titulo = document.createElement("strong");
+  titulo.textContent = opcion.titulo;
+  etiqueta.appendChild(titulo);
+  if (opcion.descripcion) {
+    const descripcion = document.createElement("span");
+    descripcion.textContent = opcion.descripcion;
+    etiqueta.appendChild(descripcion);
+  }
+
+  caja.appendChild(boton);
+  caja.appendChild(etiqueta);
+  return caja;
+}
+
+function prepararEleccion() {
+  const contenedor = document.getElementById("opciones-proyecto");
+  for (const opcion of laboratorio.proyectos.opciones) {
+    contenedor.appendChild(crearOpcion(opcion));
+  }
+  document.getElementById("form-eleccion").addEventListener("submit", function (evento) {
+    // Este formulario no se envía a ningún lado: solo leemos la opción marcada.
+    evento.preventDefault();
+    const marcada = document.querySelector("input[name=proyecto]:checked");
+    if (marcada) {
+      elegirProyecto(marcada.value);
+    }
+  });
+  document.getElementById("boton-cancelar-eleccion").addEventListener("click", function () {
+    mostrarTrabajo();
+    document.getElementById("boton-cambiar-proyecto").focus();
+  });
+  document.getElementById("boton-cambiar-proyecto").addEventListener("click", mostrarEleccion);
+}
+
+// Muestra la lista de proyectos y oculta el editor.
+// Al cargar la página no movemos el foco; al pulsar "Cambiar de proyecto", sí.
+function mostrarEleccion(moverFoco) {
+  guardarPendiente();
+  for (const boton of document.querySelectorAll("input[name=proyecto]")) {
+    boton.checked = proyecto !== null && boton.value === proyecto.id;
+  }
+  // "Seguir con el proyecto actual" solo tiene sentido si ya hay uno.
+  document.getElementById("boton-cancelar-eleccion").hidden = proyecto === null;
+  document.getElementById("proyecto-actual").hidden = true;
+  document.getElementById("area-trabajo").hidden = true;
+  document.getElementById("eleccion-proyecto").hidden = false;
+  if (moverFoco !== false) {
+    document.getElementById("titulo-eleccion").focus();
+  }
+}
+
+// Oculta la lista de proyectos y muestra el editor.
+function mostrarTrabajo() {
+  document.getElementById("eleccion-proyecto").hidden = true;
+  document.getElementById("proyecto-actual").hidden = false;
+  document.getElementById("area-trabajo").hidden = false;
+}
+
+async function elegirProyecto(id) {
+  const elegido = buscarProyecto(id);
+  if (!elegido) {
+    mostrarEleccion();
+    return;
+  }
+  const veniaDeLaLista = !document.getElementById("eleccion-proyecto").hidden;
+  try {
+    await cargarArchivos(carpeta + "inicio/" + elegido.id + "/");
+  } catch (error) {
+    console.error(error);
+    mostrarError("No se pudieron cargar los archivos del proyecto «" + elegido.titulo + "». " +
+      "Prueba con otro proyecto o recarga la página.");
+    return;
+  }
+  proyecto = elegido;
+  guardarProyecto(elegido.id);
+  document.getElementById("nombre-proyecto").textContent = elegido.titulo;
+  document.getElementById("aviso-error").hidden = true;
+  document.getElementById("estado-guardado").textContent = "";
+  document.getElementById("estado-pestana").textContent = "";
+  prepararTrabajo();
+  mostrarTrabajo();
+  // Si la persona eligió en la lista, llevamos el foco al proyecto elegido.
+  if (veniaDeLaLista) {
+    document.getElementById("proyecto-actual").focus();
   }
 }
 
@@ -395,6 +609,24 @@ async function leerArchivo(ruta) {
   return respuesta.text();
 }
 
+// Lee los archivos de inicio de una carpeta. Si falta uno,
+// no cambia nada de lo que ya estaba cargado.
+async function cargarArchivos(ruta) {
+  const leidos = {};
+  for (const archivo of laboratorio.archivos) {
+    leidos[archivo.nombre] = await leerArchivo(ruta + archivo.nombre);
+  }
+  carpetaInicio = ruta;
+  codigoInicial = leidos;
+}
+
+// Arma el editor, las descargas y la vista previa.
+function prepararTrabajo() {
+  mostrarEditor();
+  mostrarDescargas();
+  actualizarVistaPrevia();
+}
+
 async function cargarLaboratorio() {
   const parametros = new URLSearchParams(window.location.search);
   const nombreCarpeta = parametros.get("lab");
@@ -408,8 +640,9 @@ async function cargarLaboratorio() {
 
   try {
     laboratorio = JSON.parse(await leerArchivo(carpeta + "lab.json"));
-    for (const archivo of laboratorio.archivos) {
-      codigoInicial[archivo.nombre] = await leerArchivo(carpeta + "inicio/" + archivo.nombre);
+    // Sin proyectos, los archivos de inicio están directo en inicio/.
+    if (!laboratorio.proyectos) {
+      await cargarArchivos(carpeta + "inicio/");
     }
   } catch (error) {
     console.error(error);
@@ -420,13 +653,27 @@ async function cargarLaboratorio() {
 
   mostrarDatos();
   mostrarTareas();
-  mostrarEditor();
-  mostrarDescargas();
-  actualizarVistaPrevia();
 
   document.getElementById("boton-descargar").addEventListener("click", descargarTrabajo);
   document.getElementById("boton-reiniciar").addEventListener("click", reiniciarCodigo);
+  document.getElementById("boton-pestana").addEventListener("click", abrirEnPestana);
   document.getElementById("laboratorio").hidden = false;
+
+  if (!laboratorio.proyectos) {
+    prepararTrabajo();
+    return;
+  }
+
+  // Laboratorio con varios proyectos: si ya hay uno elegido, lo abrimos.
+  // Si no, mostramos la lista para elegir.
+  prepararEleccion();
+  const guardado = leerProyectoGuardado();
+  if (guardado && buscarProyecto(guardado)) {
+    await elegirProyecto(guardado);
+  }
+  if (proyecto === null) {
+    mostrarEleccion(false);
+  }
 }
 
 cargarLaboratorio();
