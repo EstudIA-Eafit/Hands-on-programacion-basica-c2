@@ -188,7 +188,131 @@ function mostrarTareas() {
 
 // ---------- Editor ----------
 
-// Crea un panel con su etiqueta y su cuadro de texto para un archivo.
+// ---------- Colores, números de línea y sangría ----------
+
+// Vuelve a pintar los colores y los números de línea de un editor.
+// Se llama cada vez que cambia el código.
+function pintarEditor(cuadro) {
+  const partes = cuadro.parentElement.parentElement;
+  const capa = partes.querySelector(".capa-colores code");
+  const numeros = partes.querySelector(".numeros-texto");
+
+  // El salto de línea final hace que la última línea tenga altura,
+  // igual que en el cuadro de texto.
+  capa.innerHTML = resaltarCodigo(cuadro.value, cuadro.dataset.lenguaje) + "\n";
+
+  const lineas = cuadro.value.split("\n").length;
+  if (Number(numeros.dataset.lineas) !== lineas) {
+    let texto = "";
+    for (let numero = 1; numero <= lineas; numero = numero + 1) {
+      texto = texto + numero + "\n";
+    }
+    numeros.textContent = texto;
+    numeros.dataset.lineas = lineas;
+  }
+  seguirDesplazamiento(cuadro);
+}
+
+// Cuando el cuadro de texto se desplaza, los colores y los números
+// se mueven lo mismo para quedar alineados.
+function seguirDesplazamiento(cuadro) {
+  const partes = cuadro.parentElement.parentElement;
+  const capa = partes.querySelector(".capa-colores code");
+  const numeros = partes.querySelector(".numeros-texto");
+  capa.style.transform = "translate(" + (-cuadro.scrollLeft) + "px, " + (-cuadro.scrollTop) + "px)";
+  numeros.style.transform = "translateY(" + (-cuadro.scrollTop) + "px)";
+}
+
+// Escribe un texto en lugar de lo seleccionado.
+// execCommand permite deshacer con Ctrl + Z. Si el navegador
+// no lo acepta, usamos setRangeText.
+function escribirEnCursor(cuadro, texto) {
+  const funciono = document.execCommand("insertText", false, texto);
+  if (!funciono) {
+    cuadro.setRangeText(texto, cuadro.selectionStart, cuadro.selectionEnd, "end");
+    cuadro.dispatchEvent(new Event("input"));
+  }
+}
+
+// Cambia la sangría de las líneas seleccionadas.
+// mas = true agrega 2 espacios; mas = false quita hasta 2.
+function cambiarSangria(cuadro, mas) {
+  const codigo = cuadro.value;
+  const inicioSeleccion = cuadro.selectionStart;
+  let finSeleccion = cuadro.selectionEnd;
+  const variasLineas = codigo.slice(inicioSeleccion, finSeleccion).includes("\n");
+
+  // Tab sin seleccionar varias líneas: escribe 2 espacios donde está el cursor.
+  if (mas && !variasLineas) {
+    escribirEnCursor(cuadro, "  ");
+    return;
+  }
+
+  // Si la selección termina justo al empezar una línea, esa línea no cuenta.
+  if (variasLineas && codigo[finSeleccion - 1] === "\n") {
+    finSeleccion = finSeleccion - 1;
+  }
+  const inicioLineas = codigo.lastIndexOf("\n", inicioSeleccion - 1) + 1;
+  let finLineas = codigo.indexOf("\n", finSeleccion);
+  if (finLineas === -1) {
+    finLineas = codigo.length;
+  }
+
+  const lineas = codigo.slice(inicioLineas, finLineas).split("\n");
+  const nuevas = lineas.map(function (linea) {
+    if (mas) {
+      return "  " + linea;
+    }
+    return linea.replace(/^ {1,2}/, "");
+  });
+  const texto = nuevas.join("\n");
+  if (texto === lineas.join("\n")) {
+    return;
+  }
+
+  // Cuánto se movió el inicio de la primera línea, para dejar el cursor bien.
+  const cambioPrimera = nuevas[0].length - lineas[0].length;
+  cuadro.setSelectionRange(inicioLineas, finLineas);
+  escribirEnCursor(cuadro, texto);
+  if (variasLineas) {
+    cuadro.setSelectionRange(inicioLineas, inicioLineas + texto.length);
+  } else {
+    const cursor = Math.max(inicioLineas, inicioSeleccion + cambioPrimera);
+    cuadro.setSelectionRange(cursor, cursor);
+  }
+}
+
+// Tab y Mayús + Tab cambian la sangría, como en VS Code.
+// Para no dejar atrapado a quien usa solo el teclado:
+// después de Esc, la tecla Tab sale del editor como siempre.
+function alPulsarTecla(evento) {
+  const cuadro = evento.target;
+  if (evento.key === "Escape") {
+    cuadro.dataset.salir = "si";
+    return;
+  }
+  // Mayús, Ctrl o Alt solos no cuentan como "otra tecla".
+  if (["Shift", "Control", "Alt", "Meta"].includes(evento.key)) {
+    return;
+  }
+  const saleDelEditor = cuadro.dataset.salir === "si";
+  delete cuadro.dataset.salir;
+  if (evento.key !== "Tab" || evento.ctrlKey || evento.altKey || evento.metaKey || saleDelEditor) {
+    return;
+  }
+  evento.preventDefault();
+  cambiarSangria(cuadro, !evento.shiftKey);
+}
+
+// Al salir del editor, Esc deja de tener efecto.
+function alSalirDelEditor(evento) {
+  delete evento.target.dataset.salir;
+}
+
+
+// Crea un panel con su etiqueta y su editor para un archivo.
+// El editor tiene tres partes: números de línea, la capa de
+// colores y, encima, el cuadro de texto donde se escribe.
 function crearPanel(archivo, posicion) {
   const panel = document.createElement("div");
   panel.className = "panel";
@@ -198,9 +322,29 @@ function crearPanel(archivo, posicion) {
   etiqueta.htmlFor = "codigo-" + posicion;
   etiqueta.textContent = "Código " + archivo.etiqueta + " (" + archivo.nombre + ")";
 
+  const marco = document.createElement("div");
+  marco.className = "marco-codigo";
+
+  // aria-hidden: los lectores de pantalla leen solo el cuadro de texto.
+  const numeros = document.createElement("div");
+  numeros.className = "numeros";
+  numeros.setAttribute("aria-hidden", "true");
+  const numerosTexto = document.createElement("div");
+  numerosTexto.className = "numeros-texto";
+  numeros.appendChild(numerosTexto);
+
+  const area = document.createElement("div");
+  area.className = "area-codigo";
+  const capa = document.createElement("pre");
+  capa.className = "capa-colores";
+  capa.setAttribute("aria-hidden", "true");
+  capa.appendChild(document.createElement("code"));
+
   const cuadro = document.createElement("textarea");
   cuadro.id = "codigo-" + posicion;
   cuadro.className = "codigo";
+  cuadro.dataset.lenguaje = archivo.nombre.endsWith(".css") ? "css" : "html";
+  cuadro.setAttribute("aria-describedby", "ayuda-teclado");
   // Apagamos el corrector y las mayúsculas automáticas:
   // en el código molestan.
   cuadro.spellcheck = false;
@@ -211,11 +355,27 @@ function crearPanel(archivo, posicion) {
 
   const guardado = leerGuardado(parteArchivo(archivo.nombre));
   cuadro.value = guardado !== null ? guardado : codigoInicial[archivo.nombre];
-  cuadro.addEventListener("input", alEscribir);
 
+  // Los colores se pintan en cada tecla, para que no se atrasen.
+  // Guardar y actualizar la vista previa espera un momento (alEscribir).
+  cuadro.addEventListener("input", function () {
+    pintarEditor(cuadro);
+    alEscribir();
+  });
+  cuadro.addEventListener("scroll", function () {
+    seguirDesplazamiento(cuadro);
+  });
+  cuadro.addEventListener("keydown", alPulsarTecla);
+  cuadro.addEventListener("blur", alSalirDelEditor);
+
+  area.appendChild(capa);
+  area.appendChild(cuadro);
+  marco.appendChild(numeros);
+  marco.appendChild(area);
   panel.appendChild(etiqueta);
-  panel.appendChild(cuadro);
+  panel.appendChild(marco);
   editores[archivo.nombre] = cuadro;
+  pintarEditor(cuadro);
   return panel;
 }
 
@@ -458,6 +618,7 @@ function reiniciarCodigo() {
   }
   for (const archivo of laboratorio.archivos) {
     editores[archivo.nombre].value = codigoInicial[archivo.nombre];
+    pintarEditor(editores[archivo.nombre]);
     borrarGuardado(parteArchivo(archivo.nombre));
   }
   document.getElementById("estado-guardado").textContent = "Volviste al código inicial.";

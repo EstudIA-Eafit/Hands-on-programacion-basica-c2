@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Laboratorios prácticos</title>
   <link rel="stylesheet" href="assets/css/sitio.css">
+  <!-- Va aquí, y no al final, para aplicar el tema claro u oscuro antes de mostrar la página -->
+  <script src="assets/js/tema.js"></script>
 </head>
 <body>
 
@@ -12,8 +14,12 @@
 
   <header class="cabecera">
     <div class="contenedor">
-      <!-- curso.js escribe aquí el nombre del curso que está en labs/labs.json -->
-      <p class="cabecera-curso nombre-curso"></p>
+      <div class="barra-superior">
+        <!-- curso.js escribe aquí el nombre del curso que está en labs/labs.json -->
+        <p class="cabecera-curso nombre-curso"></p>
+        <!-- tema.js escribe el texto del botón y lo muestra -->
+        <button type="button" class="boton-tema" id="boton-tema" hidden>Cambiar tema</button>
+      </div>
       <h1>Laboratorios prácticos</h1>
       <p>Practica escribiendo código. Cada laboratorio tiene tareas cortas y un editor con vista previa.</p>
     </div>

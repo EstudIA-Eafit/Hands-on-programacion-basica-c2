@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Laboratorio</title>
   <link rel="stylesheet" href="assets/css/sitio.css">
+  <!-- Va aquí, y no al final, para aplicar el tema claro u oscuro antes de mostrar la página -->
+  <script src="assets/js/tema.js"></script>
 </head>
 <body>
 
@@ -16,8 +18,10 @@
   <a class="saltar" href="#contenido">Ir al contenido</a>
 
   <header class="cabecera cabecera-lab">
-    <div class="contenedor-ancho">
+    <div class="contenedor-ancho barra-superior">
       <a href="index.html">← Volver a los laboratorios</a>
+      <!-- tema.js escribe el texto del botón y lo muestra -->
+      <button type="button" class="boton-tema" id="boton-tema" hidden>Cambiar tema</button>
     </div>
   </header>
 
@@ -91,6 +95,10 @@
             <div class="pestanas" id="pestanas" role="tablist" aria-label="Archivos" hidden></div>
             <!-- Aquí aparece un cuadro de texto por cada archivo -->
             <div id="paneles"></div>
+            <p class="nota" id="ayuda-teclado">
+              En el editor, la tecla Tab agrega 2 espacios y Mayús + Tab los quita.
+              Para salir del editor con el teclado, pulsa Esc y después Tab.
+            </p>
 
             <div class="acciones">
               <button type="button" id="boton-descargar">Descargar mi trabajo</button>
@@ -135,6 +143,7 @@
   </footer>
 
   <script src="assets/js/curso.js"></script>
+  <script src="assets/js/resaltado.js"></script>
   <script src="assets/js/laboratorio.js"></script>
 </body>
 </html>
