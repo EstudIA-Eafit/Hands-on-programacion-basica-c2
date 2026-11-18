@@ -124,9 +124,13 @@ un programa pequeño que sirve las páginas como lo haría internet.
 - Cada laboratorio abre, muestra sus tareas y la vista previa.
 - Al escribir en el editor, la vista previa cambia y el código se ve de colores.
 - En el editor, Tab agrega 2 espacios. Esc y después Tab sale del editor.
-- El botón **Ocultar tareas** cierra el panel de tareas: el editor y el
-  resultado se hacen más anchos y queda una franja con el avance y el botón
-  **Mostrar tareas**. Al abrir de nuevo un laboratorio, las tareas se ven.
+- La flecha junto al título **Tareas** cierra el panel de tareas y el editor
+  y el resultado se hacen más anchos. En pantalla grande la flecha apunta a
+  la izquierda (‹) con el panel abierto y a la derecha (›) cerrado; cerrado,
+  queda solo una franja con la flecha. En celular y pantallas medianas apunta
+  hacia arriba (˄) abierto y hacia abajo (˅) cerrado. Al pasar el mouse dice
+  «Ocultar tareas» o «Mostrar tareas». Al abrir de nuevo un laboratorio, las
+  tareas se ven.
 - El botón **Cambiar a tema oscuro / claro** de la cabecera cambia los colores
   de todo el sitio, y el tema se mantiene al pasar a otra página.
 - El botón **Abrir vista previa en pestaña nueva** muestra el código del

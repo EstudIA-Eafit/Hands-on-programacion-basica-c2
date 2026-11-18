@@ -371,35 +371,57 @@ iframe:focus-visible {
   margin: 0;
 }
 
+/* Botón con una flecha para abrir y cerrar el panel de tareas.
+   No tiene texto visible: su nombre está en aria-label y title. */
 .boton-plegar {
-  padding: 0.4rem 0.8rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
   border: 2px solid var(--principal);
   border-radius: 6px;
   background-color: var(--fondo);
   color: var(--principal);
   cursor: pointer;
-  white-space: nowrap;
 }
 
 .boton-plegar:hover {
   background-color: var(--fondo-suave);
 }
 
-/* Panel cerrado: una franja con el título, el avance y el botón.
-   En celular y pantallas medianas es una fila corta arriba del editor. */
+/* La flecha es un solo dibujo que apunta a la izquierda (‹).
+   Se gira según el estado del panel y el ancho de la pantalla.
+   En celular y pantallas medianas las tareas van arriba del editor:
+   abierto apunta hacia arriba (˄) y cerrado hacia abajo (˅). */
+.flecha {
+  width: 1.4rem;
+  height: 1.4rem;
+  transform: rotate(90deg);
+  transition: transform 0.2s;
+}
+
+.boton-plegar[aria-expanded="false"] .flecha {
+  transform: rotate(-90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flecha {
+    transition: none;
+  }
+}
+
+/* Panel cerrado: una fila corta con el título y la flecha. */
 .tareas-cerrada {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem 1rem;
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   background-color: var(--fondo-suave);
 }
 
 .tareas-cerrada .avance {
-  margin: 0;
+  display: none;
 }
 
 /* Pestañas del editor */
@@ -728,16 +750,29 @@ h2:focus-visible {
     grid-template-columns: auto 1fr 1fr;
   }
 
-  /* La franja se lee de arriba a abajo, como el lomo de un libro. */
-  .tareas-cerrada {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-self: start;
-    writing-mode: vertical-rl;
-    padding: 0.75rem 0.5rem;
+  /* Las tareas van a la izquierda: abierto la flecha apunta
+     a la izquierda (‹) y cerrado a la derecha (›). */
+  .flecha {
+    transform: rotate(0deg);
   }
 
-  .tareas-cerrada .tareas-cabecera {
-    flex-wrap: nowrap;
+  .boton-plegar[aria-expanded="false"] .flecha {
+    transform: rotate(180deg);
+  }
+
+  /* Cerrado: solo queda una franja angosta con la flecha. */
+  .tareas-cerrada {
+    align-self: start;
+    padding: 0.25rem;
+  }
+
+  /* El título se oculta a la vista, pero los lectores de pantalla lo leen. */
+  .tareas-cerrada .tareas-cabecera h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
 }
