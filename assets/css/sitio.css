@@ -358,6 +358,50 @@ iframe:focus-visible {
   font-weight: bold;
 }
 
+/* Título "Tareas" y botón para ocultar el panel, en una fila */
+.tareas-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+.tareas-cabecera h2 {
+  margin: 0;
+}
+
+.boton-plegar {
+  padding: 0.4rem 0.8rem;
+  border: 2px solid var(--principal);
+  border-radius: 6px;
+  background-color: var(--fondo);
+  color: var(--principal);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.boton-plegar:hover {
+  background-color: var(--fondo-suave);
+}
+
+/* Panel cerrado: una franja con el título, el avance y el botón.
+   En celular y pantallas medianas es una fila corta arriba del editor. */
+.tareas-cerrada {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background-color: var(--fondo-suave);
+}
+
+.tareas-cerrada .avance {
+  margin: 0;
+}
+
 /* Pestañas del editor */
 
 .pestanas {
@@ -676,5 +720,24 @@ h2:focus-visible {
 
   .tareas {
     grid-column: auto;
+  }
+
+  /* Panel de tareas cerrado: la primera columna se hace angosta
+     y el editor y el resultado se reparten el resto. */
+  .lab-cuerpo.sin-tareas {
+    grid-template-columns: auto 1fr 1fr;
+  }
+
+  /* La franja se lee de arriba a abajo, como el lomo de un libro. */
+  .tareas-cerrada {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-self: start;
+    writing-mode: vertical-rl;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .tareas-cerrada .tareas-cabecera {
+    flex-wrap: nowrap;
   }
 }

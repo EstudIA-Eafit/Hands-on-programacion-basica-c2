@@ -126,6 +126,27 @@ function actualizarAvance() {
     "Llevas " + hechas + " de " + casillas.length + " tareas.";
 }
 
+// Abre o cierra el panel de tareas. Cerrado, el editor y el resultado
+// ocupan su espacio y queda una franja con el avance y el botón.
+// No se guarda: cada vez que se abre un laboratorio, las tareas se ven.
+function mostrarPanelTareas(abrir) {
+  const boton = document.getElementById("boton-tareas");
+  document.getElementById("contenido-tareas").hidden = !abrir;
+  document.getElementById("panel-tareas").classList.toggle("tareas-cerrada", !abrir);
+  document.querySelector(".lab-cuerpo").classList.toggle("sin-tareas", !abrir);
+  boton.setAttribute("aria-expanded", abrir ? "true" : "false");
+  if (abrir) {
+    boton.innerHTML = '<span aria-hidden="true">«</span> Ocultar tareas';
+  } else {
+    boton.innerHTML = 'Mostrar tareas <span aria-hidden="true">»</span>';
+  }
+}
+
+function alternarTareas() {
+  const abierto = document.getElementById("boton-tareas").getAttribute("aria-expanded") === "true";
+  mostrarPanelTareas(!abierto);
+}
+
 function guardarTareas() {
   const hechas = {};
   const casillas = document.querySelectorAll("#lista-tareas input[type=checkbox]");
@@ -818,6 +839,8 @@ async function cargarLaboratorio() {
   document.getElementById("boton-descargar").addEventListener("click", descargarTrabajo);
   document.getElementById("boton-reiniciar").addEventListener("click", reiniciarCodigo);
   document.getElementById("boton-pestana").addEventListener("click", abrirEnPestana);
+  document.getElementById("boton-tareas").addEventListener("click", alternarTareas);
+  mostrarPanelTareas(true);
   document.getElementById("laboratorio").hidden = false;
 
   if (!laboratorio.proyectos) {

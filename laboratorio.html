@@ -81,12 +81,20 @@
 
         <div class="lab-cuerpo">
 
-          <section class="tareas" aria-labelledby="titulo-tareas">
-            <h2 id="titulo-tareas">Tareas</h2>
+          <!-- El botón "Ocultar tareas" cierra este panel para dar más espacio
+               al editor y al resultado. Cerrado, queda una franja con el avance. -->
+          <section class="tareas" id="panel-tareas" aria-labelledby="titulo-tareas">
+            <div class="tareas-cabecera">
+              <h2 id="titulo-tareas">Tareas</h2>
+              <button type="button" id="boton-tareas" class="boton-plegar"
+                      aria-expanded="true" aria-controls="contenido-tareas">Ocultar tareas</button>
+            </div>
             <p class="avance" id="avance" aria-live="polite"></p>
-            <!-- laboratorio.js crea aquí una tarea por cada elemento de "tareas" en lab.json -->
-            <ol class="lista-tareas" id="lista-tareas"></ol>
-            <p class="nota">Las casillas marcadas se guardan en este navegador.</p>
+            <div id="contenido-tareas">
+              <!-- laboratorio.js crea aquí una tarea por cada elemento de "tareas" en lab.json -->
+              <ol class="lista-tareas" id="lista-tareas"></ol>
+              <p class="nota">Las casillas marcadas se guardan en este navegador.</p>
+            </div>
           </section>
 
           <section class="editor" aria-labelledby="titulo-editor">
