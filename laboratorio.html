@@ -125,6 +125,11 @@
           <section class="vista" aria-labelledby="titulo-vista">
             <h2 id="titulo-vista">Resultado</h2>
             <p class="titulo-pestana">Título de la pestaña: <strong id="titulo-pestana"></strong></p>
+            <!-- Solo en laboratorios con JavaScript (laboratorio.js lo muestra) -->
+            <p class="nota aviso-js" id="aviso-js" hidden>
+              Este cuadro no ejecuta JavaScript. Para ver lo que hace tu código,
+              pulsa «Abrir vista previa en pestaña nueva».
+            </p>
             <!-- sandbox sin permisos: la vista previa no ejecuta scripts
                  ni envía formularios. -->
             <iframe id="vista-previa" title="Vista previa de tu página" sandbox></iframe>

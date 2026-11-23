@@ -10,7 +10,9 @@
 # - una carpeta del catálogo que no existe;
 # - un archivo de "archivos" que no está en inicio/
 #   (o en la carpeta de cada proyecto, si el lab tiene varios);
-# - datos que faltan o ids repetidos.
+# - datos que faltan o ids repetidos;
+# - un archivo .js que el HTML principal no conecta con
+#   <script src="app.js" defer>.
 # ============================================================
 
 import json
@@ -63,6 +65,21 @@ def revisar_proyectos(ruta, proyectos):
     return carpetas
 
 
+def revisar_scripts(ruta, carpeta, carpetas_inicio, archivos, principal):
+    """Cada archivo .js debe estar conectado en el HTML principal con
+    <script src="app.js" defer> para que la pestaña nueva lo ejecute."""
+    for archivo in archivos:
+        nombre = archivo.get("nombre", "")
+        if not nombre.endswith(".js"):
+            continue
+        etiqueta = re.compile(r"<script[^>]*src=[\"']?" + re.escape(nombre) + r"[\"']?[^>]*\bdefer\b", re.I)
+        for carpeta_inicio in carpetas_inicio:
+            html = carpeta / carpeta_inicio / principal
+            if html.is_file() and not etiqueta.search(html.read_text(encoding="utf-8")):
+                errores.append(f'{ruta}: {carpeta_inicio}/{principal} no tiene '
+                               f'<script src="{nombre}" defer></script> en el <head>.')
+
+
 def revisar_laboratorio(carpeta):
     # as_posix() escribe la ruta con / también en Windows.
     ruta = (carpeta / "lab.json").as_posix()
@@ -89,6 +106,8 @@ def revisar_laboratorio(carpeta):
     principales = [a for a in archivos if a.get("principal")]
     if len(principales) != 1:
         errores.append(f'{ruta}: debe haber exactamente un archivo con "principal": true.')
+    else:
+        revisar_scripts(ruta, carpeta, carpetas_inicio, archivos, principales[0].get("nombre", ""))
 
     ids = [tarea.get("id") for tarea in lab.get("tareas", [])]
     for tarea in lab.get("tareas", []):

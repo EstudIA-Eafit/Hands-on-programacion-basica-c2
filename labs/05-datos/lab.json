@@ -1,0 +1,82 @@
+{
+  "id": "05-datos",
+  "titulo": "Datos en JavaScript",
+  "objetivo": "Guardar y mostrar datos con JavaScript: variables, textos, números, booleanos, arrays y objetos. Todo se revisa en la consola del navegador.",
+  "duracion": "60 minutos",
+  "nivel": "Básico",
+  "archivos": [
+    { "nombre": "index.html", "etiqueta": "HTML", "principal": true },
+    { "nombre": "estilos.css", "etiqueta": "CSS" },
+    { "nombre": "app.js", "etiqueta": "JS" }
+  ],
+  "proyectos": {
+    "grupo": "encuentro-2",
+    "opciones": [
+      {
+        "id": "eventos",
+        "titulo": "Inscripción a eventos culturales",
+        "descripcion": "Seis eventos del barrio y un formulario para inscribirse."
+      },
+      {
+        "id": "tienda",
+        "titulo": "Catálogo de una tienda de barrio",
+        "descripcion": "Seis productos y un formulario para hacer un pedido."
+      },
+      {
+        "id": "servicios",
+        "titulo": "Directorio de servicios del barrio",
+        "descripcion": "Seis servicios y un formulario para pedir uno."
+      }
+    ]
+  },
+  "tareas": [
+    {
+      "id": "consola",
+      "texto": "Abre la vista previa en pestaña nueva y, en esa pestaña, abre la consola del navegador. Busca el mensaje <code>Hola desde app.js</code>.",
+      "pista": "Pulsa «Abrir vista previa en pestaña nueva». En esa pestaña, pulsa <code>F12</code> y elige la pestaña «Consola» (Console). También puedes hacer clic derecho en la página, elegir «Inspeccionar» y después «Consola». En Mac: <code>Cmd + Opción + J</code> en Chrome y Edge, <code>Cmd + Opción + K</code> en Firefox. Debes ver el mensaje <code>Hola desde app.js</code>. Cada vez que cambies el código, vuelve a pulsar el botón: la pestaña se actualiza con tu código nuevo. Si aparece un error en rojo, el número al final del enlace de la derecha es la línea del error en la pestaña JS. El cuadro «Resultado» de esta página no ejecuta JavaScript.",
+      "reto": false
+    },
+    {
+      "id": "const",
+      "texto": "Guarda el nombre del sitio en una <code>const</code> llamada <code>nombreSitio</code> y muéstralo con <code>console.log</code>.",
+      "pista": "Escribe donde dice «TAREA 2»: <code>const nombreSitio = \"...\";</code> con el texto del <code>&lt;h1&gt;</code> entre comillas. En la línea siguiente: <code>console.log(nombreSitio);</code>. Ahí va sin comillas: así muestra el valor guardado y no la palabra. <code>const</code> es para datos que no van a cambiar.",
+      "reto": false
+    },
+    {
+      "id": "let",
+      "texto": "Guarda en una <code>let</code> la cantidad de tarjetas. Muéstrala, cambia su valor y muéstrala otra vez.",
+      "pista": "Escribe <code>let cantidadTarjetas = 6;</code> y <code>console.log(cantidadTarjetas);</code>. Los números van sin comillas. Para cambiar el valor no se repite <code>let</code>: <code>cantidadTarjetas = 7;</code>. Muéstrala otra vez: en la consola verás 6 y después 7. Si intentas cambiar una <code>const</code>, la consola muestra un error en rojo y el código se detiene ahí.",
+      "reto": false
+    },
+    {
+      "id": "typeof",
+      "texto": "Usa <code>typeof</code> para ver el tipo de un texto, de un número y de un booleano.",
+      "pista": "<code>console.log(typeof \"hola\");</code> muestra <code>string</code>: un texto. <code>typeof 6</code> muestra <code>number</code>: un número. <code>typeof true</code> muestra <code>boolean</code>: un booleano, que solo puede ser <code>true</code> (verdadero) o <code>false</code> (falso). Prueba también con tus variables, por ejemplo <code>typeof nombreSitio</code>.",
+      "reto": false
+    },
+    {
+      "id": "array",
+      "texto": "Crea un array con los títulos de 3 tarjetas de tu proyecto. Muestra el primero con <code>[0]</code> y el total con <code>length</code>.",
+      "pista": "Un array es una lista entre corchetes, separada por comas: <code>const nombres = [\"Uno\", \"Dos\", \"Tres\"];</code>. Cambia esos textos por títulos de tus tarjetas. Las posiciones empiezan en 0: <code>nombres[0]</code> es el primero y <code>nombres[2]</code> es el tercero. <code>nombres.length</code> dice cuántos hay: 3.",
+      "reto": false
+    },
+    {
+      "id": "objeto",
+      "texto": "Crea un objeto para una tarjeta con <code>titulo</code>, <code>texto</code> y <code>detalle</code>. Muestra dos de sus propiedades con punto.",
+      "pista": "Un objeto va entre llaves y cada dato tiene un nombre y un valor: <code>const tarjeta = { titulo: \"...\", texto: \"...\", detalle: \"...\" };</code>. Copia los textos de una tarjeta de la pestaña HTML. Para leer un dato se usa un punto: <code>console.log(tarjeta.titulo);</code>. Los nombres son los mismos de las clases del HTML: <code>tarjeta-titulo</code>, <code>tarjeta-texto</code> y <code>tarjeta-detalle</code>.",
+      "reto": false
+    },
+    {
+      "id": "array-objetos",
+      "texto": "Completa el array <code>tarjetas</code>: trae 2 tarjetas y debe tener las 6. Muéstralo completo.",
+      "pista": "Copia uno de los objetos que ya están, con sus llaves, y cambia los textos por los de la tarjeta siguiente de la pestaña HTML. Entre un objeto y otro va una coma. En la consola, haz clic en el triángulo ▶ para ver cada tarjeta y revisa que diga <code>(6)</code>. Muestra también <code>tarjetas[2].titulo</code>: es el título de la tercera tarjeta.",
+      "reto": false
+    },
+    {
+      "id": "booleano",
+      "texto": "Agrega a cada tarjeta del array una propiedad booleana, por ejemplo <code>destacado</code>, con <code>true</code> o <code>false</code>.",
+      "pista": "Después de <code>detalle</code>, pon una coma y escribe <code>destacado: true</code> o <code>destacado: false</code>. Va sin comillas: <code>\"true\"</code> con comillas sería un texto. Comprueba con <code>console.log(typeof tarjetas[0].destacado);</code>: debe decir <code>boolean</code>.",
+      "reto": true
+    }
+  ]
+}

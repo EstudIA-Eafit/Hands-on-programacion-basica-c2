@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Directorio de servicios del barrio</title>
+  <link rel="stylesheet" href="estilos.css">
+  <!-- Conecta el JavaScript. defer: se ejecuta cuando la página ya cargó. -->
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- ======================================================
+       LAB 07 · PINTAR LAS TARJETAS DESDE LOS DATOS
+       Las tarjetas ya no están escritas aquí: las crea app.js.
+       En este laboratorio escribes en app.js y, en la tarea 6, en estilos.css.
+       Este archivo HTML no lo tienes que cambiar.
+       ====================================================== -->
+
+  <header>
+    <div>
+      <h1>Servicios del barrio</h1>
+      <p>Personas del barrio que te pueden ayudar.</p>
+    </div>
+
+    <nav class="menu" aria-label="Menú principal">
+      <a href="#seccion-tarjetas">Servicios</a>
+      <a href="#seccion-formulario">Solicitar</a>
+      <a href="#acerca">Acerca de</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="seccion-tarjetas">
+      <h2>Servicios disponibles</h2>
+      <p>Revisa el horario de cada servicio antes de pedirlo.</p>
+
+      <!-- Cada tarjeta es un servicio: oficio, descripción y horario.
+           Todas las tarjetas tienen la misma estructura. -->
+      <div id="lista-tarjetas">
+        <!-- app.js crea aquí las tarjetas a partir del array de datos (tarea 4). -->
+      </div>
+    </section>
+
+    <section id="seccion-formulario">
+      <h2>Solicitar un servicio</h2>
+      <p>Cuéntanos qué necesitas y para qué fecha.</p>
+      <p class="aviso-practica">Este formulario todavía no guarda ni envía datos.</p>
+
+      <form id="formulario">
+
+        <div class="campo">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre">
+        </div>
+
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo">
+        </div>
+
+        <div class="campo">
+          <label for="servicio">Servicio</label>
+          <select id="servicio" name="servicio">
+            <option value="">Elige una opción</option>
+            <option value="Plomería">Plomería</option>
+            <option value="Electricidad">Electricidad</option>
+            <option value="Carpintería">Carpintería</option>
+            <option value="Costura">Costura</option>
+            <option value="Cerrajería">Cerrajería</option>
+            <option value="Jardinería">Jardinería</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="fecha">Fecha deseada</label>
+          <input type="date" id="fecha" name="fecha">
+        </div>
+
+        <div class="campo">
+          <label for="descripcion">Descripción del trabajo</label>
+          <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+        </div>
+
+        <button type="button" id="boton-enviar">Enviar solicitud</button>
+
+      </form>
+
+      <!-- Aquí aparecerán mensajes cuando la página use JavaScript. -->
+      <p id="mensaje" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer id="acerca">
+    <h2>Acerca de</h2>
+    <p>Proyecto de práctica. Todos los datos de esta página son ficticios.</p>
+  </footer>
+
+</body>
+</html>
