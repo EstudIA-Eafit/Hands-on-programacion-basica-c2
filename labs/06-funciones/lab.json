@@ -1,0 +1,82 @@
+{
+  "id": "06-funciones",
+  "titulo": "Funciones y recorridos",
+  "objetivo": "Escribir funciones que reciben datos y devuelven un resultado, y recorrer el array de tarjetas con for...of y forEach. Todo se revisa en la consola del navegador.",
+  "duracion": "60 minutos",
+  "nivel": "Básico",
+  "archivos": [
+    { "nombre": "index.html", "etiqueta": "HTML", "principal": true },
+    { "nombre": "estilos.css", "etiqueta": "CSS" },
+    { "nombre": "app.js", "etiqueta": "JS" }
+  ],
+  "proyectos": {
+    "grupo": "encuentro-2",
+    "opciones": [
+      {
+        "id": "eventos",
+        "titulo": "Inscripción a eventos culturales",
+        "descripcion": "Seis eventos del barrio y un formulario para inscribirse."
+      },
+      {
+        "id": "tienda",
+        "titulo": "Catálogo de una tienda de barrio",
+        "descripcion": "Seis productos y un formulario para hacer un pedido."
+      },
+      {
+        "id": "servicios",
+        "titulo": "Directorio de servicios del barrio",
+        "descripcion": "Seis servicios y un formulario para pedir uno."
+      }
+    ]
+  },
+  "tareas": [
+    {
+      "id": "consola",
+      "texto": "Abre la vista previa en pestaña nueva y, en esa pestaña, abre la consola del navegador. Busca el mensaje <code>Hola desde app.js</code>.",
+      "pista": "Pulsa «Abrir vista previa en pestaña nueva». En esa pestaña, pulsa <code>F12</code> y elige la pestaña «Consola» (Console). También puedes hacer clic derecho en la página, elegir «Inspeccionar» y después «Consola». En Mac: <code>Cmd + Opción + J</code> en Chrome y Edge, <code>Cmd + Opción + K</code> en Firefox. Debes ver el mensaje <code>Hola desde app.js</code>. Cada vez que cambies el código, vuelve a pulsar el botón: la pestaña se actualiza con tu código nuevo. Si aparece un error en rojo, el número al final del enlace de la derecha es la línea del error en la pestaña JS. El cuadro «Resultado» de esta página no ejecuta JavaScript.",
+      "reto": false
+    },
+    {
+      "id": "saludar",
+      "texto": "Declara una función <code>saludar</code>, sin parámetros, que muestre un saludo en la consola. Después llámala.",
+      "pista": "Escribe <code>function saludar() { console.log(\"Hola\"); }</code>. Declarar la función no la ejecuta: para eso hay que llamarla con <code>saludar();</code>. Llámala dos veces y mira cuántos saludos aparecen en la consola.",
+      "reto": false
+    },
+    {
+      "id": "describir",
+      "texto": "Escribe una función <code>describirTarjeta</code> que reciba una tarjeta y devuelva con <code>return</code> un texto que la describa.",
+      "pista": "Escribe <code>function describirTarjeta(tarjeta) { return tarjeta.titulo + \", \" + tarjeta.texto + \", \" + tarjeta.detalle; }</code>. <code>tarjeta</code> es el parámetro: el nombre que usa la función para el dato que recibe. El <code>+</code> une textos. <code>return</code> devuelve el resultado, pero no lo muestra. Para verlo: <code>console.log(describirTarjeta(tarjetas[0]));</code>.",
+      "reto": false
+    },
+    {
+      "id": "flecha",
+      "texto": "Escribe la misma función como función flecha, con el nombre <code>describirFlecha</code>.",
+      "pista": "Escribe <code>const describirFlecha = (tarjeta) =&gt; { return tarjeta.titulo + \", \" + tarjeta.texto + \", \" + tarjeta.detalle; };</code>. Hace lo mismo, escrita de otra forma. Si la función solo tiene un <code>return</code>, se pueden quitar las llaves y la palabra <code>return</code>: <code>const describirFlecha = (tarjeta) =&gt; tarjeta.titulo + \", \" + tarjeta.texto;</code>. Pruébala con <code>tarjetas[1]</code>.",
+      "reto": false
+    },
+    {
+      "id": "for-of",
+      "texto": "Recorre el array con <code>for...of</code> y muestra la descripción de cada tarjeta usando <code>describirTarjeta</code>.",
+      "pista": "Escribe <code>for (const tarjeta of tarjetas) { console.log(describirTarjeta(tarjeta)); }</code>. En cada vuelta, <code>tarjeta</code> es una tarjeta distinta del array, en orden. Deben aparecer 6 líneas en la consola.",
+      "reto": false
+    },
+    {
+      "id": "for-each",
+      "texto": "Haz el mismo recorrido con <code>forEach</code>.",
+      "pista": "Escribe <code>tarjetas.forEach(function (tarjeta) { console.log(describirTarjeta(tarjeta)); });</code>. <code>forEach</code> recibe una función y la llama una vez por cada tarjeta. También puedes darle una función flecha: <code>tarjetas.forEach((tarjeta) =&gt; console.log(describirTarjeta(tarjeta)));</code>. Deben aparecer otras 6 líneas.",
+      "reto": false
+    },
+    {
+      "id": "contar",
+      "texto": "Escribe una función <code>contarTarjetas</code> que reciba el array y devuelva cuántas tarjetas tiene.",
+      "pista": "Escribe <code>function contarTarjetas(lista) { return lista.length; }</code> y muestra <code>contarTarjetas(tarjetas)</code>: debe dar 6. Como la lista llega por parámetro, la misma función sirve para cualquier array. En el lab 07 la vas a usar otra vez.",
+      "reto": false
+    },
+    {
+      "id": "contar-destacadas",
+      "texto": "Escribe una función <code>contarDestacadas</code> que reciba el array y devuelva cuántas tarjetas tienen <code>destacado</code> en <code>true</code>.",
+      "pista": "Empieza con <code>let total = 0;</code> y recorre la lista con <code>for...of</code>. Dentro del recorrido usa <code>if</code>: <code>if (tarjeta.destacado) { total = total + 1; }</code>. <code>if</code> ejecuta lo que está entre sus llaves solo si la condición es <code>true</code>. Después del recorrido, escribe <code>return total;</code>. Con los datos de inicio debe dar 2.",
+      "reto": true
+    }
+  ]
+}

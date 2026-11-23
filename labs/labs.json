@@ -1,6 +1,6 @@
 {
   "curso": "Programación Básica - C2",
-  "institucion": "[Nombre de la institución]",
+  "institucion": "EstudIA",
   "laboratorios": [
     {
       "id": "01-html-basico",
@@ -33,6 +33,30 @@
       "duracion": "75 minutos",
       "nivel": "Básico",
       "carpeta": "04-flexbox-grid"
+    },
+    {
+      "id": "05-datos",
+      "titulo": "Datos en JavaScript",
+      "descripcion": "Sigue con tu proyecto: guarda sus datos en variables, arrays y objetos, y revísalos en la consola del navegador.",
+      "duracion": "60 minutos",
+      "nivel": "Básico",
+      "carpeta": "05-datos"
+    },
+    {
+      "id": "06-funciones",
+      "titulo": "Funciones y recorridos",
+      "descripcion": "Escribe funciones que describen y cuentan tus tarjetas, y recorre la lista con for...of y forEach.",
+      "duracion": "60 minutos",
+      "nivel": "Básico",
+      "carpeta": "06-funciones"
+    },
+    {
+      "id": "07-dom",
+      "titulo": "Pintar las tarjetas desde los datos",
+      "descripcion": "Usa JavaScript para cambiar la página: crea las tarjetas de tu proyecto a partir de un array de datos.",
+      "duracion": "75 minutos",
+      "nivel": "Básico",
+      "carpeta": "07-dom"
     }
   ]
 }

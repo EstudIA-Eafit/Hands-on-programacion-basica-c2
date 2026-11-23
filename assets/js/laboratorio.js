@@ -332,6 +332,18 @@ function alSalirDelEditor(evento) {
 }
 
 
+// El tipo de código de un archivo, según cómo termina su nombre.
+// Sirve para elegir los colores del editor.
+function lenguajeDe(nombre) {
+  if (nombre.endsWith(".css")) {
+    return "css";
+  }
+  if (nombre.endsWith(".js")) {
+    return "js";
+  }
+  return "html";
+}
+
 // Crea un panel con su etiqueta y su editor para un archivo.
 // El editor tiene tres partes: números de línea, la capa de
 // colores y, encima, el cuadro de texto donde se escribe.
@@ -365,7 +377,7 @@ function crearPanel(archivo, posicion) {
   const cuadro = document.createElement("textarea");
   cuadro.id = "codigo-" + posicion;
   cuadro.className = "codigo";
-  cuadro.dataset.lenguaje = archivo.nombre.endsWith(".css") ? "css" : "html";
+  cuadro.dataset.lenguaje = lenguajeDe(archivo.nombre);
   cuadro.setAttribute("aria-describedby", "ayuda-teclado");
   // Apagamos el corrector y las mayúsculas automáticas:
   // en el código molestan.
@@ -515,10 +527,23 @@ function archivoPrincipal() {
   return laboratorio.archivos[0];
 }
 
+// Los archivos JavaScript del laboratorio (por ejemplo app.js).
+// Los labs 01 a 04 no tienen ninguno.
+function archivosJS() {
+  return laboratorio.archivos.filter(function (archivo) {
+    return lenguajeDe(archivo.nombre) === "js";
+  });
+}
+
+function tieneJS() {
+  return archivosJS().length > 0;
+}
+
 // Arma la página completa a partir del HTML principal.
 // Si hay archivos CSS, cambia su <link href="estilos.css">
 // por una etiqueta <style> con el código que la persona escribió.
 // Así la vista previa y la descarga quedan en un solo archivo.
+// Los archivos JavaScript no se tocan aquí: ver conectarJS.
 function armarPagina() {
   let pagina = editores[archivoPrincipal().nombre].value;
 
@@ -534,6 +559,28 @@ function armarPagina() {
     }
   }
   return pagina;
+}
+
+// Solo para la pestaña nueva. Cada archivo JavaScript se guarda como un
+// archivo temporal del navegador (una dirección blob:) y su
+// <script src="app.js" defer> pasa a apuntar ahí. No lo copiamos dentro
+// de la página porque un <script> con el código adentro no respeta defer:
+// se ejecutaría antes de que exista el resto del HTML. Además, así los
+// errores de la consola dicen la misma línea que el editor.
+// Devuelve la página y las direcciones creadas, para liberarlas después.
+function conectarJS(pagina) {
+  const direcciones = [];
+  for (const archivo of archivosJS()) {
+    const codigo = new Blob([editores[archivo.nombre].value], { type: "text/javascript;charset=utf-8" });
+    const direccion = URL.createObjectURL(codigo);
+    direcciones.push(direccion);
+    const nombre = archivo.nombre.replaceAll(".", "\\.");
+    const fuente = new RegExp("(<script[^>]*src=)[\"']?" + nombre + "[\"']?", "gi");
+    pagina = pagina.replace(fuente, function (completo, inicio) {
+      return inicio + '"' + direccion + '"';
+    });
+  }
+  return { pagina: pagina, direcciones: direcciones };
 }
 
 // Los enlaces como href="#lista" deben moverse dentro de la vista previa.
@@ -580,24 +627,61 @@ function nombreDescarga() {
   return laboratorio.id + "-mi-trabajo.html";
 }
 
-function descargarTrabajo() {
-  const pagina = armarPagina();
-  const archivo = new Blob([pagina], { type: "text/html;charset=utf-8" });
+// Descarga un texto como archivo.
+function bajarArchivo(texto, tipo, nombre) {
+  const archivo = new Blob([texto], { type: tipo });
   const enlace = document.createElement("a");
   enlace.href = URL.createObjectURL(archivo);
-  enlace.download = nombreDescarga();
+  enlace.download = nombre;
   document.body.appendChild(enlace);
   enlace.click();
   enlace.remove();
-  URL.revokeObjectURL(enlace.href);
+  // Esperamos un momento antes de liberar la memoria, para que la descarga empiece.
+  setTimeout(function () {
+    URL.revokeObjectURL(enlace.href);
+  }, 10000);
+}
+
+function tipoDeArchivo(nombre) {
+  const lenguaje = lenguajeDe(nombre);
+  if (lenguaje === "css") {
+    return "text/css;charset=utf-8";
+  }
+  if (lenguaje === "js") {
+    return "text/javascript;charset=utf-8";
+  }
+  return "text/html;charset=utf-8";
+}
+
+// Sin JavaScript: un solo archivo HTML, con el CSS dentro de <style>.
+// Con JavaScript: cada archivo por separado, igual que en el editor,
+// porque el <script src="app.js" defer> necesita su archivo al lado.
+// Los archivos salen uno tras otro; el navegador puede pedir permiso
+// una vez para descargar varios archivos.
+function descargarTrabajo() {
+  if (!tieneJS()) {
+    bajarArchivo(armarPagina(), "text/html;charset=utf-8", nombreDescarga());
+    return;
+  }
+  laboratorio.archivos.forEach(function (archivo, posicion) {
+    setTimeout(function () {
+      bajarArchivo(editores[archivo.nombre].value, tipoDeArchivo(archivo.nombre), archivo.nombre);
+    }, posicion * 400);
+  });
+  document.getElementById("estado-guardado").textContent =
+    "Se descargan " + laboratorio.archivos.length + " archivos. Guárdalos juntos en una misma carpeta.";
 }
 
 // La pestaña nueva no tiene la protección del cuadro de vista previa.
 // Esta regla de seguridad, puesta al inicio de <head>, hace lo mismo:
 // no deja ejecutar scripts ni enviar formularios.
+// En los laboratorios con JavaScript solo deja ejecutar los archivos
+// temporales (blob:) que arma conectarJS, es decir, el código del editor.
+// Un <script> escrito dentro del HTML o un onclick siguen bloqueados.
 function protegerPestana(pagina) {
+  const scripts = tieneJS() ? "blob:" : "'none'";
   const regla = '<meta http-equiv="Content-Security-Policy" ' +
-    'content="script-src \'none\'; object-src \'none\'; form-action \'none\'">';
+    'content="script-src ' + scripts + '; object-src \'none\'; form-action \'none\'">';
   const inicioHead = /<head[^>]*>/i;
   if (inicioHead.test(pagina)) {
     return pagina.replace(inicioHead, function (etiqueta) {
@@ -608,11 +692,12 @@ function protegerPestana(pagina) {
 }
 
 // Abre en otra pestaña el código que está ahora en el editor,
-// para usar el inspector del navegador con más espacio.
+// para usar el inspector y la consola del navegador con más espacio.
 // Siempre usa la misma pestaña, así no se acumulan.
 function abrirEnPestana() {
   guardarPendiente();
-  const pagina = protegerPestana(armarPagina());
+  const conJS = conectarJS(armarPagina());
+  const pagina = protegerPestana(conJS.pagina);
   const archivo = new Blob([pagina], { type: "text/html;charset=utf-8" });
   const direccion = URL.createObjectURL(archivo);
   const pestana = window.open(direccion, "vista-previa-laboratorio");
@@ -627,6 +712,9 @@ function abrirEnPestana() {
   // Damos tiempo a que la pestaña cargue y después liberamos la memoria.
   setTimeout(function () {
     URL.revokeObjectURL(direccion);
+    for (const direccionJS of conJS.direcciones) {
+      URL.revokeObjectURL(direccionJS);
+    }
   }, 60000);
 }
 
@@ -805,6 +893,8 @@ async function cargarArchivos(ruta) {
 
 // Arma el editor, las descargas y la vista previa.
 function prepararTrabajo() {
+  // El cuadro «Resultado» no ejecuta JavaScript: lo avisamos en los labs que lo usan.
+  document.getElementById("aviso-js").hidden = !tieneJS();
   mostrarEditor();
   mostrarDescargas();
   actualizarVistaPrevia();

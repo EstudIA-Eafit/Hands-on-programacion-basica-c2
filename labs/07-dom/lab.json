@@ -1,0 +1,76 @@
+{
+  "id": "07-dom",
+  "titulo": "Pintar las tarjetas desde los datos",
+  "objetivo": "Usar JavaScript para cambiar la página: seleccionar elementos, cambiar textos y clases, y crear las tarjetas a partir del array de datos.",
+  "duracion": "75 minutos",
+  "nivel": "Básico",
+  "archivos": [
+    { "nombre": "index.html", "etiqueta": "HTML", "principal": true },
+    { "nombre": "estilos.css", "etiqueta": "CSS" },
+    { "nombre": "app.js", "etiqueta": "JS" }
+  ],
+  "proyectos": {
+    "grupo": "encuentro-2",
+    "opciones": [
+      {
+        "id": "eventos",
+        "titulo": "Inscripción a eventos culturales",
+        "descripcion": "Seis eventos del barrio y un formulario para inscribirse."
+      },
+      {
+        "id": "tienda",
+        "titulo": "Catálogo de una tienda de barrio",
+        "descripcion": "Seis productos y un formulario para hacer un pedido."
+      },
+      {
+        "id": "servicios",
+        "titulo": "Directorio de servicios del barrio",
+        "descripcion": "Seis servicios y un formulario para pedir uno."
+      }
+    ]
+  },
+  "tareas": [
+    {
+      "id": "titulo",
+      "texto": "Selecciona el título principal con <code>querySelector</code> y cambia su texto con <code>textContent</code>.",
+      "pista": "Escribe <code>const titulo = document.querySelector(\"h1\");</code>: busca el primer <code>&lt;h1&gt;</code> de la página. Después: <code>titulo.textContent = \"Nuevo título\";</code>. Pulsa «Abrir vista previa en pestaña nueva» para ver el cambio: el cuadro «Resultado» no ejecuta JavaScript. El archivo HTML no cambia: JavaScript cambia la página después de cargarla.",
+      "reto": false
+    },
+    {
+      "id": "contenedor",
+      "texto": "Selecciona el contenedor de tarjetas por su id y guárdalo en una <code>const</code> llamada <code>contenedor</code>.",
+      "pista": "Escribe <code>const contenedor = document.getElementById(\"lista-tarjetas\");</code>. El id va sin <code>#</code>. Muéstralo con <code>console.log(contenedor);</code>: en la consola aparece el <code>&lt;div&gt;</code>, todavía vacío. Si aparece <code>null</code>, revisa que el id esté bien escrito.",
+      "reto": false
+    },
+    {
+      "id": "crear-tarjeta",
+      "texto": "Completa la función <code>crearTarjeta</code> para que devuelva el HTML de una tarjeta con una plantilla literal, con la misma estructura y las mismas clases del lab 04.",
+      "pista": "Una plantilla literal va entre comillas invertidas <code>`</code> y puede ocupar varias líneas. Si no encuentras esa comilla en tu teclado, cópiala del comentario de app.js. Dentro, <code>${tarjeta.titulo}</code> pone el valor de la propiedad. Escribe: <code>return `&lt;article class=\"tarjeta\"&gt;&lt;h3 class=\"tarjeta-titulo\"&gt;${tarjeta.titulo}&lt;/h3&gt;…&lt;/article&gt;`;</code> y completa los dos <code>&lt;p&gt;</code> con <code>tarjeta-texto</code> y <code>tarjeta-detalle</code>. Pruébala con <code>console.log(crearTarjeta(tarjetas[0]));</code>.",
+      "reto": false
+    },
+    {
+      "id": "pintar",
+      "texto": "Completa <code>pintarTarjetas</code>: recorre la lista, junta el HTML de todas las tarjetas en la variable <code>html</code> y asígnalo al contenedor con <code>innerHTML</code> una sola vez.",
+      "pista": "Dentro de la función escribe <code>for (const tarjeta of lista) { html = html + crearTarjeta(tarjeta); }</code>. Después del recorrido, fuera de sus llaves: <code>contenedor.innerHTML = html;</code>. Se asigna una sola vez, al final, para que el navegador dibuje toda la lista de una vez. En la pestaña nueva deben aparecer las 6 tarjetas con los estilos del lab 04. <code>innerHTML</code> se usa aquí porque los datos son propios del archivo; en el Encuentro 4, con datos del formulario, se cambiará.",
+      "reto": false
+    },
+    {
+      "id": "mensaje",
+      "texto": "Muestra en el elemento de mensajes un texto como «Hay 6 eventos», usando <code>textContent</code> y la función <code>contarTarjetas</code>.",
+      "pista": "Escribe <code>const mensaje = document.getElementById(\"mensaje\");</code> y después <code>mensaje.textContent = `Hay ${contarTarjetas(tarjetas)} eventos`;</code>. Cambia «eventos» por «productos» o «servicios» según tu proyecto. El mensaje aparece debajo del formulario. Aquí se usa <code>textContent</code> porque es solo texto, sin etiquetas.",
+      "reto": false
+    },
+    {
+      "id": "destacadas",
+      "texto": "Agrega con <code>classList</code> la clase <code>tarjeta-destacada</code> a las tarjetas que tienen <code>destacado</code> en <code>true</code>, y define esa clase en la pestaña CSS.",
+      "pista": "<code>const elementos = document.querySelectorAll(\".tarjeta\");</code> trae todas las tarjetas de la página, en el mismo orden del array. Recorre el array con <code>forEach</code>, que también da la posición: <code>tarjetas.forEach(function (tarjeta, posicion) { if (tarjeta.destacado) { elementos[posicion].classList.add(\"tarjeta-destacada\"); } });</code>. Va después de <code>pintarTarjetas(tarjetas);</code>, cuando las tarjetas ya existen. En la pestaña CSS, al final de COMPONENTES, escribe <code>.tarjeta-destacada { border-width: 4px; }</code> o el estilo que quieras. Revisa con el inspector que solo 2 tarjetas tienen la clase.",
+      "reto": false
+    },
+    {
+      "id": "septima",
+      "texto": "Agrega una séptima tarjeta solo en el array <code>tarjetas</code> y comprueba que aparece en la página sin tocar el HTML.",
+      "pista": "Copia el último objeto del array, pon una coma entre los dos y cambia los textos. Abre otra vez la pestaña nueva: debe haber 7 tarjetas y el mensaje debe decir «Hay 7». Así funciona una página hecha desde los datos: cambias los datos y la página se arma sola.",
+      "reto": true
+    }
+  ]
+}

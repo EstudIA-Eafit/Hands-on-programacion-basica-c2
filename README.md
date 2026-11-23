@@ -18,10 +18,11 @@ previa que se actualiza mientras la persona escribe.
 4. [Agregar un laboratorio nuevo](#agregar-un-laboratorio-nuevo)
 5. [Formato de lab.json](#formato-de-labjson)
 6. [Laboratorios con varios proyectos](#laboratorios-con-varios-proyectos)
-7. [Contrato para JavaScript (labs 03 y 04)](#contrato-para-javascript-labs-03-y-04)
-8. [Formato de labs/labs.json](#formato-de-labslabsjson)
-9. [Editor con colores y tema claro u oscuro](#editor-con-colores-y-tema-claro-u-oscuro)
-10. [Límites conocidos](#límites-conocidos)
+7. [Contrato para JavaScript (labs 03 a 07)](#contrato-para-javascript-labs-03-a-07)
+8. [Laboratorios con JavaScript (labs 05 a 07)](#laboratorios-con-javascript-labs-05-a-07)
+9. [Formato de labs/labs.json](#formato-de-labslabsjson)
+10. [Editor con colores y tema claro u oscuro](#editor-con-colores-y-tema-claro-u-oscuro)
+11. [Límites conocidos](#límites-conocidos)
 
 ---
 
@@ -42,7 +43,7 @@ previa que se actualiza mientras la persona escribe.
 │       ├── tema.js         Tema claro u oscuro y su botón (todas las páginas)
 │       ├── curso.js        Escribe el nombre del curso en todas las páginas
 │       ├── portada.js      Arma la lista de la portada
-│       ├── resaltado.js    Pinta de colores el código HTML y CSS del editor
+│       ├── resaltado.js    Pinta de colores el código HTML, CSS y JS del editor
 │       └── laboratorio.js  Tareas, editor, vista previa y botones
 ├── labs/
 │   ├── labs.json           Catálogo: la lista de laboratorios
@@ -59,12 +60,15 @@ previa que se actualiza mientras la persona escribe.
 │   │       ├── eventos/    Una carpeta por proyecto,
 │   │       ├── tienda/     cada una con los mismos archivos
 │   │       └── servicios/
-│   └── 04-flexbox-grid/    Sigue con el proyecto elegido en el 03
-│       ├── lab.json
-│       └── inicio/
-│           ├── eventos/
-│           ├── tienda/
-│           └── servicios/
+│   ├── 04-flexbox-grid/    Sigue con el proyecto elegido en el 03
+│   │   ├── lab.json
+│   │   └── inicio/
+│   │       ├── eventos/
+│   │       ├── tienda/
+│   │       └── servicios/
+│   ├── 05-datos/           Encuentro 3: JavaScript. Los mismos tres proyectos,
+│   ├── 06-funciones/       cada uno con index.html, estilos.css y app.js
+│   └── 07-dom/
 └── material/               Plantillas originales de clase
 ```
 
@@ -136,8 +140,13 @@ un programa pequeño que sirve las páginas como lo haría internet.
 - El botón **Abrir vista previa en pestaña nueva** muestra el código del
   editor, con tus cambios.
 - Los enlaces de "Descargar" bajan los archivos de inicio.
-- En los labs 03 y 04: el proyecto que eliges en el 03 aparece ya elegido
-  en el 04, y el botón **Cambiar de proyecto** funciona.
+- En los labs 03 a 07: el proyecto que eliges en el 03 aparece ya elegido
+  en los demás, y el botón **Cambiar de proyecto** funciona.
+- En los labs 05 a 07: hay una pestaña **JS**. Al pulsar **Abrir vista
+  previa en pestaña nueva**, el código JS del editor se ejecuta en esa
+  pestaña y lo que muestra `console.log` aparece en su consola (F12 >
+  Consola). En el lab 07, con las tareas resueltas, aparecen las 6 tarjetas
+  con los estilos del lab 04.
 - Prueba la página a lo ancho de un celular (375 px) con el modo de
   dispositivo del inspector (`Ctrl + Mayús + M` en Chrome, Edge o Firefox).
 
@@ -201,7 +210,7 @@ subcarpeta sin cambiar nada.
 
 ## Agregar un laboratorio nuevo
 
-Ejemplo: vamos a crear el laboratorio `05-listas`.
+Ejemplo: vamos a crear el laboratorio `08-listas`.
 
 ### Paso 1. Copia la plantilla
 
@@ -209,7 +218,7 @@ Copia la carpeta `labs/_plantilla/` y pega la copia dentro de `labs/` con el
 nombre nuevo:
 
 ```
-labs/05-listas/
+labs/08-listas/
 ├── lab.json
 └── inicio/
     ├── proyecto-a/
@@ -233,7 +242,7 @@ estos dos casos es el tuyo:
   Queda así:
 
   ```
-  labs/05-listas/
+  labs/08-listas/
   ├── lab.json
   └── inicio/
       └── index.html
@@ -257,7 +266,7 @@ Reemplaza `index.html` por el tuyo.
 
 ### Paso 3. Edita `lab.json`
 
-Abre `labs/05-listas/lab.json` y cambia los textos entre corchetes. El formato
+Abre `labs/08-listas/lab.json` y cambia los textos entre corchetes. El formato
 completo está en la sección [Formato de lab.json](#formato-de-labjson).
 
 ### Paso 4. Agrega el laboratorio al catálogo
@@ -267,17 +276,17 @@ Abre `labs/labs.json` y agrega una entrada al final de la lista
 
 ```json
     {
-      "id": "04-flexbox-grid",
+      "id": "07-dom",
       ...
-      "carpeta": "04-flexbox-grid"
+      "carpeta": "07-dom"
     },
     {
-      "id": "05-listas",
+      "id": "08-listas",
       "titulo": "Listas en HTML",
       "descripcion": "Crea listas ordenadas y no ordenadas.",
       "duracion": "30 minutos",
       "nivel": "Básico",
-      "carpeta": "05-listas"
+      "carpeta": "08-listas"
     }
   ]
 }
@@ -334,6 +343,10 @@ JSON no admite comentarios. Por eso el ejemplo de abajo está comentado con
   // - "principal": true en el archivo HTML que se ve en la vista previa.
   //   Solo uno lo lleva.
   // Si hay un solo archivo, no se muestran pestañas.
+  // Un archivo que termina en .js es JavaScript: tiene su pestaña y sus
+  // colores, y se ejecuta en la pestaña nueva. Ejemplo:
+  // { "nombre": "app.js", "etiqueta": "JS" }
+  // Ver "Laboratorios con JavaScript".
   "archivos": [
     { "nombre": "index.html",  "etiqueta": "HTML", "principal": true },
     { "nombre": "estilos.css", "etiqueta": "CSS" }
@@ -397,7 +410,9 @@ Se agrega el bloque `"proyectos"`:
 "proyectos": {
   // Los laboratorios con el mismo "grupo" comparten la elección:
   // lo que la persona elige en uno aparece ya elegido en los otros.
-  // Los labs 03 y 04 usan "encuentro-2".
+  // Los labs 03 a 07 usan "encuentro-2". Los labs 05 a 07 son del
+  // Encuentro 3, pero usan el mismo grupo a propósito: así la persona
+  // sigue con el proyecto que eligió en el lab 03. No lo cambies.
   // Si no escribes "grupo", la elección vale solo para este laboratorio.
   "grupo": "encuentro-2",
 
@@ -460,9 +475,9 @@ archivo.
 
 ---
 
-## Contrato para JavaScript (labs 03 y 04)
+## Contrato para JavaScript (labs 03 a 07)
 
-En próximos encuentros los estudiantes van a usar JavaScript para leer el
+En los labs 05 a 07 y en los próximos encuentros los estudiantes usan JavaScript para leer el
 formulario y agregar tarjetas a la lista. Ese código va a buscar los elementos
 por su `id` y su clase. Por eso, **en los laboratorios futuros que sigan con
 estos proyectos, no cambies estos nombres**. Son los mismos en los tres
@@ -517,7 +532,119 @@ Las opciones del `select` tienen como `value` el mismo texto del título de
 cada tarjeta.
 
 La página dice: "Este formulario todavía no guarda ni envía datos." Cuando un
-laboratorio futuro agregue JavaScript, actualiza ese texto.
+laboratorio futuro lea el formulario con JavaScript, actualiza ese texto.
+
+### Clase para tarjetas destacadas
+
+En la tarea 6 del lab 07, JavaScript agrega la clase `tarjeta-destacada` a
+las tarjetas con `destacado: true`. Cada estudiante define su estilo en el
+CSS.
+
+---
+
+## Laboratorios con JavaScript (labs 05 a 07)
+
+### Cómo se conecta el JavaScript
+
+Basta con agregar el archivo a `"archivos"` en `lab.json`:
+
+```json
+"archivos": [
+  { "nombre": "index.html",  "etiqueta": "HTML", "principal": true },
+  { "nombre": "estilos.css", "etiqueta": "CSS" },
+  { "nombre": "app.js",      "etiqueta": "JS" }
+]
+```
+
+El HTML lo enlaza en el `<head>`, siempre de la misma forma:
+
+```html
+<script src="app.js" defer></script>
+```
+
+`defer` hace que el código se ejecute cuando la página ya cargó. Así
+`document.getElementById("lista-tarjetas")` encuentra el elemento.
+`revisar_labs.py` avisa si a un HTML le falta esa línea.
+
+### Dónde se ve el resultado
+
+- **El cuadro «Resultado» no ejecuta JavaScript.** Se vuelve a armar con cada
+  tecla. Con código a medio escribir llenaría la consola de errores, y un
+  bucle que nunca termina congelaría el editor. En los labs con JS, una nota
+  lo avisa.
+- **La pestaña nueva sí lo ejecuta.** El botón **Abrir vista previa en
+  pestaña nueva** guarda el código JS del editor como un archivo temporal del
+  navegador (una dirección `blob:`). El `<script src="app.js" defer>` pasa a
+  apuntar ahí. Por eso `defer` funciona igual que con un archivo de verdad, y
+  los errores de la consola dicen la misma línea que el editor.
+- La regla de seguridad de esa pestaña solo deja ejecutar esos archivos
+  temporales. Un `<script>` escrito dentro del HTML o un `onclick` siguen
+  bloqueados. En los labs sin JS, la pestaña sigue sin ejecutar nada.
+- En los labs 05 y 06 todo se revisa con `console.log` en la consola de esa
+  pestaña (F12 > Consola). La primera tarea de cada uno explica cómo abrirla.
+
+### Datos de las tarjetas
+
+En los tres proyectos, cada tarjeta es un objeto con las mismas propiedades.
+Se llaman como las clases del HTML, así el mismo código sirve para todos:
+
+```js
+{
+  titulo: "Concierto de música andina",       // va en .tarjeta-titulo
+  texto: "Sábado 6 de diciembre, 7:00 p. m.", // va en .tarjeta-texto
+  detalle: "Parque principal",                // va en .tarjeta-detalle
+  destacado: true                             // booleano del reto del lab 05
+}
+```
+
+Son las mismas 6 tarjetas ficticias del HTML de los labs 03 y 04. En cada
+proyecto, 2 tienen `destacado: true`.
+
+### Nombres que reutiliza el Encuentro 4
+
+El `app.js` del lab 07 trae estos nombres. El código del Encuentro 4 los va a
+usar, así que **no los cambies**:
+
+| Nombre | Qué es |
+|---|---|
+| `tarjetas` | El array con los datos de todas las tarjetas. |
+| `crearTarjeta(tarjeta)` | Recibe un objeto y devuelve con `return` el HTML de una tarjeta, con la estructura del contrato. |
+| `pintarTarjetas(lista)` | Junta el HTML de todas las tarjetas de `lista` y lo pone en `#lista-tarjetas` con `innerHTML`, una sola vez. |
+| `contarTarjetas(lista)` | Devuelve cuántas tarjetas tiene `lista`. Viene del lab 06. |
+| `contenedor` | El elemento `#lista-tarjetas` (tarea 2 del lab 07). |
+
+Para agregar una tarjeta desde el Encuentro 4, basta con agregarla al array y
+volver a llamar `pintarTarjetas(tarjetas)`.
+
+### Seguridad: innerHTML
+
+`innerHTML` convierte un texto en HTML. En el lab 07 se usa porque los datos
+son propios del archivo `app.js`: nadie de afuera los escribe. En el
+Encuentro 4 los datos van a venir del formulario. Entonces `crearTarjeta` y
+`pintarTarjetas` se cambiarán para usar `textContent` o `createElement`. Así,
+si alguien escribe una etiqueta en el formulario, se muestra como texto y no
+se ejecuta. El código de inicio del lab 07 tiene el mismo aviso en un
+comentario.
+
+### Temas de cada laboratorio
+
+- **Lab 05:** `let`, `const`, textos, números, booleanos, `typeof`, arrays
+  (índice y `length`), objetos con punto y array de objetos.
+- **Lab 06:** declarar y llamar funciones, parámetros, `return`, funciones
+  flecha, `for...of` y `forEach`. El reto presenta `if`.
+- **Lab 07:** `getElementById`, `querySelector`, `textContent`, `classList`,
+  plantillas literales e `innerHTML`. La tarea 6 usa `querySelectorAll` y la
+  posición que da `forEach`.
+- No se usan eventos, formularios, `map`, `filter`, `reduce`, clases,
+  módulos ni `fetch`. Todo se ejecuta al cargar la página.
+
+### Archivos de inicio
+
+- **Labs 05 y 06:** el resultado del lab 04. El HTML es el mismo: solo cambia
+  el comentario de arriba y se agrega el `<script>`. El CSS queda ordenado
+  por secciones, con el menú en fila, la cuadrícula y las `@media`.
+- **Lab 07:** el mismo HTML, pero `#lista-tarjetas` está vacío. El CSS es el
+  mismo de los labs 05 y 06. El `app.js` trae el array completo.
 
 ---
 
@@ -555,8 +682,10 @@ en la portada. Puedes verla en `laboratorio.html?lab=_plantilla`.
 
 ### Colores del código
 
-El editor pinta de colores el HTML y el CSS, parecido a Visual Studio Code:
-etiquetas, atributos, valores, comentarios, selectores, propiedades y números.
+El editor pinta de colores el HTML, el CSS y el JavaScript, parecido a Visual
+Studio Code: etiquetas, atributos, valores, comentarios, selectores,
+propiedades, números, palabras clave de JS (`let`, `function`, `return`...)
+y textos entre comillas, también en las plantillas literales.
 También tiene números de línea.
 
 Cómo funciona, por si hay que arreglar algo:
@@ -600,19 +729,26 @@ menos 4.5 a 1; si cambias un color, revisa que siga así.
 - **El avance vive en un solo navegador.** Si la persona cambia de computador,
   usa una ventana privada o borra los datos del navegador, pierde el avance.
   Por eso hay un botón para descargar el trabajo.
-- **La vista previa no ejecuta JavaScript ni envía formularios.** Los
+- **El cuadro «Resultado» no ejecuta JavaScript ni envía formularios.** Los
   formularios de ejemplo son solo de práctica: no guardan ni envían datos.
-  La vista previa en pestaña nueva tampoco ejecuta JavaScript.
+  La vista previa en pestaña nueva ejecuta JavaScript solo en los labs que
+  tienen un archivo `.js`, y solo ese archivo.
+- **Si recargas la pestaña nueva después de un minuto, puede quedar en
+  blanco.** El sitio libera los archivos temporales a los 60 segundos. Vuelve
+  a pulsar el botón en el laboratorio.
 - **La pestaña nueva es una foto del código.** Muestra el código del momento
   en que se pulsó el botón. Si la persona cambia el código, debe pulsar el
   botón otra vez. Si el navegador bloquea las ventanas emergentes, la página
   lo avisa debajo del botón.
-- **Solo HTML y CSS.** El editor acepta un archivo HTML principal y archivos
-  CSS. Los archivos CSS se conectan a la vista previa solo si el HTML los
-  enlaza con `<link ... href="nombre.css">`.
-- **La descarga del trabajo es un solo archivo HTML.** Si hay CSS, queda
-  dentro de una etiqueta `<style>`. Los archivos de inicio sí se descargan por
-  separado.
+- **HTML, CSS y JS.** El editor acepta un archivo HTML principal, archivos
+  CSS y archivos JS. Los CSS se conectan a la vista previa solo si el HTML
+  los enlaza con `<link ... href="nombre.css">`. Los JS, solo si el HTML los
+  enlaza con `<script src="nombre.js" defer>`.
+- **La descarga del trabajo.** Sin JavaScript es un solo archivo HTML, con el
+  CSS dentro de una etiqueta `<style>`. Con JavaScript se descargan los
+  archivos por separado (`index.html`, `estilos.css` y `app.js`), iguales a
+  los del editor. El navegador puede pedir permiso una vez para descargar
+  varios archivos. Los archivos de inicio siempre se descargan por separado.
 - **El editor no es VS Code.** Pinta colores, muestra números de línea y
   maneja Tab, pero no autocompleta, no cierra etiquetas solo y no marca
   errores. Si el código tiene un error, los colores pueden verse raros; el

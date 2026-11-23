@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agenda cultural del barrio</title>
+  <link rel="stylesheet" href="estilos.css">
+  <!-- Conecta el JavaScript. defer: se ejecuta cuando la página ya cargó. -->
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- ======================================================
+       LAB 07 · PINTAR LAS TARJETAS DESDE LOS DATOS
+       Las tarjetas ya no están escritas aquí: las crea app.js.
+       En este laboratorio escribes en app.js y, en la tarea 6, en estilos.css.
+       Este archivo HTML no lo tienes que cambiar.
+       ====================================================== -->
+
+  <header>
+    <div>
+      <h1>Agenda cultural del barrio</h1>
+      <p>Eventos gratuitos para toda la comunidad.</p>
+    </div>
+
+    <nav class="menu" aria-label="Menú principal">
+      <a href="#seccion-tarjetas">Eventos</a>
+      <a href="#seccion-formulario">Inscripción</a>
+      <a href="#acerca">Acerca de</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="seccion-tarjetas">
+      <h2>Próximos eventos</h2>
+      <p>Elige un evento y luego inscríbete en el formulario.</p>
+
+      <!-- Cada tarjeta es un evento: nombre, fecha y lugar.
+           Todas las tarjetas tienen la misma estructura. -->
+      <div id="lista-tarjetas">
+        <!-- app.js crea aquí las tarjetas a partir del array de datos (tarea 4). -->
+      </div>
+    </section>
+
+    <section id="seccion-formulario">
+      <h2>Inscripción</h2>
+      <p>Completa tus datos para inscribirte en un evento.</p>
+      <p class="aviso-practica">Este formulario todavía no guarda ni envía datos.</p>
+
+      <form id="formulario">
+
+        <div class="campo">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre">
+        </div>
+
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo">
+        </div>
+
+        <div class="campo">
+          <label for="evento">Evento</label>
+          <select id="evento" name="evento">
+            <option value="">Elige una opción</option>
+            <option value="Concierto de música andina">Concierto de música andina</option>
+            <option value="Taller de pintura para principiantes">Taller de pintura para principiantes</option>
+            <option value="Noche de cine al aire libre">Noche de cine al aire libre</option>
+            <option value="Feria del libro usado">Feria del libro usado</option>
+            <option value="Clase abierta de baile">Clase abierta de baile</option>
+            <option value="Cuentos para familias">Cuentos para familias</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="acompanantes">Número de acompañantes</label>
+          <input type="number" id="acompanantes" name="acompanantes" min="0" max="5" value="0">
+        </div>
+
+        <button type="button" id="boton-enviar">Inscribirme</button>
+
+      </form>
+
+      <!-- Aquí aparecerán mensajes cuando la página use JavaScript. -->
+      <p id="mensaje" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer id="acerca">
+    <h2>Acerca de</h2>
+    <p>Proyecto de práctica. Todos los datos de esta página son ficticios.</p>
+  </footer>
+
+</body>
+</html>

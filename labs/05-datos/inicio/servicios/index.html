@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Directorio de servicios del barrio</title>
+  <link rel="stylesheet" href="estilos.css">
+  <!-- Conecta el JavaScript. defer: se ejecuta cuando la página ya cargó. -->
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- ======================================================
+       LAB 05 · DATOS
+       En este laboratorio todo se escribe en el archivo app.js.
+       Este archivo HTML no lo tienes que cambiar.
+       ====================================================== -->
+
+  <header>
+    <div>
+      <h1>Servicios del barrio</h1>
+      <p>Personas del barrio que te pueden ayudar.</p>
+    </div>
+
+    <nav class="menu" aria-label="Menú principal">
+      <a href="#seccion-tarjetas">Servicios</a>
+      <a href="#seccion-formulario">Solicitar</a>
+      <a href="#acerca">Acerca de</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="seccion-tarjetas">
+      <h2>Servicios disponibles</h2>
+      <p>Revisa el horario de cada servicio antes de pedirlo.</p>
+
+      <!-- Cada tarjeta es un servicio: oficio, descripción y horario.
+           Todas las tarjetas tienen la misma estructura. -->
+      <div id="lista-tarjetas">
+
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Plomería</h3>
+          <p class="tarjeta-texto">Arreglo de tuberías, llaves y fugas de agua.</p>
+          <p class="tarjeta-detalle">Lunes a viernes, 8:00 a. m. a 5:00 p. m.</p>
+        </article>
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Electricidad</h3>
+          <p class="tarjeta-texto">Instalación de tomas, lámparas e interruptores.</p>
+          <p class="tarjeta-detalle">Lunes a sábado, 8:00 a. m. a 4:00 p. m.</p>
+        </article>
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Carpintería</h3>
+          <p class="tarjeta-texto">Arreglo de puertas, sillas y muebles de madera.</p>
+          <p class="tarjeta-detalle">Martes a sábado, 9:00 a. m. a 5:00 p. m.</p>
+        </article>
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Costura</h3>
+          <p class="tarjeta-texto">Arreglos de ropa: dobladillos, cierres y botones.</p>
+          <p class="tarjeta-detalle">Lunes a viernes, 9:00 a. m. a 6:00 p. m.</p>
+        </article>
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Cerrajería</h3>
+          <p class="tarjeta-texto">Copias de llaves y cambio de cerraduras.</p>
+          <p class="tarjeta-detalle">Todos los días, 8:00 a. m. a 8:00 p. m.</p>
+        </article>
+        <article class="tarjeta">
+          <h3 class="tarjeta-titulo">Jardinería</h3>
+          <p class="tarjeta-texto">Poda de plantas y cuidado de jardines.</p>
+          <p class="tarjeta-detalle">Sábados y domingos, 7:00 a. m. a 12:00 m.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="seccion-formulario">
+      <h2>Solicitar un servicio</h2>
+      <p>Cuéntanos qué necesitas y para qué fecha.</p>
+      <p class="aviso-practica">Este formulario todavía no guarda ni envía datos.</p>
+
+      <form id="formulario">
+
+        <div class="campo">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre">
+        </div>
+
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo">
+        </div>
+
+        <div class="campo">
+          <label for="servicio">Servicio</label>
+          <select id="servicio" name="servicio">
+            <option value="">Elige una opción</option>
+            <option value="Plomería">Plomería</option>
+            <option value="Electricidad">Electricidad</option>
+            <option value="Carpintería">Carpintería</option>
+            <option value="Costura">Costura</option>
+            <option value="Cerrajería">Cerrajería</option>
+            <option value="Jardinería">Jardinería</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="fecha">Fecha deseada</label>
+          <input type="date" id="fecha" name="fecha">
+        </div>
+
+        <div class="campo">
+          <label for="descripcion">Descripción del trabajo</label>
+          <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+        </div>
+
+        <button type="button" id="boton-enviar">Enviar solicitud</button>
+
+      </form>
+
+      <!-- Aquí aparecerán mensajes cuando la página use JavaScript. -->
+      <p id="mensaje" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer id="acerca">
+    <h2>Acerca de</h2>
+    <p>Proyecto de práctica. Todos los datos de esta página son ficticios.</p>
+  </footer>
+
+</body>
+</html>

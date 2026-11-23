@@ -1,6 +1,6 @@
 // ============================================================
 // RESALTADO DE CÓDIGO
-// Pinta de colores el código HTML y CSS del editor, parecido
+// Pinta de colores el código HTML, CSS y JavaScript del editor, parecido
 // a Visual Studio Code.
 //
 // Cómo funciona: el cuadro de texto donde se escribe tiene la
@@ -10,7 +10,7 @@
 // Los colores de cada clase están en assets/css/sitio.css.
 //
 // No es un analizador completo: reconoce lo más común en HTML
-// y CSS. Si el código tiene un error, los colores pueden verse
+// CSS y JavaScript. Si el código tiene un error, los colores pueden verse
 // raros, pero el código no cambia.
 // ============================================================
 
@@ -99,7 +99,7 @@ function resaltarHTML(codigo) {
       if (abre === "<" && cierra && (etiqueta === "style" || etiqueta === "script")) {
         const fin = buscarCierre(codigo, buscador.lastIndex, etiqueta);
         const contenido = codigo.slice(buscador.lastIndex, fin);
-        salida += etiqueta === "style" ? resaltarCSS(contenido) : escaparHTML(contenido);
+        salida += etiqueta === "style" ? resaltarCSS(contenido) : resaltarJS(contenido);
         buscador.lastIndex = fin;
       }
     } else if (entidad) {
@@ -202,10 +202,67 @@ function resaltarCSS(codigo) {
 }
 
 
+// ---------- JavaScript ----------
+
+// Palabras que JavaScript reserva. Solo las que se ven en el curso
+// y algunas más comunes.
+const PALABRAS_CLAVE_JS = new Set([
+  "let", "const", "var", "function", "return", "if", "else", "for", "of",
+  "in", "while", "do", "break", "continue", "typeof", "new", "true", "false",
+  "null", "undefined", "this", "class", "switch", "case", "default", "try",
+  "catch", "throw", "async", "await"
+]);
+
+// Partes que se buscan en JavaScript, en este orden:
+// comentario /* ... */, comentario // hasta el final de la línea,
+// plantilla literal entre comillas invertidas `...`,
+// texto entre comillas dobles o simples, un número, una palabra
+// o cualquier otro símbolo.
+const PARTES_JS = /(\/\*[\s\S]*?(?:\*\/|$))|(\/\/[^\n]*)|(`(?:\\[\s\S]|[^`\\])*`?)|("(?:\\.|[^"\\\n])*"?|'(?:\\.|[^'\\\n])*'?)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_$À-ɏ][\w$À-ɏ]*)|([\s\S])/g;
+
+// En una plantilla literal, el texto va del color de los textos
+// y lo que está dentro de ${ } va con los colores normales.
+function pintarPlantilla(plantilla) {
+  let salida = "";
+  let ultimo = 0;
+  for (const parte of plantilla.matchAll(/\$\{([^}]*)\}?/g)) {
+    salida += pintar("texto-js", plantilla.slice(ultimo, parte.index));
+    salida += pintar("puntuacion", "${") + resaltarJS(parte[1]) +
+      (parte[0].endsWith("}") ? pintar("puntuacion", "}") : "");
+    ultimo = parte.index + parte[0].length;
+  }
+  return salida + pintar("texto-js", plantilla.slice(ultimo));
+}
+
+function resaltarJS(codigo) {
+  let salida = "";
+  for (const parte of codigo.matchAll(PARTES_JS)) {
+    const [completo, bloque, linea, plantilla, texto, numero, palabra] = parte;
+    if (bloque || linea) {
+      salida += pintar("comentario", completo);
+    } else if (plantilla) {
+      salida += pintarPlantilla(plantilla);
+    } else if (texto) {
+      salida += pintar("texto-js", texto);
+    } else if (numero) {
+      salida += pintar("numero", numero);
+    } else if (palabra && PALABRAS_CLAVE_JS.has(palabra)) {
+      salida += pintar("clave", palabra);
+    } else {
+      salida += escaparHTML(completo);
+    }
+  }
+  return salida;
+}
+
+
 // Elige el resaltador según el tipo de archivo.
 function resaltarCodigo(codigo, lenguaje) {
   if (lenguaje === "css") {
     return resaltarCSS(codigo);
+  }
+  if (lenguaje === "js") {
+    return resaltarJS(codigo);
   }
   return resaltarHTML(codigo);
 }
