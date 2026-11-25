@@ -1,0 +1,196 @@
+/* ==========================================================
+   ESTILOS DEL PROYECTO
+   Esta hoja es el resultado del lab 07, con estilos para el
+   buscador, el botón de cada tarjeta, el formulario para agregar
+   y los mensajes.
+   En este laboratorio no la tienes que cambiar.
+   ========================================================== */
+
+
+/* ===== BASE ===== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f5f1fa;
+  color: #222222;
+  font-family: Verdana, sans-serif;
+  font-size: 16px;
+}
+
+h2 {
+  color: #5b2a86;
+}
+
+input,
+select,
+textarea {
+  font-family: Verdana, sans-serif;
+  font-size: 16px;
+  padding: 8px;
+  border: 1px solid #767676;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #5b2a86;
+  color: white;
+  font-family: Verdana, sans-serif;
+  font-size: 16px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+}
+
+/* Texto que no se ve en la pantalla, pero sí lo leen los lectores
+   de pantalla. Se usa en el botón de cada tarjeta. */
+.texto-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+
+/* ===== ESTRUCTURA ===== */
+
+header {
+  background-color: #5b2a86;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+
+footer {
+  background-color: #e7def2;
+  text-align: center;
+}
+
+
+/* ===== COMPONENTES ===== */
+
+.menu {
+  display: flex;
+  gap: 16px;
+}
+
+.menu a {
+  color: white;
+  font-size: 18px;
+}
+
+#lista-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.tarjeta {
+  background-color: white;
+  padding: 16px;
+  border: 2px solid #5b2a86;
+  border-radius: 8px;
+}
+
+.tarjeta-titulo {
+  color: #5b2a86;
+  font-size: 20px;
+}
+
+.tarjeta-detalle {
+  color: #444444;
+}
+
+#formulario,
+#formulario-agregar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.aviso-practica {
+  color: #444444;
+}
+
+.tarjeta-destacada {
+  border-width: 4px;
+}
+
+.tarjeta-disponibles {
+  font-weight: bold;
+}
+
+.tarjeta-boton {
+  margin-top: 8px;
+}
+
+.campo-buscar {
+  margin-bottom: 16px;
+}
+
+.campo-buscar input {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* La casilla va al lado de su etiqueta, no encima */
+.campo-casilla {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Los mensajes también dicen con palabras qué pasó:
+   el color solo no alcanza. */
+.mensaje-ok {
+  color: #1b5e20;
+  font-weight: bold;
+}
+
+.mensaje-error {
+  color: #a31515;
+  font-weight: bold;
+}
+
+
+/* ===== RESPONSIVO ===== */
+
+/* Celular: una columna */
+@media (max-width: 599px) {
+  #lista-tarjetas {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .menu {
+    flex-direction: column;
+  }
+}
+
+/* Tableta: dos columnas */
+@media (min-width: 600px) and (max-width: 900px) {
+  #lista-tarjetas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

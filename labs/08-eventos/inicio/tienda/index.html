@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo de la tienda del barrio</title>
+  <link rel="stylesheet" href="estilos.css">
+  <!-- Conecta el JavaScript. defer: se ejecuta cuando la página ya cargó. -->
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- ======================================================
+       LAB 08 · EVENTOS
+       En este laboratorio escribes en app.js.
+       ====================================================== -->
+
+  <header>
+    <div>
+      <h1>Tienda del barrio</h1>
+      <p>Productos frescos cerca de tu casa.</p>
+    </div>
+
+    <nav class="menu" aria-label="Menú principal">
+      <a href="#seccion-tarjetas">Productos</a>
+      <a href="#seccion-formulario">Hacer pedido</a>
+      <a href="#acerca">Acerca de</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- Solo para las tareas 1 y 2 de este laboratorio. -->
+    <section id="seccion-prueba">
+      <h2>Zona de práctica</h2>
+      <p id="texto-prueba">Todavía no pulsaste el botón.</p>
+      <button type="button" id="boton-prueba">Botón de prueba</button>
+    </section>
+
+    <section id="seccion-tarjetas">
+      <h2>Productos</h2>
+      <p>Estos son algunos productos de la semana.</p>
+
+      <div class="campo campo-buscar">
+        <label for="buscador">Buscar productos por nombre</label>
+        <input type="search" id="buscador" name="buscador">
+      </div>
+
+      <!-- Aquí JavaScript dice cuántas tarjetas se ven. -->
+      <p id="mensaje-tarjetas" aria-live="polite"></p>
+
+      <!-- Cada tarjeta es un producto: nombre, descripción, precio, unidades disponibles y un botón.
+           Todas las tarjetas tienen la misma estructura. -->
+      <div id="lista-tarjetas">
+        <!-- app.js crea aquí las tarjetas a partir del array de datos. -->
+      </div>
+    </section>
+
+    <section id="seccion-agregar">
+      <h2>Agregar un producto</h2>
+      <p>Completa los datos para sumar un producto a la lista.</p>
+      <p class="aviso-practica">El producto nuevo solo se ve en esta página: se borra al recargarla.</p>
+
+      <form id="formulario-agregar">
+
+        <div class="campo">
+          <label for="titulo">Nombre del producto</label>
+          <input type="text" id="titulo" name="titulo">
+        </div>
+
+        <div class="campo">
+          <label for="texto">Descripción</label>
+          <input type="text" id="texto" name="texto">
+        </div>
+
+        <div class="campo">
+          <label for="detalle">Precio</label>
+          <input type="text" id="detalle" name="detalle">
+        </div>
+
+        <div class="campo">
+          <label for="disponibles">Unidades disponibles</label>
+          <input type="number" id="disponibles" name="disponibles">
+        </div>
+
+        <div class="campo campo-casilla">
+          <input type="checkbox" id="destacado" name="destacado">
+          <label for="destacado">Destacado</label>
+        </div>
+
+        <button type="submit" id="boton-agregar">Agregar producto</button>
+
+      </form>
+
+      <!-- Aquí JavaScript dice si la tarjeta se agregó o qué falta. -->
+      <p id="mensaje-agregar" aria-live="polite"></p>
+    </section>
+
+    <section id="seccion-formulario">
+      <h2>Hacer un pedido</h2>
+      <p>Elige un producto y cuéntanos cuántas unidades quieres.</p>
+      <p class="aviso-practica">Este formulario es una simulación: no guarda ni envía datos.</p>
+
+      <form id="formulario">
+
+        <div class="campo">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre">
+        </div>
+
+        <div class="campo">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono">
+        </div>
+
+        <div class="campo">
+          <label for="producto">Producto</label>
+          <select id="producto" name="producto">
+            <option value="">Elige una opción</option>
+            <option value="Pan de la casa">Pan de la casa</option>
+            <option value="Huevos">Huevos</option>
+            <option value="Leche entera">Leche entera</option>
+            <option value="Café molido">Café molido</option>
+            <option value="Queso fresco">Queso fresco</option>
+            <option value="Frutas de temporada">Frutas de temporada</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="cantidad">Cantidad</label>
+          <input type="number" id="cantidad" name="cantidad" min="1" max="20" value="1">
+        </div>
+
+        <div class="campo">
+          <label for="comentarios">Comentarios</label>
+          <textarea id="comentarios" name="comentarios" rows="4"></textarea>
+        </div>
+
+        <button type="submit" id="boton-enviar">Enviar pedido</button>
+
+      </form>
+
+      <!-- Aquí JavaScript muestra el resumen de la simulación. -->
+      <p id="mensaje" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer id="acerca">
+    <h2>Acerca de</h2>
+    <p>Proyecto de práctica. Todos los datos de esta página son ficticios.</p>
+  </footer>
+
+</body>
+</html>

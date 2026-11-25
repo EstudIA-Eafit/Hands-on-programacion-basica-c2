@@ -18,11 +18,12 @@ previa que se actualiza mientras la persona escribe.
 4. [Agregar un laboratorio nuevo](#agregar-un-laboratorio-nuevo)
 5. [Formato de lab.json](#formato-de-labjson)
 6. [Laboratorios con varios proyectos](#laboratorios-con-varios-proyectos)
-7. [Contrato para JavaScript (labs 03 a 07)](#contrato-para-javascript-labs-03-a-07)
-8. [Laboratorios con JavaScript (labs 05 a 07)](#laboratorios-con-javascript-labs-05-a-07)
-9. [Formato de labs/labs.json](#formato-de-labslabsjson)
-10. [Editor con colores y tema claro u oscuro](#editor-con-colores-y-tema-claro-u-oscuro)
-11. [Límites conocidos](#límites-conocidos)
+7. [Contrato para JavaScript (labs 03 a 10)](#contrato-para-javascript-labs-03-a-10)
+8. [Laboratorios con JavaScript (labs 05 a 10)](#laboratorios-con-javascript-labs-05-a-10)
+9. [Tabla de casos de prueba](#tabla-de-casos-de-prueba)
+10. [Formato de labs/labs.json](#formato-de-labslabsjson)
+11. [Editor con colores y tema claro u oscuro](#editor-con-colores-y-tema-claro-u-oscuro)
+12. [Límites conocidos](#límites-conocidos)
 
 ---
 
@@ -68,7 +69,10 @@ previa que se actualiza mientras la persona escribe.
 │   │       └── servicios/
 │   ├── 05-datos/           Encuentro 3: JavaScript. Los mismos tres proyectos,
 │   ├── 06-funciones/       cada uno con index.html, estilos.css y app.js
-│   └── 07-dom/
+│   ├── 07-dom/
+│   ├── 08-eventos/         Encuentro 4: eventos, formularios y validación.
+│   ├── 09-formularios/     Los mismos tres proyectos y los mismos archivos
+│   └── 10-validacion/      Su lab.json trae una tabla de casos de prueba
 └── material/               Plantillas originales de clase
 ```
 
@@ -147,6 +151,13 @@ un programa pequeño que sirve las páginas como lo haría internet.
   pestaña y lo que muestra `console.log` aparece en su consola (F12 >
   Consola). En el lab 07, con las tareas resueltas, aparecen las 6 tarjetas
   con los estilos del lab 04.
+- En los labs 08 a 10, en la pestaña nueva: el buscador filtra las tarjetas,
+  el botón de cada tarjeta elige su opción en el formulario y el formulario
+  para agregar crea la tarjeta sin recargar. En el lab 09, si un formulario se
+  envía sin `preventDefault()`, la pestaña se recarga.
+- En el lab 10: la tabla de casos de prueba aparece debajo del editor, lo que
+  escribes sigue ahí al recargar y **Descargar mi trabajo** baja también
+  `casos-de-prueba.html`.
 - Prueba la página a lo ancho de un celular (375 px) con el modo de
   dispositivo del inspector (`Ctrl + Mayús + M` en Chrome, Edge o Firefox).
 
@@ -389,7 +400,17 @@ JSON no admite comentarios. Por eso el ejemplo de abajo está comentado con
       "pista": "",
       "reto": true
     }
-  ]
+  ],
+
+  // OPCIONAL. Una tabla de casos de prueba debajo del editor.
+  // La explicación completa está en "Tabla de casos de prueba".
+  "casos": {
+    "instrucciones": "Prueba cada caso y escribe qué esperas y qué pasó.",
+    "filas": [
+      { "id": "agregar-vacio", "caso": "Agregar tarjeta: nombre vacío",
+        "entrada": "En el nombre, escribe solo espacios." }
+    ]
+  }
 }
 ```
 
@@ -475,52 +496,79 @@ archivo.
 
 ---
 
-## Contrato para JavaScript (labs 03 a 07)
+## Contrato para JavaScript (labs 03 a 10)
 
-En los labs 05 a 07 y en los próximos encuentros los estudiantes usan JavaScript para leer el
-formulario y agregar tarjetas a la lista. Ese código va a buscar los elementos
-por su `id` y su clase. Por eso, **en los laboratorios futuros que sigan con
-estos proyectos, no cambies estos nombres**. Son los mismos en los tres
-proyectos, así que el mismo código de JavaScript sirve para todos.
+Desde el lab 05, los estudiantes usan JavaScript para pintar las tarjetas,
+leer los formularios y agregar tarjetas a la lista. Ese código busca los
+elementos por su `id` y su clase. Por eso, **en los laboratorios futuros que
+sigan con estos proyectos, no cambies estos nombres**. Son los mismos en los
+tres proyectos, así que el mismo código de JavaScript sirve para todos. El
+Encuentro 5 (depuración con DevTools) trabaja sobre este código.
 
 ### Estructura de la página
 
-| Qué es | Nombre | Notas |
-|---|---|---|
-| Sección de tarjetas | `id="seccion-tarjetas"` | El menú enlaza aquí. |
-| Contenedor de tarjetas | `id="lista-tarjetas"` | JavaScript agregará tarjetas aquí adentro. |
-| Cada tarjeta | `class="tarjeta"` | Siempre un `<article>` con la estructura de abajo. |
-| Sección del formulario | `id="seccion-formulario"` | El menú enlaza aquí. |
-| Formulario | `id="formulario"` | |
-| Cada campo con su etiqueta | `class="campo"` | Un `<div>` con un `<label>` y su campo. |
-| Botón del formulario | `id="boton-enviar"` | Es `type="button"`: no envía nada. |
-| Mensajes | `id="mensaje"` | Un `<p>` vacío con `aria-live="polite"`. JavaScript escribirá aquí. |
-| Pie de página | `id="acerca"` | El menú enlaza aquí. |
-| Menú | `class="menu"` | Un `<nav>` con tres enlaces. |
+| Qué es | Nombre | Desde | Notas |
+|---|---|---|---|
+| Sección de tarjetas | `id="seccion-tarjetas"` | lab 03 | El menú enlaza aquí. |
+| Buscador | `id="buscador"` (y `name`) | lab 08 | Un `<input type="search">` con su `<label>`, dentro de un `<div class="campo campo-buscar">`, encima de las tarjetas. No está dentro de un formulario. |
+| Mensajes de la lista | `id="mensaje-tarjetas"` | lab 08 | Un `<p>` con `aria-live="polite"`: «Hay 6 eventos», cuántas coinciden con la búsqueda… |
+| Contenedor de tarjetas | `id="lista-tarjetas"` | lab 03 | Desde el lab 07 está vacío: JavaScript pinta las tarjetas aquí. Tiene el único listener de clic de las tarjetas (delegación). |
+| Cada tarjeta | `class="tarjeta"` | lab 03 | Siempre un `<article>` con la estructura de abajo. |
+| Sección para agregar | `id="seccion-agregar"` | lab 08 | Va después de las tarjetas. El menú no enlaza aquí: sigue con tres enlaces. |
+| Formulario para agregar | `id="formulario-agregar"` | lab 08 | Sus campos están más abajo. |
+| Botón para agregar | `id="boton-agregar"` | lab 08 | `type="submit"`. |
+| Mensajes para agregar | `id="mensaje-agregar"` | lab 08 | Un `<p>` con `aria-live="polite"`. |
+| Sección del formulario | `id="seccion-formulario"` | lab 03 | El menú enlaza aquí. |
+| Formulario de inscripción, pedido o solicitud | `id="formulario"` | lab 03 | |
+| Cada campo con su etiqueta | `class="campo"` | lab 03 | Un `<div>` con un `<label>` y su campo. Con una casilla, `class="campo campo-casilla"`: la casilla va primero. |
+| Botón del formulario | `id="boton-enviar"` | lab 03 | Hasta el lab 07 es `type="button"`. Desde el lab 08 es `type="submit"`. |
+| Mensajes del formulario | `id="mensaje"` | lab 03 | Un `<p>` con `aria-live="polite"`. Muestra el resumen de la simulación. |
+| Pie de página | `id="acerca"` | lab 03 | El menú enlaza aquí. |
+| Menú | `class="menu"` | lab 03 | Un `<nav>` con tres enlaces. |
+| Zona de práctica | `id="seccion-prueba"`, `id="texto-prueba"`, `id="boton-prueba"` | solo lab 08 | Para las tareas 1 y 2. No pasa a los labs siguientes. |
 
 ### Estructura de cada tarjeta
 
 Todas las tarjetas son iguales. Una tarjeta nueva creada con JavaScript debe
-tener exactamente esta forma:
+tener exactamente esta forma. Hasta el lab 07 solo tiene las tres primeras
+partes; desde el lab 08 tiene las cinco:
 
 ```html
-<article class="tarjeta">
-  <h3 class="tarjeta-titulo">...</h3>
-  <p class="tarjeta-texto">...</p>
-  <p class="tarjeta-detalle">...</p>
+<article class="tarjeta" data-id="1">
+  <h3 class="tarjeta-titulo">Concierto de música andina</h3>
+  <p class="tarjeta-texto">Sábado 6 de diciembre, 7:00 p. m.</p>
+  <p class="tarjeta-detalle">Parque principal</p>
+  <p class="tarjeta-disponibles">Cupos: 40</p>
+  <button type="button" class="tarjeta-boton">Inscribirme<span class="texto-oculto"> en Concierto de música andina</span></button>
 </article>
 ```
 
-| Clase | Eventos | Tienda | Servicios |
+| Parte | Eventos | Tienda | Servicios |
 |---|---|---|---|
+| `data-id` | El `id` de la tarjeta en el array | igual | igual |
 | `tarjeta-titulo` | Nombre del evento | Nombre del producto | Oficio |
 | `tarjeta-texto` | Fecha | Descripción | Descripción |
 | `tarjeta-detalle` | Lugar | Precio | Horario |
+| `tarjeta-disponibles` | «Cupos: 40» | «Unidades disponibles: 20» | «Turnos por semana: 10» |
+| `tarjeta-boton` | «Inscribirme» | «Pedir» | «Solicitar» |
 
-### Campos del formulario
+- **El texto oculto.** El `<span class="texto-oculto">` no se ve en la
+  pantalla, pero los lectores de pantalla sí lo leen. Así, en vez de oír
+  «Inscribirme» seis veces, se oye «Inscribirme en Concierto de música
+  andina». El texto del `span` empieza con un espacio, y en eventos lleva
+  «en».
+- **Al pulsar el botón.** Como el `span` está dentro del botón, un clic puede
+  caer en el `span`. Por eso la delegación usa
+  `evento.target.closest(".tarjeta-boton")`.
+- **La clase `tarjeta-destacada`.** La reciben las tarjetas con
+  `destacado: true`. Su estilo está en el CSS desde el lab 08.
+
+### Campos de los formularios
 
 En cada campo, el `id` y el `name` son iguales, y el `<label>` tiene un `for`
 con ese mismo nombre.
+
+**Formulario de inscripción, pedido o solicitud (`#formulario`):**
 
 | Proyecto | Campos (`id` y `name`) |
 |---|---|
@@ -528,21 +576,41 @@ con ese mismo nombre.
 | Tienda | `nombre` (text), `telefono` (tel), `producto` (select), `cantidad` (number), `comentarios` (textarea) |
 | Servicios | `nombre` (text), `correo` (email), `servicio` (select), `fecha` (date), `descripcion` (textarea) |
 
+**Formulario para agregar (`#formulario-agregar`, desde el lab 08).** Sus
+campos se llaman igual que las propiedades de una tarjeta en el array. No
+chocan con los del otro formulario:
+
+| Campo (`id` y `name`) | Tipo | Eventos | Tienda | Servicios |
+|---|---|---|---|---|
+| `titulo` | text | Nombre del evento | Nombre del producto | Oficio |
+| `texto` | text | Fecha | Descripción | Descripción |
+| `detalle` | text | Lugar | Precio | Horario |
+| `disponibles` | number | Cupos | Unidades disponibles | Turnos por semana |
+| `destacado` | checkbox | Destacado | Destacado | Destacado |
+
+El `id` de la tarjeta no es un campo: lo calcula JavaScript.
+
 Las opciones del `select` tienen como `value` el mismo texto del título de
-cada tarjeta.
+cada tarjeta. Cuando se agrega una tarjeta, `agregarOpcion` suma su opción al
+`select` (reto del lab 09).
 
-La página dice: "Este formulario todavía no guarda ni envía datos." Cuando un
-laboratorio futuro lea el formulario con JavaScript, actualiza ese texto.
+- **Hasta el lab 07** la página dice: «Este formulario todavía no guarda ni
+  envía datos.»
+- **Desde el lab 08** dice: «Este formulario es una simulación: no guarda ni
+  envía datos.» El resumen que muestra `#mensaje` dice siempre «Es una
+  simulación: no se envió nada.» **Nunca** debe decir «enviado» ni
+  «recibimos».
 
-### Clase para tarjetas destacadas
+### Clases de los mensajes
 
-En la tarea 6 del lab 07, JavaScript agrega la clase `tarjeta-destacada` a
-las tarjetas con `destacado: true`. Cada estudiante define su estilo en el
-CSS.
+Desde el lab 10, `mostrarMensaje` pone la clase `mensaje-ok` o
+`mensaje-error`, que cambian el color. El color nunca va solo: cada mensaje
+empieza con palabras («Listo.», «No se agregó la tarjeta:») y dice qué
+hacer.
 
 ---
 
-## Laboratorios con JavaScript (labs 05 a 07)
+## Laboratorios con JavaScript (labs 05 a 10)
 
 ### Cómo se conecta el JavaScript
 
@@ -583,6 +651,27 @@ El HTML lo enlaza en el `<head>`, siempre de la misma forma:
 - En los labs 05 y 06 todo se revisa con `console.log` en la consola de esa
   pestaña (F12 > Consola). La primera tarea de cada uno explica cómo abrirla.
 
+### Formularios en la pestaña nueva: la recarga simulada
+
+Un formulario que se envía sin `evento.preventDefault()` recarga la página.
+La tarea 1 del lab 09 muestra justamente eso. Pero la pestaña nueva no puede
+enviar formularios de verdad: su regla de seguridad lo impide
+(`form-action 'none'`), y una dirección `blob:` no se puede pedir con los
+datos del formulario.
+
+Por eso, en los labs con JavaScript, el sitio agrega a la pestaña nueva un
+script propio y pequeño: `simularEnvioDeFormularios`, en
+`assets/js/laboratorio.js`. Ese script escucha `submit` en `window`, es decir,
+después de los listeners del formulario. Si nadie llamó a `preventDefault()`,
+recarga la página. Se pierde lo que había cambiado, igual que al enviar un
+formulario de verdad. En la consola deja el mensaje «El formulario se envió
+sin preventDefault(): la página se recarga.», que se ve si está activo
+«Conservar registro» (Preserve log).
+
+Los archivos temporales de la pestaña nueva se liberan cuando se vuelve a
+pulsar el botón, ya no al minuto. Así la persona puede recargar esa pestaña
+con F5, por ejemplo en el reto de `localStorage` del lab 10.
+
 ### Datos de las tarjetas
 
 En los tres proyectos, cada tarjeta es un objeto con las mismas propiedades.
@@ -590,15 +679,25 @@ Se llaman como las clases del HTML, así el mismo código sirve para todos:
 
 ```js
 {
+  id: 1,                                      // desde el lab 08: va en data-id
   titulo: "Concierto de música andina",       // va en .tarjeta-titulo
   texto: "Sábado 6 de diciembre, 7:00 p. m.", // va en .tarjeta-texto
   detalle: "Parque principal",                // va en .tarjeta-detalle
+  disponibles: 40,                            // desde el lab 08: número, va en .tarjeta-disponibles
   destacado: true                             // booleano del reto del lab 05
 }
 ```
 
 Son las mismas 6 tarjetas ficticias del HTML de los labs 03 y 04. En cada
 proyecto, 2 tienen `destacado: true`.
+
+- **`id`:** un número del 1 al 6. Una tarjeta nueva recibe
+  `tarjetas.length + 1`. Como `data-id` siempre es texto, se compara con
+  `Number(...dataset.id)`.
+- **`disponibles`:** según el proyecto, son cupos, unidades disponibles o
+  turnos por semana. Existe para que el formulario para agregar tenga un
+  número de verdad que convertir con `Number()` (lab 09), y donde usar `min`
+  y `max` (lab 10).
 
 ### Nombres que reutiliza el Encuentro 4
 
@@ -616,15 +715,62 @@ usar, así que **no los cambies**:
 Para agregar una tarjeta desde el Encuentro 4, basta con agregarla al array y
 volver a llamar `pintarTarjetas(tarjetas)`.
 
+### Nombres que reutiliza el Encuentro 5
+
+El Encuentro 5 (depuración con DevTools) trabaja sobre el código de los labs
+08 a 10. Estos nombres son los mismos en los tres proyectos. **No los
+cambies:**
+
+| Nombre | Desde | Qué es |
+|---|---|---|
+| `tarjetas`, `contarTarjetas`, `contenedor` | lab 07 | Siguen igual. |
+| `crearTarjeta(tarjeta)` | lab 07 | Hasta la tarea 6 del lab 09 devuelve un texto con HTML. Desde ahí devuelve un `<article>` hecho con `createElement` y `textContent`, con la estructura del contrato. |
+| `pintarTarjetas(lista)` | lab 07 | Pinta las tarjetas de `lista` en `#lista-tarjetas`. En el lab 08 también vuelve a poner `tarjeta-destacada`. Desde el lab 09 vacía el contenedor con `textContent = ""` y agrega cada tarjeta con `append`. |
+| `crearElemento(etiqueta, clase, texto)` | lab 09 | Ayuda de `crearTarjeta`: crea un elemento con su clase y su texto. |
+| `mensajeTarjetas`, `buscador`, `campoOpcion` | lab 08 | Los elementos `#mensaje-tarjetas`, `#buscador` y el `select` del formulario (`#evento`, `#producto` o `#servicio`). |
+| `filtrarTarjetas(texto)` | lab 08 | Devuelve las tarjetas cuyo `titulo` contiene el texto, sin importar mayúsculas (`filter`, `includes`, `toLowerCase`). No cambia `tarjetas`. |
+| `alEscribirBusqueda(evento)` | lab 08 | Listener de `input` del buscador: pinta las que coinciden y escribe cuántas son. |
+| `buscarTarjetaPorId(id)` | lab 08 | Devuelve la tarjeta con ese `id` (número), con `filter(...)[0]`. |
+| `alPulsarEnLista(evento)` | lab 08 | El único listener de clic de `#lista-tarjetas` (delegación). Con `closest(".tarjeta-boton")` y `data-id` sabe qué tarjeta se pulsó. Elige su opción en `campoOpcion` y le pone el foco. |
+| `formularioAgregar`, `mensajeAgregar`, `formulario`, `mensaje` | lab 09 | Los elementos de los dos formularios y sus mensajes. |
+| `alAgregarTarjeta(evento)` | lab 09 | Listener de `submit` de `#formulario-agregar`: lee los campos, hace `push`, vuelve a pintar y limpia con `reset()`. En el lab 10 también valida. |
+| `agregarOpcion(titulo)` | lab 09 | Agrega una `<option>` al `select`, para que el botón de una tarjeta nueva también funcione. |
+| `alEnviarFormulario(evento)` | lab 09 | Listener de `submit` de `#formulario`: muestra el resumen de la simulación con `textContent`. En el lab 10 también valida. |
+| `registros` | lab 10 | Array en memoria con los envíos válidos de `#formulario`. Se vacía al recargar. |
+| `mostrarMensaje(elemento, tipo, texto)` | lab 10 | Escribe un mensaje y le pone la clase `mensaje-ok` o `mensaje-error`. |
+| `existeTitulo(titulo)` | lab 10 | Dice si ya hay una tarjeta con ese título (`filter` y `length`). Es el nombre que usa la solución de referencia; la tarea 4 se puede resolver sin esta función. |
+| `"tarjetas-agregadas"` | lab 10 | Clave de `localStorage` del reto. |
+
 ### Seguridad: innerHTML
 
-`innerHTML` convierte un texto en HTML. En el lab 07 se usa porque los datos
-son propios del archivo `app.js`: nadie de afuera los escribe. En el
-Encuentro 4 los datos van a venir del formulario. Entonces `crearTarjeta` y
-`pintarTarjetas` se cambiarán para usar `textContent` o `createElement`. Así,
-si alguien escribe una etiqueta en el formulario, se muestra como texto y no
-se ejecuta. El código de inicio del lab 07 tiene el mismo aviso en un
-comentario.
+`innerHTML` convierte un texto en HTML.
+
+- **En los labs 07 y 08** se usa porque los datos son propios del archivo
+  `app.js`: nadie de afuera los escribe.
+- **En el lab 09** los datos vienen del formulario. Por eso la tarea 5 hace
+  ver el riesgo: se agrega una tarjeta llamada `<h1>Hola</h1>`, y con
+  `innerHTML` aparece como un título. Las instrucciones usan solo etiquetas
+  inofensivas como `<h1>` o `<b>`.
+- **En la tarea 6 del lab 09** `crearTarjeta` cambia a `createElement` y
+  `textContent`, y entonces `<h1>Hola</h1>` se ve como texto.
+- Desde ahí, los datos que escribe la persona **nunca** pasan por
+  `innerHTML`. Lo único que queda es `contenedor.textContent = ""` para
+  vaciar la lista, y no lleva datos.
+
+### Validación
+
+En el lab 10 la validación se hace en dos lugares:
+
+- **El navegador:** con `required`, `type="email"`, `min`, `max` y
+  `maxlength`, frena el envío y muestra su propio mensaje.
+- **JavaScript:** rechaza los nombres que solo tienen espacios (`trim`), un
+  título repetido y el mismo correo (o teléfono, en la tienda) con la misma
+  opción (`filter` y `length`).
+
+> **La validación del navegador ayuda a la persona, pero no protege un
+> servidor.** Cualquiera puede saltarla, por ejemplo con DevTools. Si algún
+> día los datos van a un servidor, el servidor debe revisarlos otra vez. El
+> código de inicio del lab 10 tiene el mismo aviso en un comentario.
 
 ### Temas de cada laboratorio
 
@@ -635,8 +781,21 @@ comentario.
 - **Lab 07:** `getElementById`, `querySelector`, `textContent`, `classList`,
   plantillas literales e `innerHTML`. La tarea 6 usa `querySelectorAll` y la
   posición que da `forEach`.
-- No se usan eventos, formularios, `map`, `filter`, `reduce`, clases,
-  módulos ni `fetch`. Todo se ejecuta al cargar la página.
+- En los labs 05 a 07 no se usan eventos, formularios, `map`, `filter`,
+  `reduce`, clases, módulos ni `fetch`. Todo se ejecuta al cargar la página.
+- **Lab 08:** `addEventListener`, `click`, `input`, el objeto del evento,
+  `event.target`, `closest`, `data-*`, `filter`, `includes`, `toLowerCase` y
+  delegación. También aparecen `Number()` (para leer `data-id`), `focus()` y
+  `else if`.
+- **Lab 09:** `submit`, `preventDefault`, `.value` (y `.checked` en la
+  casilla), `Number()`, `push`, volver a pintar, `reset()`, el riesgo de
+  `innerHTML`, `createElement`, `textContent` y `append`.
+- **Lab 10:** `required`, `type="email"`, `min`, `max`, `maxlength`, `trim`,
+  `filter` y `length` para encontrar repetidos, `&&` y mensajes con texto.
+  El reto usa `localStorage`, `JSON.stringify` y `JSON.parse`.
+- En los labs 08 a 10 no se usan `fetch`, servidores, `map`, `reduce`,
+  clases, módulos ni frameworks. `localStorage` solo aparece en el reto del
+  lab 10.
 
 ### Archivos de inicio
 
@@ -645,6 +804,61 @@ comentario.
   por secciones, con el menú en fila, la cuadrícula y las `@media`.
 - **Lab 07:** el mismo HTML, pero `#lista-tarjetas` está vacío. El CSS es el
   mismo de los labs 05 y 06. El `app.js` trae el array completo.
+- **Lab 08:**
+  - **HTML:** el del lab 07, más el buscador, `#mensaje-tarjetas`, el
+    formulario para agregar, la zona de práctica y los botones
+    `type="submit"`.
+  - **CSS:** el del lab 07, con `.tarjeta-destacada` y estilos para las
+    partes nuevas.
+  - **app.js:** la solución del lab 07, con `id`, `disponibles` y el botón en
+    cada tarjeta, sin listeners.
+- **Lab 09:** la solución del lab 08, sin la zona de práctica.
+- **Lab 10:** la solución del lab 09, con el reto incluido (`agregarOpcion`).
+  El HTML todavía no tiene `required`, `min`, `max` ni `maxlength`: eso lo
+  agregan las tareas 1 y 2.
+
+---
+
+## Tabla de casos de prueba
+
+Un laboratorio puede mostrar, debajo del editor y del resultado, una tabla
+para planear y anotar pruebas. Hoy la usa el lab 10. Se activa con el bloque
+opcional `"casos"` en su `lab.json`:
+
+```jsonc
+"casos": {
+  // Texto de arriba de la tabla. Puede llevar <code>, como las tareas.
+  "instrucciones": "Prueba cada caso en la pestaña nueva...",
+
+  // Una fila por caso, en el orden en que se muestran.
+  "filas": [
+    {
+      // Corto, único y sin espacios. Sirve para guardar lo que escribe la
+      // persona: no lo cambies después de publicar.
+      "id": "agregar-vacio",
+      // Qué se prueba. Puede llevar <code>.
+      "caso": "Agregar tarjeta: nombre vacío",
+      // Qué escribir para probarlo. Puede llevar <code>.
+      "entrada": "En el nombre, escribe solo espacios."
+    }
+  ]
+}
+```
+
+- **Columnas:** son siempre cuatro. Caso y Entrada sugerida vienen de
+  `lab.json`. **Resultado esperado** y **Resultado observado** las escribe la
+  persona.
+- **Guardado:** se guarda en el navegador, por laboratorio, junto al avance
+  de las tareas, con la clave `laboratorios:<id del lab>:casos`. **Volver al
+  código inicial** no la borra.
+- **Descarga:** **Descargar mi trabajo** baja además `casos-de-prueba.html`,
+  una tabla que se puede abrir e imprimir. Lo que escribió la persona va
+  escapado: si escribe etiquetas, se ven como texto.
+- **En celular:** cada fila se ve como una ficha, con el nombre de cada
+  columna encima de su valor.
+- **Revisión:** `revisar_labs.py` revisa que cada fila tenga `id`, `caso` y
+  `entrada`, y que los `id` no se repitan.
+- **Labs sin `"casos"`:** no muestran la tabla y no cambian.
 
 ---
 
@@ -733,9 +947,19 @@ menos 4.5 a 1; si cambias un color, revisa que siga así.
   formularios de ejemplo son solo de práctica: no guardan ni envían datos.
   La vista previa en pestaña nueva ejecuta JavaScript solo en los labs que
   tienen un archivo `.js`, y solo ese archivo.
-- **Si recargas la pestaña nueva después de un minuto, puede quedar en
-  blanco.** El sitio libera los archivos temporales a los 60 segundos. Vuelve
-  a pulsar el botón en el laboratorio.
+- **La pestaña nueva se puede recargar con F5** mientras el laboratorio siga
+  abierto. Si cierras el laboratorio o vuelves a pulsar el botón, la página
+  anterior ya no se puede recargar: pulsa el botón otra vez.
+- **Los formularios de la pestaña nueva no envían nada.** Si el código no
+  llama a `preventDefault()`, el sitio recarga la página para imitar un envío
+  (ver «Formularios en la pestaña nueva»). Con los archivos descargados, el
+  navegador sí envía el formulario a la misma página y la recarga.
+- **`localStorage` de la pestaña nueva es el del sitio.** Lo que guarda el
+  reto del lab 10 (`"tarjetas-agregadas"`) queda en el mismo navegador y para
+  la misma dirección que el avance de los laboratorios. No los mezcla porque
+  usa otra clave. Se borra con
+  `localStorage.removeItem("tarjetas-agregadas")` en la consola de esa
+  pestaña.
 - **La pestaña nueva es una foto del código.** Muestra el código del momento
   en que se pulsó el botón. Si la persona cambia el código, debe pulsar el
   botón otra vez. Si el navegador bloquea las ventanas emergentes, la página
@@ -747,8 +971,10 @@ menos 4.5 a 1; si cambias un color, revisa que siga así.
 - **La descarga del trabajo.** Sin JavaScript es un solo archivo HTML, con el
   CSS dentro de una etiqueta `<style>`. Con JavaScript se descargan los
   archivos por separado (`index.html`, `estilos.css` y `app.js`), iguales a
-  los del editor. El navegador puede pedir permiso una vez para descargar
-  varios archivos. Los archivos de inicio siempre se descargan por separado.
+  los del editor. Si el laboratorio tiene tabla de casos, se agrega
+  `casos-de-prueba.html`. El navegador puede pedir permiso una vez para
+  descargar varios archivos. Los archivos de inicio siempre se descargan por
+  separado.
 - **El editor no es VS Code.** Pinta colores, muestra números de línea y
   maneja Tab, pero no autocompleta, no cierra etiquetas solo y no marca
   errores. Si el código tiene un error, los colores pueden verse raros; el

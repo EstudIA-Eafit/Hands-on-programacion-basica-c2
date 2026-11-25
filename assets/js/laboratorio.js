@@ -208,6 +208,126 @@ function mostrarTareas() {
 }
 
 
+// ---------- Tabla de casos de prueba ----------
+// Solo para laboratorios con "casos" en lab.json. Cada fila tiene un caso
+// y una entrada sugerida (vienen de lab.json) y dos columnas que escribe
+// la persona: el resultado esperado y el observado.
+// Se guarda en este navegador, como las tareas: una vez por laboratorio.
+
+function tieneCasos() {
+  return Boolean(laboratorio.casos && laboratorio.casos.filas && laboratorio.casos.filas.length);
+}
+
+function leerCasos() {
+  const texto = leerGuardado("casos");
+  if (!texto) {
+    return {};
+  }
+  try {
+    return JSON.parse(texto);
+  } catch (error) {
+    return {};
+  }
+}
+
+function guardarCasos() {
+  const casos = {};
+  for (const cuadro of document.querySelectorAll("#filas-casos textarea")) {
+    const fila = cuadro.dataset.fila;
+    if (!casos[fila]) {
+      casos[fila] = { esperado: "", observado: "" };
+    }
+    casos[fila][cuadro.dataset.columna] = cuadro.value;
+  }
+  const estado = document.getElementById("estado-casos");
+  if (guardar("casos", JSON.stringify(casos))) {
+    estado.textContent = "La tabla se guarda en este navegador y se incluye al descargar tu trabajo.";
+  } else {
+    estado.textContent = "No se pudo guardar la tabla en este navegador. Descarga tu trabajo para no perderla.";
+  }
+}
+
+// Crea una celda con un cuadro de texto para una de las dos columnas.
+// data-columna da el nombre de la columna cuando la tabla se ve como
+// fichas, en pantallas angostas (ver sitio.css).
+function crearCeldaCaso(fila, columna, titulo, guardados) {
+  const celda = document.createElement("td");
+  celda.dataset.columna = titulo;
+  const cuadro = document.createElement("textarea");
+  cuadro.rows = 2;
+  cuadro.dataset.fila = fila.id;
+  cuadro.dataset.columna = columna;
+  cuadro.setAttribute("aria-label", titulo + ": " + fila.caso);
+  if (guardados[fila.id] && guardados[fila.id][columna]) {
+    cuadro.value = guardados[fila.id][columna];
+  }
+  cuadro.addEventListener("input", guardarCasos);
+  celda.appendChild(cuadro);
+  return celda;
+}
+
+// El caso y la entrada se escriben en lab.json y pueden llevar etiquetas
+// sencillas como <code>, igual que las tareas. Por eso usan innerHTML.
+function mostrarCasos() {
+  const seccion = document.getElementById("seccion-casos");
+  if (!tieneCasos()) {
+    seccion.hidden = true;
+    return;
+  }
+  document.getElementById("instrucciones-casos").innerHTML = laboratorio.casos.instrucciones || "";
+  const cuerpo = document.getElementById("filas-casos");
+  cuerpo.innerHTML = "";
+  const guardados = leerCasos();
+  for (const fila of laboratorio.casos.filas) {
+    const renglon = document.createElement("tr");
+    const caso = document.createElement("th");
+    caso.scope = "row";
+    caso.innerHTML = fila.caso;
+    const entrada = document.createElement("td");
+    entrada.dataset.columna = "Entrada sugerida";
+    entrada.innerHTML = fila.entrada;
+    renglon.appendChild(caso);
+    renglon.appendChild(entrada);
+    renglon.appendChild(crearCeldaCaso(fila, "esperado", "Resultado esperado", guardados));
+    renglon.appendChild(crearCeldaCaso(fila, "observado", "Resultado observado", guardados));
+    cuerpo.appendChild(renglon);
+  }
+  seccion.hidden = false;
+}
+
+// Arma casos-de-prueba.html para la descarga. Lo que escribió la persona
+// se escapa con escaparHTML (de resaltado.js): se muestra como texto,
+// aunque tenga etiquetas.
+function armarArchivoCasos() {
+  const guardados = leerCasos();
+  let filas = "";
+  for (const fila of laboratorio.casos.filas) {
+    const datos = guardados[fila.id] || {};
+    filas += "    <tr>\n" +
+      "      <th scope=\"row\">" + fila.caso + "</th>\n" +
+      "      <td>" + fila.entrada + "</td>\n" +
+      "      <td>" + escaparHTML(datos.esperado || "").replaceAll("\n", "<br>") + "</td>\n" +
+      "      <td>" + escaparHTML(datos.observado || "").replaceAll("\n", "<br>") + "</td>\n" +
+      "    </tr>\n";
+  }
+  const subtitulo = escaparHTML(laboratorio.titulo) +
+    (proyecto ? " · Proyecto: " + escaparHTML(proyecto.titulo) : "");
+  return "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n" +
+    "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+    "  <title>Casos de prueba · " + escaparHTML(laboratorio.titulo) + "</title>\n" +
+    "  <style>\n" +
+    "    body { font-family: Arial, sans-serif; margin: 16px; color: #222222; }\n" +
+    "    table { border-collapse: collapse; width: 100%; }\n" +
+    "    th, td { border: 1px solid #767676; padding: 8px; text-align: left; vertical-align: top; }\n" +
+    "    thead th { background-color: #eeeeee; }\n" +
+    "  </style>\n</head>\n<body>\n" +
+    "  <h1>Casos de prueba</h1>\n  <p>" + subtitulo + "</p>\n" +
+    "  <table>\n    <thead>\n      <tr><th scope=\"col\">Caso</th><th scope=\"col\">Entrada sugerida</th>" +
+    "<th scope=\"col\">Resultado esperado</th><th scope=\"col\">Resultado observado</th></tr>\n    </thead>\n" +
+    "    <tbody>\n" + filas + "    </tbody>\n  </table>\n</body>\n</html>\n";
+}
+
+
 // ---------- Editor ----------
 
 // ---------- Colores, números de línea y sangría ----------
@@ -570,6 +690,9 @@ function armarPagina() {
 // Devuelve la página y las direcciones creadas, para liberarlas después.
 function conectarJS(pagina) {
   const direcciones = [];
+  if (tieneJS()) {
+    pagina = agregarSimulacionDeEnvio(pagina, direcciones);
+  }
   for (const archivo of archivosJS()) {
     const codigo = new Blob([editores[archivo.nombre].value], { type: "text/javascript;charset=utf-8" });
     const direccion = URL.createObjectURL(codigo);
@@ -581,6 +704,41 @@ function conectarJS(pagina) {
     });
   }
   return { pagina: pagina, direcciones: direcciones };
+}
+
+// Este código NO se ejecuta en esta página: se copia a la pestaña nueva.
+// Imita lo que pasa al enviar un formulario de verdad. Si el código de la
+// persona no llamó a evento.preventDefault(), la página se recarga y se
+// pierde lo que había cambiado, igual que con un archivo propio.
+// Hace falta porque la pestaña nueva no puede enviar formularios
+// (form-action 'none') y una dirección blob: no se puede pedir con los
+// datos del formulario. El listener está en window: se ejecuta después de
+// los listeners del formulario, cuando ya se sabe si llamaron a preventDefault.
+function simularEnvioDeFormularios() {
+  window.addEventListener("submit", function (evento) {
+    if (evento.defaultPrevented) {
+      return;
+    }
+    evento.preventDefault();
+    console.info("El formulario se envió sin preventDefault(): la página se recarga.");
+    location.reload();
+  });
+}
+
+// Pone simularEnvioDeFormularios en un archivo temporal y lo conecta al
+// inicio de <head>, antes del código de la persona.
+function agregarSimulacionDeEnvio(pagina, direcciones) {
+  const codigo = "(" + simularEnvioDeFormularios.toString() + ")();\n";
+  const direccion = URL.createObjectURL(new Blob([codigo], { type: "text/javascript;charset=utf-8" }));
+  direcciones.push(direccion);
+  const etiqueta = '<script src="' + direccion + '" defer></script>';
+  const inicioHead = /<head[^>]*>/i;
+  if (inicioHead.test(pagina)) {
+    return pagina.replace(inicioHead, function (inicio) {
+      return inicio + etiqueta;
+    });
+  }
+  return etiqueta + pagina;
 }
 
 // Los enlaces como href="#lista" deben moverse dentro de la vista previa.
@@ -658,18 +816,29 @@ function tipoDeArchivo(nombre) {
 // porque el <script src="app.js" defer> necesita su archivo al lado.
 // Los archivos salen uno tras otro; el navegador puede pedir permiso
 // una vez para descargar varios archivos.
+// Si el laboratorio tiene tabla de casos, se descarga además
+// casos-de-prueba.html.
 function descargarTrabajo() {
+  const descargas = [];
   if (!tieneJS()) {
-    bajarArchivo(armarPagina(), "text/html;charset=utf-8", nombreDescarga());
-    return;
+    descargas.push({ texto: armarPagina(), tipo: "text/html;charset=utf-8", nombre: nombreDescarga() });
+  } else {
+    for (const archivo of laboratorio.archivos) {
+      descargas.push({ texto: editores[archivo.nombre].value, tipo: tipoDeArchivo(archivo.nombre), nombre: archivo.nombre });
+    }
   }
-  laboratorio.archivos.forEach(function (archivo, posicion) {
+  if (tieneCasos()) {
+    descargas.push({ texto: armarArchivoCasos(), tipo: "text/html;charset=utf-8", nombre: "casos-de-prueba.html" });
+  }
+  descargas.forEach(function (descarga, posicion) {
     setTimeout(function () {
-      bajarArchivo(editores[archivo.nombre].value, tipoDeArchivo(archivo.nombre), archivo.nombre);
+      bajarArchivo(descarga.texto, descarga.tipo, descarga.nombre);
     }, posicion * 400);
   });
-  document.getElementById("estado-guardado").textContent =
-    "Se descargan " + laboratorio.archivos.length + " archivos. Guárdalos juntos en una misma carpeta.";
+  if (descargas.length > 1) {
+    document.getElementById("estado-guardado").textContent =
+      "Se descargan " + descargas.length + " archivos. Guárdalos juntos en una misma carpeta.";
+  }
 }
 
 // La pestaña nueva no tiene la protección del cuadro de vista previa.
@@ -691,6 +860,11 @@ function protegerPestana(pagina) {
   return regla + pagina;
 }
 
+// Las direcciones temporales de la última pestaña nueva. Se liberan
+// cuando se abre otra, no antes: así la persona puede recargar esa
+// pestaña con F5 (por ejemplo, para probar localStorage).
+let direccionesPestana = [];
+
 // Abre en otra pestaña el código que está ahora en el editor,
 // para usar el inspector y la consola del navegador con más espacio.
 // Siempre usa la misma pestaña, así no se acumulan.
@@ -701,6 +875,11 @@ function abrirEnPestana() {
   const archivo = new Blob([pagina], { type: "text/html;charset=utf-8" });
   const direccion = URL.createObjectURL(archivo);
   const pestana = window.open(direccion, "vista-previa-laboratorio");
+  // La pestaña ya cambió a la página nueva: liberamos la anterior.
+  for (const anterior of direccionesPestana) {
+    URL.revokeObjectURL(anterior);
+  }
+  direccionesPestana = conJS.direcciones.concat([direccion]);
   const estado = document.getElementById("estado-pestana");
   if (pestana) {
     estado.textContent = "Tu página se abrió en otra pestaña. " +
@@ -709,20 +888,13 @@ function abrirEnPestana() {
     estado.textContent = "El navegador no dejó abrir la pestaña nueva. " +
       "Revisa si bloqueó las ventanas emergentes de este sitio.";
   }
-  // Damos tiempo a que la pestaña cargue y después liberamos la memoria.
-  setTimeout(function () {
-    URL.revokeObjectURL(direccion);
-    for (const direccionJS of conJS.direcciones) {
-      URL.revokeObjectURL(direccionJS);
-    }
-  }, 60000);
 }
 
 function reiniciarCodigo() {
   const seguro = confirm(
     "¿Volver al código inicial?\n\n" +
     "Se borrarán todos tus cambios en el código de este laboratorio. " +
-    "Las tareas marcadas no cambian.");
+    (tieneCasos() ? "Las tareas marcadas y la tabla de casos no cambian." : "Las tareas marcadas no cambian."));
   if (!seguro) {
     return;
   }
@@ -926,6 +1098,7 @@ async function cargarLaboratorio() {
 
   mostrarDatos();
   mostrarTareas();
+  mostrarCasos();
 
   document.getElementById("boton-descargar").addEventListener("click", descargarTrabajo);
   document.getElementById("boton-reiniciar").addEventListener("click", reiniciarCodigo);

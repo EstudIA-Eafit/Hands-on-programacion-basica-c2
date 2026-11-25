@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Directorio de servicios del barrio</title>
+  <link rel="stylesheet" href="estilos.css">
+  <!-- Conecta el JavaScript. defer: se ejecuta cuando la página ya cargó. -->
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- ======================================================
+       LAB 08 · EVENTOS
+       En este laboratorio escribes en app.js.
+       ====================================================== -->
+
+  <header>
+    <div>
+      <h1>Servicios del barrio</h1>
+      <p>Personas del barrio que te pueden ayudar.</p>
+    </div>
+
+    <nav class="menu" aria-label="Menú principal">
+      <a href="#seccion-tarjetas">Servicios</a>
+      <a href="#seccion-formulario">Solicitar</a>
+      <a href="#acerca">Acerca de</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- Solo para las tareas 1 y 2 de este laboratorio. -->
+    <section id="seccion-prueba">
+      <h2>Zona de práctica</h2>
+      <p id="texto-prueba">Todavía no pulsaste el botón.</p>
+      <button type="button" id="boton-prueba">Botón de prueba</button>
+    </section>
+
+    <section id="seccion-tarjetas">
+      <h2>Servicios disponibles</h2>
+      <p>Revisa el horario de cada servicio antes de pedirlo.</p>
+
+      <div class="campo campo-buscar">
+        <label for="buscador">Buscar servicios por nombre</label>
+        <input type="search" id="buscador" name="buscador">
+      </div>
+
+      <!-- Aquí JavaScript dice cuántas tarjetas se ven. -->
+      <p id="mensaje-tarjetas" aria-live="polite"></p>
+
+      <!-- Cada tarjeta es un servicio: oficio, descripción, horario, turnos por semana y un botón.
+           Todas las tarjetas tienen la misma estructura. -->
+      <div id="lista-tarjetas">
+        <!-- app.js crea aquí las tarjetas a partir del array de datos. -->
+      </div>
+    </section>
+
+    <section id="seccion-agregar">
+      <h2>Agregar un servicio</h2>
+      <p>Completa los datos para sumar un servicio a la lista.</p>
+      <p class="aviso-practica">El servicio nuevo solo se ve en esta página: se borra al recargarla.</p>
+
+      <form id="formulario-agregar">
+
+        <div class="campo">
+          <label for="titulo">Oficio</label>
+          <input type="text" id="titulo" name="titulo">
+        </div>
+
+        <div class="campo">
+          <label for="texto">Descripción</label>
+          <input type="text" id="texto" name="texto">
+        </div>
+
+        <div class="campo">
+          <label for="detalle">Horario</label>
+          <input type="text" id="detalle" name="detalle">
+        </div>
+
+        <div class="campo">
+          <label for="disponibles">Turnos por semana</label>
+          <input type="number" id="disponibles" name="disponibles">
+        </div>
+
+        <div class="campo campo-casilla">
+          <input type="checkbox" id="destacado" name="destacado">
+          <label for="destacado">Destacado</label>
+        </div>
+
+        <button type="submit" id="boton-agregar">Agregar servicio</button>
+
+      </form>
+
+      <!-- Aquí JavaScript dice si la tarjeta se agregó o qué falta. -->
+      <p id="mensaje-agregar" aria-live="polite"></p>
+    </section>
+
+    <section id="seccion-formulario">
+      <h2>Solicitar un servicio</h2>
+      <p>Cuéntanos qué necesitas y para qué fecha.</p>
+      <p class="aviso-practica">Este formulario es una simulación: no guarda ni envía datos.</p>
+
+      <form id="formulario">
+
+        <div class="campo">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre">
+        </div>
+
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo">
+        </div>
+
+        <div class="campo">
+          <label for="servicio">Servicio</label>
+          <select id="servicio" name="servicio">
+            <option value="">Elige una opción</option>
+            <option value="Plomería">Plomería</option>
+            <option value="Electricidad">Electricidad</option>
+            <option value="Carpintería">Carpintería</option>
+            <option value="Costura">Costura</option>
+            <option value="Cerrajería">Cerrajería</option>
+            <option value="Jardinería">Jardinería</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="fecha">Fecha deseada</label>
+          <input type="date" id="fecha" name="fecha">
+        </div>
+
+        <div class="campo">
+          <label for="descripcion">Descripción del trabajo</label>
+          <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+        </div>
+
+        <button type="submit" id="boton-enviar">Enviar solicitud</button>
+
+      </form>
+
+      <!-- Aquí JavaScript muestra el resumen de la simulación. -->
+      <p id="mensaje" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer id="acerca">
+    <h2>Acerca de</h2>
+    <p>Proyecto de práctica. Todos los datos de esta página son ficticios.</p>
+  </footer>
+
+</body>
+</html>

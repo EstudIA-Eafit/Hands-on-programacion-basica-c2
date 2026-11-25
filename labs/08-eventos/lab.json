@@ -1,0 +1,82 @@
+{
+  "id": "08-eventos",
+  "titulo": "Eventos: la página responde",
+  "objetivo": "Hacer que la página responda a clics y a lo que escribe la persona: un buscador que filtra las tarjetas y botones que llevan al formulario.",
+  "duracion": "75 minutos",
+  "nivel": "Básico",
+  "archivos": [
+    { "nombre": "index.html", "etiqueta": "HTML", "principal": true },
+    { "nombre": "estilos.css", "etiqueta": "CSS" },
+    { "nombre": "app.js", "etiqueta": "JS" }
+  ],
+  "proyectos": {
+    "grupo": "encuentro-2",
+    "opciones": [
+      {
+        "id": "eventos",
+        "titulo": "Inscripción a eventos culturales",
+        "descripcion": "Seis eventos del barrio y un formulario para inscribirse."
+      },
+      {
+        "id": "tienda",
+        "titulo": "Catálogo de una tienda de barrio",
+        "descripcion": "Seis productos y un formulario para hacer un pedido."
+      },
+      {
+        "id": "servicios",
+        "titulo": "Directorio de servicios del barrio",
+        "descripcion": "Seis servicios y un formulario para pedir uno."
+      }
+    ]
+  },
+  "tareas": [
+    {
+      "id": "click",
+      "texto": "Escucha el clic del botón de prueba y cambia el texto del párrafo de al lado con <code>textContent</code>.",
+      "pista": "Selecciona los dos elementos: <code>const botonPrueba = document.getElementById(\"boton-prueba\");</code> y <code>const textoPrueba = document.getElementById(\"texto-prueba\");</code>. Después escribe <code>botonPrueba.addEventListener(\"click\", function (evento) { textoPrueba.textContent = \"¡Pulsaste el botón!\"; });</code>. <code>addEventListener</code> recibe el nombre del evento y la función que se ejecuta cada vez que pasa. Pruébalo en la pestaña nueva: el cuadro «Resultado» no ejecuta JavaScript.",
+      "reto": false
+    },
+    {
+      "id": "target",
+      "texto": "Dentro de esa función, muestra <code>evento.target</code> con <code>console.log</code>.",
+      "pista": "La función recibe un parámetro, aquí llamado <code>evento</code>: un objeto con los datos de lo que pasó. <code>evento.target</code> es el elemento que se pulsó. Escribe <code>console.log(evento.target);</code> dentro de la función, pulsa el botón y mira la consola: aparece el <code>&lt;button&gt;</code>. Pasa el mouse sobre él en la consola y se resalta en la página.",
+      "reto": false
+    },
+    {
+      "id": "input",
+      "texto": "Escucha el evento <code>input</code> del buscador y muestra en la consola lo que está escrito.",
+      "pista": "La const <code>buscador</code> ya está en app.js. Completa la función <code>alEscribirBusqueda</code> con <code>console.log(buscador.value);</code> y conéctala: <code>buscador.addEventListener(\"input\", alEscribirBusqueda);</code>. El evento <code>input</code> pasa con cada letra que escribes o borras. <code>.value</code> es el texto que tiene el campo.",
+      "reto": false
+    },
+    {
+      "id": "filtrar",
+      "texto": "Completa <code>filtrarTarjetas</code> con <code>filter</code>, <code>includes</code> y <code>toLowerCase</code>. En <code>alEscribirBusqueda</code>, vuelve a pintar solo las tarjetas que coinciden.",
+      "pista": "<code>filter</code> recorre el array y devuelve uno nuevo, solo con los elementos para los que la función devuelve <code>true</code>. Escribe: <code>const buscado = texto.toLowerCase(); return tarjetas.filter(function (tarjeta) { return tarjeta.titulo.toLowerCase().includes(buscado); });</code>. <code>toLowerCase</code> pasa todo a minúsculas: así «Feria» y «feria» son iguales. <code>includes</code> dice si un texto contiene a otro. En <code>alEscribirBusqueda</code> escribe <code>pintarTarjetas(filtrarTarjetas(buscador.value));</code>. El array <code>tarjetas</code> no cambia: solo cambia lo que se ve.",
+      "reto": false
+    },
+    {
+      "id": "coincidencias",
+      "texto": "Muestra en <code>mensajeTarjetas</code> cuántas tarjetas coinciden, o un texto claro si no coincide ninguna.",
+      "pista": "Guarda el resultado: <code>const encontradas = filtrarTarjetas(buscador.value);</code>. Con <code>if</code>, revisa si <code>contarTarjetas(encontradas) === 0</code> y escribe, por ejemplo, <code>`Ningún evento coincide con «${buscador.value}». Prueba con otra palabra.`</code>. Si hay alguna: <code>`Eventos que coinciden: ${contarTarjetas(encontradas)} de ${contarTarjetas(tarjetas)}.`</code>. Cambia «evento» por «producto» o «servicio» según tu proyecto. Un buen mensaje dice qué pasó y qué hacer.",
+      "reto": false
+    },
+    {
+      "id": "delegacion",
+      "texto": "Pon un solo listener de clic en <code>contenedor</code>. Con <code>closest</code> y <code>data-id</code>, muestra en la consola qué tarjeta se pulsó.",
+      "pista": "Completa <code>alPulsarEnLista</code> y conéctala: <code>contenedor.addEventListener(\"click\", alPulsarEnLista);</code>. Dentro escribe <code>const boton = evento.target.closest(\".tarjeta-boton\");</code>. <code>closest</code> busca el elemento más cercano con esa clase, desde el que se pulsó hacia afuera. Si se pulsó fuera de un botón, da <code>null</code>: en ese caso termina con <code>if (boton === null) { return; }</code>. Después: <code>const id = Number(boton.closest(\".tarjeta\").dataset.id);</code>. <code>dataset.id</code> lee el atributo <code>data-id</code>. Viene como texto, y <code>Number()</code> lo convierte en número. Completa <code>buscarTarjetaPorId</code> con <code>filter</code> y devuelve el primero con <code>[0]</code>. Muestra <code>console.log(buscarTarjetaPorId(id));</code>. Esto se llama delegación: el contenedor escucha los clics de todo lo que tiene adentro.",
+      "reto": false
+    },
+    {
+      "id": "elegir",
+      "texto": "Con esa tarjeta, elige su opción en el select del formulario y lleva la vista hasta él.",
+      "pista": "La const <code>campoOpcion</code> es el select del formulario. Sus opciones tienen como <code>value</code> el mismo texto del título de cada tarjeta. Escribe <code>campoOpcion.value = tarjeta.titulo;</code> y después <code>campoOpcion.focus();</code>: el foco pasa al select y la página baja hasta él. También funciona con el teclado: pulsa Tab hasta el botón de una tarjeta y después Enter.",
+      "reto": false
+    },
+    {
+      "id": "reto-delegacion",
+      "texto": "Explica con un comentario en tu código por qué la delegación sigue funcionando después de que el buscador vuelve a pintar las tarjetas. Después prueba poner el listener en cada botón y mira qué pasa al buscar.",
+      "pista": "Al buscar, <code>pintarTarjetas</code> borra los botones y crea otros nuevos. El contenedor, en cambio, siempre es el mismo: su listener no se pierde. Para comparar, después de <code>pintarTarjetas(tarjetas);</code> escribe <code>for (const boton of document.querySelectorAll(\".tarjeta-boton\")) { boton.addEventListener(\"click\", function () { console.log(\"clic en un botón\"); }); }</code>. Pulsa un botón: aparece el mensaje. Escribe algo en el buscador, bórralo y pulsa otra vez: ya no aparece, porque esos botones son nuevos. Al terminar, borra ese <code>for</code>.",
+      "reto": true
+    }
+  ]
+}

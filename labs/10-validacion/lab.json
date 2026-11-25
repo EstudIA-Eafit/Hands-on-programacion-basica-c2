@@ -1,0 +1,117 @@
+{
+  "id": "10-validacion",
+  "titulo": "Validación y mensajes",
+  "objetivo": "Revisar los datos de los formularios antes de usarlos, con atributos de HTML y con JavaScript, y escribir mensajes que digan qué pasó y qué hacer.",
+  "duracion": "75 minutos",
+  "nivel": "Básico",
+  "archivos": [
+    { "nombre": "index.html", "etiqueta": "HTML", "principal": true },
+    { "nombre": "estilos.css", "etiqueta": "CSS" },
+    { "nombre": "app.js", "etiqueta": "JS" }
+  ],
+  "proyectos": {
+    "grupo": "encuentro-2",
+    "opciones": [
+      {
+        "id": "eventos",
+        "titulo": "Inscripción a eventos culturales",
+        "descripcion": "Seis eventos del barrio y un formulario para inscribirse."
+      },
+      {
+        "id": "tienda",
+        "titulo": "Catálogo de una tienda de barrio",
+        "descripcion": "Seis productos y un formulario para hacer un pedido."
+      },
+      {
+        "id": "servicios",
+        "titulo": "Directorio de servicios del barrio",
+        "descripcion": "Seis servicios y un formulario para pedir uno."
+      }
+    ]
+  },
+  "tareas": [
+    {
+      "id": "required",
+      "texto": "Agrega <code>required</code> a los campos obligatorios de los dos formularios y revisa que el correo tenga <code>type=\"email\"</code>. Intenta enviar con campos vacíos.",
+      "pista": "En la pestaña HTML, escribe <code>required</code> dentro de la etiqueta: <code>&lt;input type=\"text\" id=\"nombre\" name=\"nombre\" required&gt;</code>. Ponlo también en el <code>select</code>: su primera opción tiene <code>value=\"\"</code>, así que cuenta como vacía. El correo ya tiene <code>type=\"email\"</code> desde el lab 03: prueba con un correo sin @. En la tienda no hay correo: el teléfono tiene <code>type=\"tel\"</code>. Al enviar con campos vacíos, el navegador muestra su propio mensaje y no ejecuta el <code>submit</code>. Ojo: esta ayuda es para la persona, pero no protege un servidor, porque cualquiera puede saltarla.",
+      "reto": false
+    },
+    {
+      "id": "limites",
+      "texto": "Agrega <code>min</code>, <code>max</code> o <code>maxlength</code> donde tenga sentido en tu proyecto.",
+      "pista": "En <code>disponibles</code>: <code>min=\"1\" max=\"500\"</code>. En los textos: <code>maxlength=\"60\"</code> en el nombre de la tarjeta, y <code>maxlength=\"300\"</code> en los comentarios o la descripción, si tu proyecto los tiene. Prueba escribir 0 en <code>disponibles</code> y enviar: el navegador lo rechaza. <code>maxlength</code> no deja escribir más letras. Revisa también los números que ya tenía el formulario, como los acompañantes o la cantidad.",
+      "reto": false
+    },
+    {
+      "id": "trim",
+      "texto": "En JavaScript, rechaza un nombre que solo tenga espacios, con un mensaje claro. Hazlo en los dos formularios.",
+      "pista": "<code>required</code> acepta un nombre que solo tiene espacios. <code>trim()</code> quita los espacios del principio y del final: <code>const titulo = document.getElementById(\"titulo\").value.trim();</code>. Si queda vacío, muestra un mensaje y termina la función: <code>if (titulo === \"\") { mensajeAgregar.textContent = \"No se agregó la tarjeta: falta el nombre. Escribe un nombre con letras, no solo espacios.\"; return; }</code>. Haz lo mismo con <code>nombre</code> en <code>alEnviarFormulario</code>.",
+      "reto": false
+    },
+    {
+      "id": "repetido",
+      "texto": "En el formulario para agregar, rechaza una tarjeta cuyo nombre ya exista, usando <code>filter</code> y <code>length</code>.",
+      "pista": "Escribe <code>const iguales = tarjetas.filter(function (tarjeta) { return tarjeta.titulo.toLowerCase() === titulo.toLowerCase(); });</code>. Si <code>iguales.length &gt; 0</code>, ya hay una tarjeta con ese nombre: muestra un mensaje como <code>`No se agregó la tarjeta: ya existe «${titulo}». Usa otro nombre.`</code> y termina con <code>return</code>. Con <code>toLowerCase</code>, «Huevos» y «huevos» cuentan como el mismo nombre.",
+      "reto": false
+    },
+    {
+      "id": "registros",
+      "texto": "En el formulario de inscripción, pedido o solicitud, guarda cada envío válido en el array <code>registros</code> y rechaza el mismo correo con la misma opción.",
+      "pista": "<code>registros</code> ya existe en app.js y empieza vacío. Antes de guardar, busca repetidos: <code>const repetidos = registros.filter(function (registro) { return registro.correo === correo &amp;&amp; registro.opcion === opcion; });</code>. <code>&amp;&amp;</code> significa «y»: se deben cumplir las dos cosas. Si hay alguno, muestra un mensaje y termina. Si no, guarda con <code>registros.push({ nombre: nombre, correo: correo, opcion: opcion });</code>. En la tienda, usa el teléfono en vez del correo. El array vive en la memoria: se vacía al recargar la página.",
+      "reto": false
+    },
+    {
+      "id": "mensajes",
+      "texto": "Haz que cada mensaje diga qué pasó y qué hacer, sin depender solo del color.",
+      "pista": "Completa <code>mostrarMensaje(elemento, tipo, texto)</code>: escribe el texto con <code>textContent</code>, quita las clases <code>mensaje-ok</code> y <code>mensaje-error</code> con <code>classList.remove</code> y agrega la que corresponde con <code>classList.add(\"mensaje-\" + tipo)</code>. Úsala en todos los mensajes. El color ayuda, pero no alcanza: hay personas que no distinguen colores, y los lectores de pantalla no los leen. Por eso cada mensaje empieza con palabras, como «Listo.» o «No se agregó la tarjeta:», y dice qué hacer.",
+      "reto": false
+    },
+    {
+      "id": "casos",
+      "texto": "Prueba los casos vacío, válido y repetido en los dos formularios. Escribe lo esperado y lo observado en la tabla de casos de prueba.",
+      "pista": "La tabla está debajo del editor y del resultado. Antes de probar, escribe en «Resultado esperado» qué debería pasar. Después prueba en la pestaña nueva y escribe en «Resultado observado» qué pasó de verdad. Si no coinciden, encontraste algo para arreglar. La tabla se guarda en este navegador y se descarga con tu trabajo.",
+      "reto": false
+    },
+    {
+      "id": "reto-guardar",
+      "texto": "Guarda las tarjetas agregadas con <code>localStorage</code>, <code>JSON.stringify</code> y <code>JSON.parse</code>, para que sigan ahí al recargar la página.",
+      "pista": "<code>localStorage</code> guarda texto en el navegador. <code>JSON.stringify</code> convierte un array en texto y <code>JSON.parse</code> lo convierte otra vez en array. Arriba de <code>pintarTarjetas(tarjetas);</code>, lee lo guardado: <code>const agregadas = JSON.parse(localStorage.getItem(\"tarjetas-agregadas\") || \"[]\");</code>. <code>|| \"[]\"</code> usa un array vacío si todavía no hay nada guardado. Agrega cada una a <code>tarjetas</code> con <code>push</code>. En <code>alAgregarTarjeta</code>, después de agregar, haz <code>agregadas.push(nueva);</code> y <code>localStorage.setItem(\"tarjetas-agregadas\", JSON.stringify(agregadas));</code>. Pruébalo con F5 en la pestaña nueva. Para empezar de cero, escribe en la consola <code>localStorage.removeItem(\"tarjetas-agregadas\")</code>.",
+      "reto": true
+    }
+  ],
+  "casos": {
+    "instrucciones": "Prueba cada caso en la pestaña nueva. Antes de probar, escribe qué esperas que pase. Después, escribe qué pasó de verdad. Un formulario con campos vacíos lo frena el navegador gracias a <code>required</code>; estos casos prueban lo que revisa tu JavaScript.",
+    "filas": [
+      {
+        "id": "agregar-vacio",
+        "caso": "Agregar tarjeta: nombre vacío",
+        "entrada": "En el nombre, escribe solo espacios. Completa los demás campos y pulsa el botón para agregar."
+      },
+      {
+        "id": "agregar-valido",
+        "caso": "Agregar tarjeta: datos válidos",
+        "entrada": "Un nombre nuevo, por ejemplo «Prueba 1», y todos los campos completos."
+      },
+      {
+        "id": "agregar-repetido",
+        "caso": "Agregar tarjeta: nombre repetido",
+        "entrada": "El nombre de una tarjeta que ya está en la lista, con todos los campos completos."
+      },
+      {
+        "id": "inscripcion-vacio",
+        "caso": "Inscripción, pedido o solicitud: nombre vacío",
+        "entrada": "En el nombre, escribe solo espacios. Completa los demás campos y envía el formulario."
+      },
+      {
+        "id": "inscripcion-valido",
+        "caso": "Inscripción, pedido o solicitud: datos válidos",
+        "entrada": "Tu nombre, un correo (en la tienda, un teléfono) y una opción. Envía el formulario una vez."
+      },
+      {
+        "id": "inscripcion-repetido",
+        "caso": "Inscripción, pedido o solicitud: repetido",
+        "entrada": "Envía otra vez el mismo correo (en la tienda, el mismo teléfono) con la misma opción."
+      }
+    ]
+  }
+}
