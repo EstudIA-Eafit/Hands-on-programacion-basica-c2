@@ -635,6 +635,65 @@ button {
   background-color: var(--fondo-suave);
 }
 
+/* ---------- Tabla de casos de prueba ----------
+   En celular, cada fila se ve como una ficha: las celdas van una debajo
+   de otra y cada una muestra el nombre de su columna (data-columna).
+   En pantallas anchas (ver @media más abajo) es una tabla normal. */
+
+.casos {
+  margin-top: 2rem;
+}
+
+.tabla-casos {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-casos thead {
+  /* Oculto en celular: cada celda ya dice su columna. */
+  display: none;
+}
+
+.tabla-casos tr,
+.tabla-casos th,
+.tabla-casos td {
+  display: block;
+}
+
+.tabla-casos tr {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--linea);
+  border-radius: 6px;
+  background-color: var(--fondo-suave);
+}
+
+.tabla-casos th,
+.tabla-casos td {
+  padding: 0.25rem 0;
+  text-align: left;
+  vertical-align: top;
+}
+
+.tabla-casos td[data-columna]::before {
+  content: attr(data-columna);
+  display: block;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.tabla-casos textarea {
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 0.5rem;
+  font: inherit;
+  color: var(--texto);
+  background-color: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  resize: vertical;
+}
+
 .descargas {
   margin-top: 2rem;
 }
@@ -739,6 +798,38 @@ h2:focus-visible {
   .codigo,
   #vista-previa {
     height: 32rem;
+  }
+
+  /* La tabla de casos vuelve a ser una tabla */
+  .tabla-casos thead {
+    display: table-header-group;
+  }
+
+  .tabla-casos tr {
+    display: table-row;
+  }
+
+  .tabla-casos th,
+  .tabla-casos td {
+    display: table-cell;
+    padding: 0.5rem;
+    border: 1px solid var(--linea);
+  }
+
+  .tabla-casos thead th {
+    background-color: var(--fondo-suave);
+  }
+
+  .tabla-casos td[data-columna]::before {
+    content: none;
+  }
+
+  .tabla-casos th[scope="row"] {
+    width: 20%;
+  }
+
+  .tabla-casos td {
+    width: 26%;
   }
 }
 

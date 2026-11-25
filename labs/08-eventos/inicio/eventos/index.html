@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agenda cultural del barrio</title>
+  <link rel="stylesheet" href="estilos.css">
+  <!-- Conecta el JavaScript. defer: se ejecuta cuando la página ya cargó. -->
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- ======================================================
+       LAB 08 · EVENTOS
+       En este laboratorio escribes en app.js.
+       ====================================================== -->
+
+  <header>
+    <div>
+      <h1>Agenda cultural del barrio</h1>
+      <p>Eventos gratuitos para toda la comunidad.</p>
+    </div>
+
+    <nav class="menu" aria-label="Menú principal">
+      <a href="#seccion-tarjetas">Eventos</a>
+      <a href="#seccion-formulario">Inscripción</a>
+      <a href="#acerca">Acerca de</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- Solo para las tareas 1 y 2 de este laboratorio. -->
+    <section id="seccion-prueba">
+      <h2>Zona de práctica</h2>
+      <p id="texto-prueba">Todavía no pulsaste el botón.</p>
+      <button type="button" id="boton-prueba">Botón de prueba</button>
+    </section>
+
+    <section id="seccion-tarjetas">
+      <h2>Próximos eventos</h2>
+      <p>Elige un evento y luego inscríbete en el formulario.</p>
+
+      <div class="campo campo-buscar">
+        <label for="buscador">Buscar eventos por nombre</label>
+        <input type="search" id="buscador" name="buscador">
+      </div>
+
+      <!-- Aquí JavaScript dice cuántas tarjetas se ven. -->
+      <p id="mensaje-tarjetas" aria-live="polite"></p>
+
+      <!-- Cada tarjeta es un evento: nombre, fecha, lugar, cupos y un botón.
+           Todas las tarjetas tienen la misma estructura. -->
+      <div id="lista-tarjetas">
+        <!-- app.js crea aquí las tarjetas a partir del array de datos. -->
+      </div>
+    </section>
+
+    <section id="seccion-agregar">
+      <h2>Agregar un evento</h2>
+      <p>Completa los datos para sumar un evento a la lista.</p>
+      <p class="aviso-practica">El evento nuevo solo se ve en esta página: se borra al recargarla.</p>
+
+      <form id="formulario-agregar">
+
+        <div class="campo">
+          <label for="titulo">Nombre del evento</label>
+          <input type="text" id="titulo" name="titulo">
+        </div>
+
+        <div class="campo">
+          <label for="texto">Fecha</label>
+          <input type="text" id="texto" name="texto">
+        </div>
+
+        <div class="campo">
+          <label for="detalle">Lugar</label>
+          <input type="text" id="detalle" name="detalle">
+        </div>
+
+        <div class="campo">
+          <label for="disponibles">Cupos</label>
+          <input type="number" id="disponibles" name="disponibles">
+        </div>
+
+        <div class="campo campo-casilla">
+          <input type="checkbox" id="destacado" name="destacado">
+          <label for="destacado">Destacado</label>
+        </div>
+
+        <button type="submit" id="boton-agregar">Agregar evento</button>
+
+      </form>
+
+      <!-- Aquí JavaScript dice si la tarjeta se agregó o qué falta. -->
+      <p id="mensaje-agregar" aria-live="polite"></p>
+    </section>
+
+    <section id="seccion-formulario">
+      <h2>Inscripción</h2>
+      <p>Completa tus datos para inscribirte en un evento.</p>
+      <p class="aviso-practica">Este formulario es una simulación: no guarda ni envía datos.</p>
+
+      <form id="formulario">
+
+        <div class="campo">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre">
+        </div>
+
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo">
+        </div>
+
+        <div class="campo">
+          <label for="evento">Evento</label>
+          <select id="evento" name="evento">
+            <option value="">Elige una opción</option>
+            <option value="Concierto de música andina">Concierto de música andina</option>
+            <option value="Taller de pintura para principiantes">Taller de pintura para principiantes</option>
+            <option value="Noche de cine al aire libre">Noche de cine al aire libre</option>
+            <option value="Feria del libro usado">Feria del libro usado</option>
+            <option value="Clase abierta de baile">Clase abierta de baile</option>
+            <option value="Cuentos para familias">Cuentos para familias</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="acompanantes">Número de acompañantes</label>
+          <input type="number" id="acompanantes" name="acompanantes" min="0" max="5" value="0">
+        </div>
+
+        <button type="submit" id="boton-enviar">Inscribirme</button>
+
+      </form>
+
+      <!-- Aquí JavaScript muestra el resumen de la simulación. -->
+      <p id="mensaje" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer id="acerca">
+    <h2>Acerca de</h2>
+    <p>Proyecto de práctica. Todos los datos de esta página son ficticios.</p>
+  </footer>
+
+</body>
+</html>

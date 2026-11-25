@@ -1,0 +1,82 @@
+{
+  "id": "09-formularios",
+  "titulo": "Formularios: agregar tarjetas",
+  "objetivo": "Leer los datos de un formulario con JavaScript, agregar tarjetas a la lista sin recargar la página y crear elementos de forma segura con createElement y textContent.",
+  "duracion": "75 minutos",
+  "nivel": "Básico",
+  "archivos": [
+    { "nombre": "index.html", "etiqueta": "HTML", "principal": true },
+    { "nombre": "estilos.css", "etiqueta": "CSS" },
+    { "nombre": "app.js", "etiqueta": "JS" }
+  ],
+  "proyectos": {
+    "grupo": "encuentro-2",
+    "opciones": [
+      {
+        "id": "eventos",
+        "titulo": "Inscripción a eventos culturales",
+        "descripcion": "Seis eventos del barrio y un formulario para inscribirse."
+      },
+      {
+        "id": "tienda",
+        "titulo": "Catálogo de una tienda de barrio",
+        "descripcion": "Seis productos y un formulario para hacer un pedido."
+      },
+      {
+        "id": "servicios",
+        "titulo": "Directorio de servicios del barrio",
+        "descripcion": "Seis servicios y un formulario para pedir uno."
+      }
+    ]
+  },
+  "tareas": [
+    {
+      "id": "submit",
+      "texto": "Escucha el evento <code>submit</code> del formulario para agregar tarjetas y mira qué pasa al enviarlo sin <code>preventDefault</code>.",
+      "pista": "La const <code>formularioAgregar</code> y la función <code>alAgregarTarjeta</code> ya están en app.js. Conéctalas: <code>formularioAgregar.addEventListener(\"submit\", alAgregarTarjeta);</code>. Dentro de la función escribe <code>console.log(\"submit\");</code>. En la pestaña nueva, escribe algo en el buscador, completa el formulario y pulsa el botón para agregar. La página se recarga: el buscador queda vacío y todo vuelve a empezar. Eso hace un formulario por defecto: envía los datos y carga la página otra vez. En la consola, activa «Conservar registro» (Preserve log) para ver los mensajes de antes de la recarga.",
+      "reto": false
+    },
+    {
+      "id": "prevent-default",
+      "texto": "Agrega <code>evento.preventDefault();</code> al principio de la función y comprueba que la página ya no se recarga.",
+      "pista": "<code>preventDefault</code> le dice al navegador: no hagas lo que harías por defecto. Ahora el formulario no se envía, y JavaScript decide qué hacer con los datos. Vuelve a probar: lo que escribiste en el buscador sigue ahí.",
+      "reto": false
+    },
+    {
+      "id": "leer-campos",
+      "texto": "Lee cada campo con <code>.value</code>, convierte <code>disponibles</code> en número con <code>Number()</code> y arma un objeto <code>nueva</code> con un <code>id</code> nuevo.",
+      "pista": "Por ejemplo: <code>const nueva = { id: tarjetas.length + 1, titulo: document.getElementById(\"titulo\").value, texto: …, detalle: …, disponibles: Number(document.getElementById(\"disponibles\").value), destacado: document.getElementById(\"destacado\").checked };</code>. <code>.value</code> siempre da texto, también en un campo de número: <code>Number()</code> lo convierte. En una casilla, <code>.checked</code> da <code>true</code> o <code>false</code>. El id nuevo es la cantidad de tarjetas más 1. Muéstralo con <code>console.log(nueva);</code>.",
+      "reto": false
+    },
+    {
+      "id": "agregar",
+      "texto": "Agrega el objeto al array con <code>push</code>, vuelve a pintar las tarjetas y limpia el formulario con <code>reset()</code>.",
+      "pista": "Escribe <code>tarjetas.push(nueva);</code> y <code>pintarTarjetas(tarjetas);</code>. Actualiza <code>mensajeTarjetas</code> con el total nuevo, y escribe en <code>mensajeAgregar</code> algo como <code>`Se agregó «${nueva.titulo}» a la lista.`</code>. Al final, <code>formularioAgregar.reset();</code> deja los campos vacíos. La tarjeta nueva aparece sin recargar la página, y el buscador también la encuentra.",
+      "reto": false
+    },
+    {
+      "id": "prueba-html",
+      "texto": "Agrega una tarjeta con el nombre <code>&lt;h1&gt;Hola&lt;/h1&gt;</code> y mira cómo se ve.",
+      "pista": "Escribe exactamente <code>&lt;h1&gt;Hola&lt;/h1&gt;</code> en el nombre y agrega la tarjeta. Aparece un título enorme, no el texto que escribiste. <code>crearTarjeta</code> arma la tarjeta con <code>innerHTML</code>, que convierte el texto en etiquetas. Con datos que escribe una persona, eso es un riesgo: alguien podría cambiar cómo se ve la página o lo que hace. Prueba también con <code>&lt;b&gt;Hola&lt;/b&gt;</code>.",
+      "reto": false
+    },
+    {
+      "id": "create-element",
+      "texto": "Reescribe <code>crearTarjeta</code> con <code>createElement</code>, <code>textContent</code> y <code>append</code>, con la misma estructura y las mismas clases. Repite la prueba de la tarea 5.",
+      "pista": "<code>document.createElement(\"article\")</code> crea un elemento vacío. Dale su clase con <code>articulo.classList.add(\"tarjeta\")</code> y su id con <code>articulo.dataset.id = tarjeta.id;</code>. Si <code>tarjeta.destacado</code> es <code>true</code>, agrega también <code>tarjeta-destacada</code>. Para el <code>h3</code>, los tres <code>p</code> y el botón usa la función de ayuda <code>crearElemento</code>, que ya está en app.js. El botón lleva adentro el <code>span</code> con la clase <code>texto-oculto</code>: agrégalo con <code>boton.append(...)</code>. Junta todo con <code>articulo.append(titulo, texto, detalle, disponibles, boton);</code> y devuelve <code>articulo</code>. En <code>pintarTarjetas</code>, vacía el contenedor con <code>contenedor.textContent = \"\";</code> y agrega cada tarjeta con <code>contenedor.append(crearTarjeta(tarjeta));</code>. Ahora <code>&lt;h1&gt;Hola&lt;/h1&gt;</code> se ve como texto: <code>textContent</code> nunca crea etiquetas.",
+      "reto": false
+    },
+    {
+      "id": "resumen",
+      "texto": "Escucha el <code>submit</code> del formulario de inscripción, pedido o solicitud y muestra en <code>mensaje</code> un resumen con <code>textContent</code>. Debe decir que es una simulación.",
+      "pista": "Completa <code>alEnviarFormulario</code> y conéctala a <code>formulario</code>. Empieza con <code>evento.preventDefault();</code>. Lee cada campo con <code>.value</code> (y con <code>Number()</code> si es un número) y escribe, por ejemplo: <code>mensaje.textContent = `Resumen de tu inscripción: ${nombre}, ${correo}, ${opcion}. Es una simulación: no se envió nada.`;</code>. Usa los campos de tu proyecto. No escribas «enviado» ni «recibimos»: nada sale de esta página. Para probar, pulsa el botón de una tarjeta y después envía el formulario.",
+      "reto": false
+    },
+    {
+      "id": "reto-opcion",
+      "texto": "Haz que el botón de las tarjetas nuevas también elija su opción en el formulario, sin agregar listeners nuevos.",
+      "pista": "La delegación ya funciona: el clic de la tarjeta nueva llega a <code>alPulsarEnLista</code>. Lo que falta es su opción en el select. En <code>alAgregarTarjeta</code>, crea una con <code>const opcion = document.createElement(\"option\");</code>, ponle <code>opcion.value</code> y <code>opcion.textContent</code> con el título nuevo, y agrégala con <code>campoOpcion.append(opcion);</code>.",
+      "reto": true
+    }
+  ]
+}

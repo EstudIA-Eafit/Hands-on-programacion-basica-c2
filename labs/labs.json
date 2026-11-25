@@ -57,6 +57,30 @@
       "duracion": "75 minutos",
       "nivel": "Básico",
       "carpeta": "07-dom"
+    },
+    {
+      "id": "08-eventos",
+      "titulo": "Eventos: la página responde",
+      "descripcion": "Sigue con tu proyecto: agrega un buscador que filtra las tarjetas y botones que llevan al formulario.",
+      "duracion": "75 minutos",
+      "nivel": "Básico",
+      "carpeta": "08-eventos"
+    },
+    {
+      "id": "09-formularios",
+      "titulo": "Formularios: agregar tarjetas",
+      "descripcion": "Lee los datos de un formulario, agrega tarjetas sin recargar la página y créalas de forma segura con createElement.",
+      "duracion": "75 minutos",
+      "nivel": "Básico",
+      "carpeta": "09-formularios"
+    },
+    {
+      "id": "10-validacion",
+      "titulo": "Validación y mensajes",
+      "descripcion": "Revisa los datos de los formularios antes de usarlos, escribe mensajes claros y anota tus pruebas en una tabla de casos.",
+      "duracion": "75 minutos",
+      "nivel": "Básico",
+      "carpeta": "10-validacion"
     }
   ]
 }

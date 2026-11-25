@@ -12,7 +12,8 @@
 #   (o en la carpeta de cada proyecto, si el lab tiene varios);
 # - datos que faltan o ids repetidos;
 # - un archivo .js que el HTML principal no conecta con
-#   <script src="app.js" defer>.
+#   <script src="app.js" defer>;
+# - una tabla de casos de prueba sin filas o con ids repetidos.
 # ============================================================
 
 import json
@@ -80,6 +81,20 @@ def revisar_scripts(ruta, carpeta, carpetas_inicio, archivos, principal):
                                f'<script src="{nombre}" defer></script> en el <head>.')
 
 
+def revisar_casos(ruta, casos):
+    """La tabla de casos de prueba: una lista "filas" con id, caso y entrada."""
+    filas = casos.get("filas", []) if isinstance(casos, dict) else []
+    if not filas:
+        errores.append(f'{ruta}: "casos" debe tener una lista "filas" con al menos un caso.')
+        return
+    for fila in filas:
+        revisar_campos(ruta, fila, ["id", "caso", "entrada"])
+    ids = [str(fila.get("id")) for fila in filas]
+    repetidos = {i for i in ids if ids.count(i) > 1}
+    if repetidos:
+        errores.append(f"{ruta}: hay casos con el mismo id: {', '.join(sorted(repetidos))}.")
+
+
 def revisar_laboratorio(carpeta):
     # as_posix() escribe la ruta con / también en Windows.
     ruta = (carpeta / "lab.json").as_posix()
@@ -108,6 +123,9 @@ def revisar_laboratorio(carpeta):
         errores.append(f'{ruta}: debe haber exactamente un archivo con "principal": true.')
     else:
         revisar_scripts(ruta, carpeta, carpetas_inicio, archivos, principales[0].get("nombre", ""))
+
+    if "casos" in lab:
+        revisar_casos(ruta, lab["casos"])
 
     ids = [tarea.get("id") for tarea in lab.get("tareas", [])]
     for tarea in lab.get("tareas", []):

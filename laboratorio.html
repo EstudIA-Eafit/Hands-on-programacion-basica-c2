@@ -143,6 +143,27 @@
 
         </div>
 
+        <!-- Solo en laboratorios con "casos" en lab.json.
+             laboratorio.js crea una fila por cada caso. -->
+        <section class="casos" id="seccion-casos" aria-labelledby="titulo-casos" hidden>
+          <h2 id="titulo-casos">Casos de prueba</h2>
+          <p id="instrucciones-casos"></p>
+          <table class="tabla-casos">
+            <thead>
+              <tr>
+                <th scope="col">Caso</th>
+                <th scope="col">Entrada sugerida</th>
+                <th scope="col">Resultado esperado</th>
+                <th scope="col">Resultado observado</th>
+              </tr>
+            </thead>
+            <tbody id="filas-casos"></tbody>
+          </table>
+          <p class="nota" id="estado-casos" aria-live="polite">
+            La tabla se guarda en este navegador y se incluye al descargar tu trabajo.
+          </p>
+        </section>
+
         <section class="descargas" aria-labelledby="titulo-descargas">
           <h2 id="titulo-descargas">¿Prefieres trabajar en tu propio editor?</h2>
           <p>Descarga los archivos de inicio y guárdalos juntos en una misma carpeta.</p>
